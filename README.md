@@ -1,0 +1,3 @@
+# misCursosUNQ-back
+
+Se plantea construir un sistema de gestión de cursos y evaluaciones para el ciclo introductorio de ciencia y tecnología (CI-CYT) de la Universidad Nacional de Quilmes (UNQ).
