@@ -9,5 +9,4 @@ public class MisCursosUnqApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MisCursosUnqApplication.class, args);
 	}
-
 }
