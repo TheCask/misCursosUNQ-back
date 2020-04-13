@@ -1,7 +1,17 @@
 package ar.edu.unq.misCursosUNQ;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 import java.util.List;
 
+@Entity
+@Table(name="USUARIO")
 public class Usuario extends AbstractEntity {
 
 	private String nombre;
@@ -9,8 +19,9 @@ public class Usuario extends AbstractEntity {
 	private String dni;
 	private String email;
 	
-	//private List<Cursada> cursadas;
+	@ManyToMany(mappedBy = "Materia")
 	private List<Materia> coordinadas;
+	//private List<Cursada> cursadas;
 	
 	
 	public Usuario(String nombre, String apellido, String dni, String email) {
@@ -20,10 +31,11 @@ public class Usuario extends AbstractEntity {
 		this.email = email;
 	}
 
-
+	@Id 
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Override
 	public Long getId() {
 		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 }
