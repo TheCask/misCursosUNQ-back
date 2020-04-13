@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public abstract class AbstractEntity implements Serializable {
  
+	private static final long serialVersionUID = -4744446709567257390L;
+	
 	protected Long id;
  
 	// Este metodo es abstracto porque las anotaciones no son heredables 
