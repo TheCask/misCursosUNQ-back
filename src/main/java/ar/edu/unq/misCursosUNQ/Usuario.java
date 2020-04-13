@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -19,8 +20,10 @@ public class Usuario extends AbstractEntity {
 	private String dni;
 	private String email;
 	
-	@ManyToMany(mappedBy = "Materia")
+	@ManyToMany
+	@JoinTable(name="COORDINADOR_MATERIA")
 	private List<Materia> coordinadas;
+	
 	//private List<Cursada> cursadas;
 	
 	
