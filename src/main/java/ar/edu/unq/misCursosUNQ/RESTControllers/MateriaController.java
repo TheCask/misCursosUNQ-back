@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.unq.misCursosUNQ.Materia;
+import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Services.MateriaService;
  
 @RestController
@@ -30,19 +31,19 @@ public class MateriaController {
     }
  
     @GetMapping("/{id}")
-    public ResponseEntity<Materia> getMateriaById(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<Materia> getMateriaById(@PathVariable("id") Long id) throws RecordNotFoundException {
         Materia entity = service.getMateriaById(id);
         return new ResponseEntity<Materia>(entity, new HttpHeaders(), HttpStatus.OK);
     }
  
     @PostMapping
-    public ResponseEntity<Materia> createOrUpdateMateria(Materia materia) throws Exception {
+    public ResponseEntity<Materia> createOrUpdateMateria(Materia materia) throws RecordNotFoundException {
         Materia updated = service.createOrUpdateMateria(materia);
         return new ResponseEntity<Materia>(updated, new HttpHeaders(), HttpStatus.OK);
     }
  
     @DeleteMapping("/{id}")
-    public HttpStatus deleteMateriaById(@PathVariable("id") Long id) throws Exception {
+    public HttpStatus deleteMateriaById(@PathVariable("id") Long id) throws RecordNotFoundException {
         service.deleteMateriaById(id);
         return HttpStatus.FORBIDDEN;
     }
