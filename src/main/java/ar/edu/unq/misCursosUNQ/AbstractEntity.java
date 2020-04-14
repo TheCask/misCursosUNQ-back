@@ -8,12 +8,13 @@ public abstract class AbstractEntity implements Serializable {
 	
 	protected Long id;
  
-	// Este metodo es abstracto porque las anotaciones no son heredables 
+	// Abstract method because anotations are not heredable 
 	public abstract Long getId();
  
-	// Este metodo es protegido para evitar que un programador pueda poner un
-	// idenfificador en la instancia, ya que los identitificadores deben ser
-	// gestionados por la capa de persistencia
+	/* 
+	 * This method is protected to avoid using identifiers in the instance,
+	 * because they has to be managed by the persistence layer
+	*/
 	protected void setId(final Long id) {
 		this.id = id;
 	}

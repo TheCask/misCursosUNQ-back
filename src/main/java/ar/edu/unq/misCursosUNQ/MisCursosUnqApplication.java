@@ -7,17 +7,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import ar.edu.unq.misCursosUNQ.Repos.MateriaRepo;
-import ar.edu.unq.misCursosUNQ.Services.MateriaService;
+import ar.edu.unq.misCursosUNQ.Repos.SubjectRepo;
+import ar.edu.unq.misCursosUNQ.Services.SubjectService;
 
 @SpringBootApplication
 public class MisCursosUnqApplication implements CommandLineRunner {
 
 	@Autowired
-	MateriaService service;
+	SubjectService service;
 	
 	@Autowired
-	MateriaRepo repo;
+	SubjectRepo repo;
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -28,10 +28,10 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 	@Override
     public void run(String... args) throws Exception { 
 		
-		Materia lea = new Materia("LEA");
-		Materia icfyq = new Materia("ICFyQ");
-		Materia mate = new Materia("MATE");
-		Materia epyl = new Materia("EPYL");
+		Subject lea = new Subject("LEA");
+		Subject icfyq = new Subject("ICFyQ");
+		Subject mate = new Subject("MATE");
+		Subject epyl = new Subject("EPYL");
 		
 		repo.save(lea);
 		repo.save(icfyq);
