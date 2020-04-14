@@ -28,10 +28,10 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 	@Override
     public void run(String... args) throws Exception { 
 		
-		Subject lea = new Subject("LEA");
-		Subject icfyq = new Subject("ICFyQ");
-		Subject mate = new Subject("MATE");
-		Subject epyl = new Subject("EPYL");
+		Subject lea = new Subject("Lectura y Escritura Académica");
+		Subject icfyq = new Subject("Introducción al Conocimiento de la Física y la Química");
+		Subject mate = new Subject("Matemática");
+		Subject epyl = new Subject("Elementos de Programación y lógica");
 		
 		repo.save(lea);
 		repo.save(icfyq);
