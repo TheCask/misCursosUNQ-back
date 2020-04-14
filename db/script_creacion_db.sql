@@ -1,4 +1,3 @@
-CREATE DATABASE misCursosUNQ;
 USE misCursosUNQ;
 
 CREATE TABLE USUARIO (
@@ -8,8 +7,13 @@ apellido VARCHAR(50) NOT NULL,
 dni VARCHAR(20) NOT NULL,
 email VARCHAR(255) NOT NULL,
 PRIMARY KEY(id)
-) engine=innodb default charset=utf8 collate=utf8_spanish_ci;
+) engine=innodb default charset=UTF8MB4 collate=UTF8MB4_spanish_ci;
 
+CREATE TABLE MATERIA (
+id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+nombre VARCHAR(255) NOT NULL,
+PRIMARY KEY(id)
+) engine=innodb default charset=UTF8MB4 collate=UTF8MB4_spanish_ci;
 
 CREATE TABLE COORDINADOR_MATERIA (
 USUARIO_id INTEGER UNSIGNED NOT NULL,
@@ -17,7 +21,7 @@ MATERIA_id INTEGER UNSIGNED NOT NULL,
 PRIMARY KEY(USUARIO_id, MATERIA_id),
 CONSTRAINT FK_COORDINADOR FOREIGN KEY(USUARIO_id) REFERENCES USUARIO(id),
 CONSTRAINT FK_MATERIA FOREIGN KEY(MATERIA_id) REFERENCES MATERIA(id)
-)engine=innodb default charset=utf8 collate=utf8_spanish_ci;
+)engine=innodb default charset=UTF8MB4 collate=UTF8MB4_spanish_ci;
 
 CREATE TABLE DOCENTE_CURSADA (
 USUARIO_id INTEGER UNSIGNED NOT NULL,
@@ -25,10 +29,4 @@ CURSADA_id INTEGER UNSIGNED NOT NULL,
 PRIMARY KEY(USUARIO_id, CURSADA_id),
 CONSTRAINT FK_DOCENTE FOREIGN KEY(USUARIO_id) REFERENCES USUARIO(id),
 CONSTRAINT FK_CURSADA FOREIGN KEY(CURSADA_id) REFERENCES CURSADA(id)
-)engine=innodb default charset=utf8 collate=utf8_spanish_ci;
-
-CREATE TABLE MATERIA (
-id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-nombre VARCHAR(255) NOT NULL,
-PRIMARY KEY(id)
-) engine=innodb default charset=utf8 collate=utf8_spanish_ci;
+)engine=innodb default charset=UTF8MB4 collate=UTF8MB4_spanish_ci;

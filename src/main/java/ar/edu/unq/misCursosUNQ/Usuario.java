@@ -1,19 +1,18 @@
 package ar.edu.unq.misCursosUNQ;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-
 import java.util.List;
 
 @Entity
-@Table(name="USUARIO")
+//@Table(name="USUARIO")
 public class Usuario extends AbstractEntity {
+
+	private static final long serialVersionUID = 6671561417676772045L;
 
 	private String nombre;
 	private String apellido;
@@ -26,7 +25,6 @@ public class Usuario extends AbstractEntity {
 	
 	//private List<Cursada> cursadas;
 	
-	
 	public Usuario(String nombre, String apellido, String dni, String email) {
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -34,11 +32,8 @@ public class Usuario extends AbstractEntity {
 		this.email = email;
 	}
 
-	@Id 
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Override
-	public Long getId() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	public Long getId() { return id; }
 }

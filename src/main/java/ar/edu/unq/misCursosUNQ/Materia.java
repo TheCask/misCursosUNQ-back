@@ -7,17 +7,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 // Remember to include only JPA API annotations (javax.persistence.*) 
 // to decouple hibernate from application code.
 
 @Entity
-@Table(name="MATERIA")
+//@Table(name="MATERIA")
 public class Materia extends AbstractEntity {
 	
 	private static final long serialVersionUID = -3642091487086232955L;
 
+	//@Column(name="nombre")
 	private String nombre;
 
 	@ManyToMany(mappedBy = "coordinadas")
@@ -26,23 +26,23 @@ public class Materia extends AbstractEntity {
 	//@ManyToMany(mappedBy = "?????")
 	//public List<Usuario> docentes;
 	
-	public Materia(String nombre) {
-		this.nombre = nombre;
-	}
+	public Materia() {}
 	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	public Materia(String nombre) { this.nombre = nombre; }
+	
 	@Override
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() { return id; }
-	
-	// To print materia basic details in logs.
-	@Override
-    public String toString() {
-        return "MateriaEntity [id=" + this.getId() + ", nombre=" + nombre + "]";
-    }
 
 	public String getNombre() { return this.nombre; }
 
 	public void setNombre(String nombre) { this.nombre = nombre; }
+	
+	// To print materia basic details in logs.
+	@Override
+	public String toString() {
+		return "MateriaEntity [id=" + this.getId() + ", nombre=" + nombre + "]";
+	}
 
 }
