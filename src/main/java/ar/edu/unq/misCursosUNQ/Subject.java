@@ -1,5 +1,6 @@
 package ar.edu.unq.misCursosUNQ;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -23,8 +24,7 @@ public class Subject extends AbstractEntity {
 	//URL
 	private String programURL;
 
-	@ManyToMany(mappedBy = "coordinatedSubjects")
-	public List<User> coordinators;
+	private List<User> coordinators = new ArrayList<User>();
 	
 	//@ManyToMany(mappedBy = "?????")
 	//public List<User> teachers;
@@ -40,6 +40,7 @@ public class Subject extends AbstractEntity {
 	@Override
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@Column(name="subject_id")
 	public Long getId() { return id; }
 
 	public String getName() { return this.name; }
@@ -53,6 +54,11 @@ public class Subject extends AbstractEntity {
 	public String getProgram() { return programURL; }
 
 	public void setProgram(String aProgram) { this.programURL = aProgram; }
+
+	@ManyToMany(mappedBy = "coordinatedSubjects")
+	public List<User> getCoordinators() { return coordinators; }
+
+	public void setCoordinators(List<User> coordinators) { this.coordinators = coordinators; }
 
 	// To print materia basic details in logs.
 	@Override

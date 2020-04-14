@@ -1,14 +1,18 @@
 package ar.edu.unq.misCursosUNQ;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Access(AccessType.PROPERTY)
 //@Table(name="USER")
 public class User extends AbstractEntity {
 
@@ -19,11 +23,11 @@ public class User extends AbstractEntity {
 	private String dni;
 	private String email;
 	
-	@ManyToMany
-	@JoinTable(name="COORDINATOR_SUBJECT")
-	private List<Subject> coordinatedSubjects;
+	private List<Subject> coordinatedSubjects = new ArrayList<Subject>();
 	
 	//private List<Course> courses;
+	
+	public User() {}
 	
 	public User(String aFirstName, String aLastName, String aDNI, String anEmail) {
 		this.setFirstName(aFirstName);
@@ -38,7 +42,8 @@ public class User extends AbstractEntity {
 	
 	@Override
 	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@Column(name="user_id")
 	public Long getId() { return id; }
 
 	public String getFirstName() { return firstName; }
@@ -56,4 +61,12 @@ public class User extends AbstractEntity {
 	public String getEmail() { return email; }
 
 	public void setEmail(String email) { this.email = email; }
+	
+	@ManyToMany()	//cascade = { CascadeType.ALL })
+	//@JoinTable(joinColumns = { @JoinColumn(name = "subject_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
+	public List<Subject> getCoordinatedSubjects() { return coordinatedSubjects; }
+
+	public void setCoordinatedSubjects(List<Subject> aListCoordinatedSubjects) { 
+		this.coordinatedSubjects= aListCoordinatedSubjects; 
+	}
 }

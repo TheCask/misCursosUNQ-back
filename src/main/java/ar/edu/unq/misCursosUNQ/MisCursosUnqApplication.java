@@ -7,17 +7,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import ar.edu.unq.misCursosUNQ.Repos.SubjectRepo;
 import ar.edu.unq.misCursosUNQ.Services.SubjectService;
+import ar.edu.unq.misCursosUNQ.Services.UserService;
 
 @SpringBootApplication
 public class MisCursosUnqApplication implements CommandLineRunner {
 
 	@Autowired
-	SubjectService service;
+	SubjectService subjectService;
 	
 	@Autowired
-	SubjectRepo repo;
+	UserService userService;
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -33,11 +33,20 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		Subject mate = new Subject("Matemática");
 		Subject epyl = new Subject("Elementos de Programación y lógica");
 		
-		repo.save(lea);
-		repo.save(icfyq);
-		repo.save(mate);
-		repo.save(epyl);
- 
-        logger.info("Materias: -> {}", repo.findAll().toString());
+		User admin = new User("Eugenio", "Calcena", "28860590", "eugeniocalcena@gmail.com");
+		User admin2 = new User("Elias", "Filipponi", "29085595", "eliasfilipponi@gmail.com");
+		
+		userService.createOrUpdateUser(admin);
+		subjectService.createOrUpdateSubject(lea);
+		admin.getCoordinatedSubjects().add(lea);
+		userService.createOrUpdateUser(admin);
+		
+		userService.createOrUpdateUser(admin2);
+		subjectService.createOrUpdateSubject(icfyq);
+		icfyq.getCoordinators().add(admin2);
+		subjectService.createOrUpdateSubject(icfyq);		
+		
+        logger.info("Materias: -> {}", subjectService.getSubjects().toString());
+        logger.info("Users: -> {}", userService.getUsers().toString());
     }
 }

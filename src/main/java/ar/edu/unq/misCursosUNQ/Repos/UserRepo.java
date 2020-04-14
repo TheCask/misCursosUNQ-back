@@ -3,7 +3,6 @@ package ar.edu.unq.misCursosUNQ.Repos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.User;
 
 @Repository

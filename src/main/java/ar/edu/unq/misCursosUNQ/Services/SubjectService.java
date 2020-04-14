@@ -3,7 +3,7 @@ package ar.edu.unq.misCursosUNQ.Services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
- 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
@@ -32,21 +32,23 @@ public class SubjectService {
     }
      
     public Subject createOrUpdateSubject(Subject entity) throws RecordNotFoundException {
-        Optional<Subject> subject = repository.findById(entity.getId());
-         
-        if(subject.isPresent()) {
-            Subject newEntity = subject.get();
-            
-            newEntity.setName(entity.getName());
- 
-            newEntity = repository.save(newEntity);
-             
-            return newEntity;
-        } 
-        else {
-            entity = repository.save(entity); 
-            return entity;
-        }
+        
+    	if (entity.getId() == null) { return repository.save(entity); }
+    	else {
+    	
+	    	Optional<Subject> subject = repository.findById(entity.getId());
+	         
+	        if(subject.isPresent()) {
+	            Subject newEntity = subject.get();
+	            
+	            newEntity.setName(entity.getName());	
+	 
+	            newEntity = repository.save(newEntity);
+	             
+	            return newEntity;
+	        } 
+	        else { return repository.save(entity); }
+    	}
     } 
      
     public void deleteSubjectById(Long id) throws RecordNotFoundException {
