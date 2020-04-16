@@ -22,12 +22,14 @@ public class User extends AbstractEntity {
 	private String lastName;
 	private String dni;
 	private String email;
+	private String cellPhone = "";
 	
 	private List<Subject> coordinatedSubjects = new ArrayList<Subject>();
 	
-	//private List<Course> courses;
+	//private List<Course> courses = new ArrayList<Course>();
 	
-	public User() {}
+	// Default constructor for Hibernate
+	private User() {}
 	
 	public User(String aFirstName, String aLastName, String aDNI, String anEmail) {
 		this.setFirstName(aFirstName);
@@ -36,15 +38,21 @@ public class User extends AbstractEntity {
 		this.setEmail(anEmail);
 	}
 
-	/*
-	 * SETTERS & GETTERS
-	 */
+	/* GETTERS & SETTERS */
 	
 	@Override
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	//@Column(name="user_id")
 	public Long getId() { return id; }
+	
+	@ManyToMany()	//cascade = { CascadeType.ALL })
+	//@JoinTable(joinColumns = { @JoinColumn(name = "subject_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
+	public List<Subject> getCoordinatedSubjects() { return coordinatedSubjects; }
+	
+	public void setCoordinatedSubjects(List<Subject> aListCoordinatedSubjects) { 
+		this.coordinatedSubjects= aListCoordinatedSubjects; 
+	}
 
 	public String getFirstName() { return firstName; }
 
@@ -61,12 +69,14 @@ public class User extends AbstractEntity {
 	public String getEmail() { return email; }
 
 	public void setEmail(String email) { this.email = email; }
-	
-	@ManyToMany()	//cascade = { CascadeType.ALL })
-	//@JoinTable(joinColumns = { @JoinColumn(name = "subject_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
-	public List<Subject> getCoordinatedSubjects() { return coordinatedSubjects; }
 
-	public void setCoordinatedSubjects(List<Subject> aListCoordinatedSubjects) { 
-		this.coordinatedSubjects= aListCoordinatedSubjects; 
+	public String getCellPhone() { return cellPhone; }
+
+	public void setCellPhone(String cellPhone) { this.cellPhone = cellPhone; }
+
+	// To print User basic details in logs.
+	@Override
+	public String toString() {
+		return "User [id " + this.getId() + " | " + firstName + " " + lastName + ", " + dni + ", " + email + "]";
 	}
 }

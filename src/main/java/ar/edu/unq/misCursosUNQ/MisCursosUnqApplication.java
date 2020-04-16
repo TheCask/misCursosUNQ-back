@@ -28,10 +28,10 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 	@Override
     public void run(String... args) throws Exception { 
 		
-		Subject lea = new Subject("Lectura y Escritura Académica");
-		Subject icfyq = new Subject("Introducción al Conocimiento de la Física y la Química");
-		Subject mate = new Subject("Matemática");
-		Subject epyl = new Subject("Elementos de Programación y lógica");
+		Subject lea = new Subject("Lectura y Escritura Académica", "80000-CYT1y2", "LEA");
+		Subject icfyq = new Subject("Introducción al Conocimiento de la Física y la Química", "80004-CYT1", "ICFYQ");
+		Subject mate = new Subject("Matemática", "80003-CYT1y2", "MATE");
+		Subject epyl = new Subject("Elementos de Programación y lógica", "80005-CYT2", "EPYL");
 		
 		User admin = new User("Eugenio", "Calcena", "28860590", "eugeniocalcena@gmail.com");
 		User admin2 = new User("Elias", "Filipponi", "29085595", "eliasfilipponi@gmail.com");

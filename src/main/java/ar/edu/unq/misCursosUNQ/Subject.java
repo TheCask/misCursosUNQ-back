@@ -21,21 +21,24 @@ public class Subject extends AbstractEntity {
 	//@Column(name="name")
 	private String name;
 	private String code;
-	//URL
-	private String programURL;
+	private String acronym;
+	private String programURL = "";
 
 	private List<User> coordinators = new ArrayList<User>();
 	
 	//@ManyToMany(mappedBy = "?????")
 	//public List<User> teachers;
 	
-	public Subject() {}
+	// Default constructor for Hibernate
+	private Subject() {}
 	
-	public Subject(String aName) { this.name = aName; }
+	public Subject(String aName, String aCode, String anAcronym) { 
+		this.name = aName;
+		this.code = aCode;
+		this.acronym = anAcronym;
+	}
 	
-	/*
-	 * SETTERS & GETTERS
-	 */
+	/* GETTERS & SETTERS */
 	
 	@Override
 	@Id
@@ -50,6 +53,10 @@ public class Subject extends AbstractEntity {
 	public String getCode() { return code; }
 
 	public void setCode(String aCode) { this.code = aCode; }
+	
+	public String getAcronym() { return acronym; }
+
+	public void setAcronym(String anAcronym) { this.acronym = anAcronym; }
 
 	public String getProgram() { return programURL; }
 
@@ -63,7 +70,7 @@ public class Subject extends AbstractEntity {
 	// To print materia basic details in logs.
 	@Override
 	public String toString() {
-		return "Subject [id=" + this.getId() + ", name=" + name + "]";
+		return "Subject [id " + this.getId() + " | " + code + ", " + acronym + "]";
 	}
 
 }
