@@ -41,7 +41,7 @@ public class Subject implements Serializable {
 
 	public void setCoordinators(List<User> coordinators) { this.coordinators = coordinators; }
 	
-	@OneToMany(orphanRemoval = true)
+	@OneToMany()
 	public List<Course> getCourses() { return courses; }
 
 	public void setCourses(List<Course> courses) { this.courses = courses; }

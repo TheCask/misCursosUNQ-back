@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Course implements Serializable {
@@ -27,7 +28,7 @@ public class Course implements Serializable {
 	//private CourseWeekSchedule courseWeekSchedule = new CourseWeekSchedule();
 	
 	private List<User> teachers = new ArrayList<User>();
-	//private List<Student> students = new ArrayList<Student>();
+	private List<Student> students = new ArrayList<Student>();
 	//private List<Lesson> lessons = new ArrayList<Lesson>();
 
 	// Default constructor for Hibernate
@@ -48,6 +49,11 @@ public class Course implements Serializable {
 	public List<User> getTeachers() { return teachers; }
 
 	public void setTeachers(List<User> teachers) { this.teachers = teachers; }
+
+	@OneToMany()
+	public List<Student> getStudents() { return students; }
+
+	public void setStudents(List<Student> students) { this.students = students; }
 
 	public String getCode() { return courseCode; }
 
