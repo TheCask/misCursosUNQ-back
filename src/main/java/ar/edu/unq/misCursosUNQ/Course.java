@@ -31,7 +31,7 @@ public class Course implements Serializable {
 	//private List<Lesson> lessons = new ArrayList<Lesson>();
 
 	// Default constructor for Hibernate
-	private Course() {}
+	protected Course() {}
 		
 	public Course(String aName) { this.setName(aName); }
 	

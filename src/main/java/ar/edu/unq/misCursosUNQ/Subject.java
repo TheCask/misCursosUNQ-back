@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -27,7 +26,7 @@ public class Subject implements Serializable {
 	private List<Course> courses = new ArrayList<Course>();
 	
 	// Default constructor for Hibernate
-	private Subject() {}
+	protected Subject() {}
 	
 	public Subject(String aName, String aCode, String anAcronym) { 
 		this.subjectName = aName;
@@ -37,18 +36,12 @@ public class Subject implements Serializable {
 	
 	/* GETTERS & SETTERS */
 	
-//	@Override
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	public Long getId() { return id; }
-	
 	@ManyToMany(mappedBy = "coordinatedSubjects")
 	public List<User> getCoordinators() { return coordinators; }
 
 	public void setCoordinators(List<User> coordinators) { this.coordinators = coordinators; }
 	
 	@OneToMany(orphanRemoval = true)
-	@JoinColumn(name="")
 	public List<Course> getCourses() { return courses; }
 
 	public void setCourses(List<Course> courses) { this.courses = courses; }
