@@ -1,7 +1,5 @@
 package ar.edu.unq.misCursosUNQ;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Access(AccessType.PROPERTY)
 //@Table(name="USER")
 public class User extends AbstractEntity {
 
@@ -26,7 +23,7 @@ public class User extends AbstractEntity {
 	
 	private List<Subject> coordinatedSubjects = new ArrayList<Subject>();
 	
-	//private List<Course> courses = new ArrayList<Course>();
+	private List<Course> taughtCourses = new ArrayList<Course>();
 	
 	// Default constructor for Hibernate
 	private User() {}
@@ -50,9 +47,12 @@ public class User extends AbstractEntity {
 	//@JoinTable(joinColumns = { @JoinColumn(name = "subject_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
 	public List<Subject> getCoordinatedSubjects() { return coordinatedSubjects; }
 	
-	public void setCoordinatedSubjects(List<Subject> aListCoordinatedSubjects) { 
-		this.coordinatedSubjects= aListCoordinatedSubjects; 
-	}
+	public void setCoordinatedSubjects(List<Subject> coordinatedSubjects) { this.coordinatedSubjects= coordinatedSubjects; }
+
+	@ManyToMany()
+	public List<Course> getTaughtCourses() { return taughtCourses; }
+
+	public void setTaughtCourses(List<Course> courses) { this.taughtCourses = courses; }
 
 	public String getFirstName() { return firstName; }
 

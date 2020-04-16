@@ -7,35 +7,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 // Remember to include only JPA API annotations (javax.persistence.*) 
 // to decouple hibernate from application code.
 
 @Entity
-//@Table(name="SUBJECT")
 public class Subject extends AbstractEntity {
 	
 	private static final long serialVersionUID = -3642091487086232955L;
 
-	//@Column(name="name")
-	private String name;
-	private String code;
-	private String acronym;
-	private String programURL = "";
+	private String subjectName;
+	private String subjectCode;
+	private String subjectAcronym;
+	private String subjectProgramURL = "";
 
 	private List<User> coordinators = new ArrayList<User>();
-	
-	//@ManyToMany(mappedBy = "?????")
-	//public List<User> teachers;
+	private List<Course> courses = new ArrayList<Course>();
 	
 	// Default constructor for Hibernate
 	private Subject() {}
 	
 	public Subject(String aName, String aCode, String anAcronym) { 
-		this.name = aName;
-		this.code = aCode;
-		this.acronym = anAcronym;
+		this.subjectName = aName;
+		this.subjectCode = aCode;
+		this.subjectAcronym = anAcronym;
 	}
 	
 	/* GETTERS & SETTERS */
@@ -43,34 +41,39 @@ public class Subject extends AbstractEntity {
 	@Override
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	//@Column(name="subject_id")
 	public Long getId() { return id; }
-
-	public String getName() { return this.name; }
-
-	public void setName(String aName) { this.name = aName; }
 	
-	public String getCode() { return code; }
-
-	public void setCode(String aCode) { this.code = aCode; }
-	
-	public String getAcronym() { return acronym; }
-
-	public void setAcronym(String anAcronym) { this.acronym = anAcronym; }
-
-	public String getProgram() { return programURL; }
-
-	public void setProgram(String aProgram) { this.programURL = aProgram; }
-
 	@ManyToMany(mappedBy = "coordinatedSubjects")
 	public List<User> getCoordinators() { return coordinators; }
 
 	public void setCoordinators(List<User> coordinators) { this.coordinators = coordinators; }
+	
+	@OneToMany(orphanRemoval = true)
+	@JoinColumn(name="id")
+	public List<Course> getCourses() { return courses; }
+
+	public void setCourses(List<Course> courses) { this.courses = courses; }
+
+	public String getName() { return this.subjectName; }
+
+	public void setName(String aName) { this.subjectName = aName; }
+	
+	public String getCode() { return subjectCode; }
+
+	public void setCode(String aCode) { this.subjectCode = aCode; }
+	
+	public String getAcronym() { return subjectAcronym; }
+
+	public void setAcronym(String anAcronym) { this.subjectAcronym = anAcronym; }
+
+	public String getProgram() { return subjectProgramURL; }
+
+	public void setProgram(String aProgram) { this.subjectProgramURL = aProgram; }
 
 	// To print materia basic details in logs.
 	@Override
 	public String toString() {
-		return "Subject [id " + this.getId() + " | " + code + ", " + acronym + "]";
+		return "Subject [id " + this.getId() + " | " + subjectCode + ", " + subjectAcronym + "]";
 	}
 
 }
