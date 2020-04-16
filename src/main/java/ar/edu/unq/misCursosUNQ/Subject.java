@@ -1,11 +1,10 @@
 package ar.edu.unq.misCursosUNQ;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -15,10 +14,10 @@ import javax.persistence.OneToMany;
 // to decouple hibernate from application code.
 
 @Entity
-public class Subject extends AbstractEntity {
+public class Subject implements Serializable {
 	
 	private static final long serialVersionUID = -3642091487086232955L;
-
+	
 	private String subjectName;
 	private String subjectCode;
 	private String subjectAcronym;
@@ -38,10 +37,10 @@ public class Subject extends AbstractEntity {
 	
 	/* GETTERS & SETTERS */
 	
-	@Override
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getId() { return id; }
+//	@Override
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	public Long getId() { return id; }
 	
 	@ManyToMany(mappedBy = "coordinatedSubjects")
 	public List<User> getCoordinators() { return coordinators; }
@@ -49,7 +48,7 @@ public class Subject extends AbstractEntity {
 	public void setCoordinators(List<User> coordinators) { this.coordinators = coordinators; }
 	
 	@OneToMany(orphanRemoval = true)
-	@JoinColumn(name="id")
+	@JoinColumn(name="")
 	public List<Course> getCourses() { return courses; }
 
 	public void setCourses(List<Course> courses) { this.courses = courses; }
@@ -58,9 +57,11 @@ public class Subject extends AbstractEntity {
 
 	public void setName(String aName) { this.subjectName = aName; }
 	
+	@Id
 	public String getCode() { return subjectCode; }
 
-	public void setCode(String aCode) { this.subjectCode = aCode; }
+	/* Protected to avoid set the primary key */
+	protected void setCode(String aCode) { this.subjectCode = aCode; }
 	
 	public String getAcronym() { return subjectAcronym; }
 
@@ -70,10 +71,12 @@ public class Subject extends AbstractEntity {
 
 	public void setProgram(String aProgram) { this.subjectProgramURL = aProgram; }
 
+	/* METHODS */
+	
 	// To print materia basic details in logs.
 	@Override
 	public String toString() {
-		return "Subject [id " + this.getId() + " | " + subjectCode + ", " + subjectAcronym + "]";
+		return "Subject [Code " + subjectCode + " | " + subjectAcronym + "]";
 	}
 
 }

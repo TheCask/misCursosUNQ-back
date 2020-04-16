@@ -33,17 +33,16 @@ public class UserService {
      
     public User createOrUpdateUser(User entity) throws RecordNotFoundException {
         
-    	if (entity.getId() == null) { return repository.save(entity); }
+    	if (entity.getDni() == null) { return repository.save(entity); }
     	else {
     	
-	    	Optional<User> user = repository.findById(entity.getId());
+	    	Optional<User> user = repository.findBydni(entity.getDni());
 	         
 	        if(user.isPresent()) {
 	            User newEntity = user.get();
 	            
 	            newEntity.setFirstName(entity.getFirstName());
 	            newEntity.setLastName(entity.getLastName());
-	            newEntity.setDni(entity.getDni());
 	            newEntity.setEmail(entity.getEmail());
 	            newEntity.setCoordinatedSubjects(entity.getCoordinatedSubjects());
 	 

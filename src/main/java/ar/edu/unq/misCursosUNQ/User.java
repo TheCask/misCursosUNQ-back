@@ -1,17 +1,16 @@
 package ar.edu.unq.misCursosUNQ;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 //@Table(name="USER")
-public class User extends AbstractEntity {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 6671561417676772045L;
 
@@ -37,11 +36,11 @@ public class User extends AbstractEntity {
 
 	/* GETTERS & SETTERS */
 	
-	@Override
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	//@Column(name="user_id")
-	public Long getId() { return id; }
+//	@Override
+//	@Id 
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	@Column(name="user_id")
+//	public Long getId() { return id; }
 	
 	@ManyToMany()	//cascade = { CascadeType.ALL })
 	//@JoinTable(joinColumns = { @JoinColumn(name = "subject_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
@@ -62,9 +61,11 @@ public class User extends AbstractEntity {
 
 	public void setLastName(String lastName) { this.lastName = lastName; }
 
+	@Id
 	public String getDni() { return dni; }
 
-	public void setDni(String dni) { this.dni = dni; }
+	/* Protected to avoid set the primary key */
+	protected void setDni(String dni) { this.dni = dni; }
 
 	public String getEmail() { return email; }
 
@@ -74,9 +75,11 @@ public class User extends AbstractEntity {
 
 	public void setCellPhone(String cellPhone) { this.cellPhone = cellPhone; }
 
+	/* METHODS */
+	
 	// To print User basic details in logs.
 	@Override
 	public String toString() {
-		return "User [id " + this.getId() + " | " + firstName + " " + lastName + ", " + dni + ", " + email + "]";
+		return "User [dni " + dni + " | " + firstName + " " + lastName + ", " + email + "]";
 	}
 }

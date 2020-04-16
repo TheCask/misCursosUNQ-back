@@ -1,5 +1,6 @@
 package ar.edu.unq.misCursosUNQ;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class Course extends AbstractEntity {
+public class Course implements Serializable {
 
 	private static final long serialVersionUID = -1636249307802887638L;
+	
+	private Long courseId;
 	
 	private String courseName;
 	private String courseCode = "";
@@ -34,10 +37,12 @@ public class Course extends AbstractEntity {
 	
 	/* GETTERS & SETTERS */
 	
-	@Override
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getId() { return id; }
+	public Long getId() { return courseId; }
+	
+	/* Protected to avoid set the primary key */
+	protected void setId(Long anId) { this.courseId = anId; }
 
 	@ManyToMany(mappedBy = "taughtCourses")
 	public List<User> getTeachers() { return teachers; }
@@ -69,5 +74,11 @@ public class Course extends AbstractEntity {
 	//public void setCourseWeekSchedule(CourseWeekSchedule courseWeekSchedule) { this.courseWeekSchedule = courseWeekSchedule; }
 	
 	/* METHODS */
+	
+	// To print materia basic details in logs.
+	@Override
+	public String toString() {
+		return "Course [Id " + courseId + " | " + courseName + "]";
+	}
 
 }

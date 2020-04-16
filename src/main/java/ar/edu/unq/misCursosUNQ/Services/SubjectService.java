@@ -33,10 +33,10 @@ public class SubjectService {
      
     public Subject createOrUpdateSubject(Subject entity) throws RecordNotFoundException {
         
-    	if (entity.getId() == null) { return repository.save(entity); }
+    	if (entity.getCode() == null) { return repository.save(entity); }
     	else {
     	
-	    	Optional<Subject> subject = repository.findById(entity.getId());
+	    	Optional<Subject> subject = repository.findByCode(entity.getCode());
 	         
 	        if(subject.isPresent()) {
 	            Subject newEntity = subject.get();
