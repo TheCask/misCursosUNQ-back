@@ -33,8 +33,8 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		Subject mate = new Subject("Matemática", "80003-CYT1y2", "MATE");
 		Subject epyl = new Subject("Elementos de Programación y lógica", "80005-CYT2", "EPYL");
 		
-		User admin = new User("Eugenio", "Calcena", "28860590", "eugeniocalcena@gmail.com");
-		User admin2 = new User("Elias", "Filipponi", "29085595", "eliasfilipponi@gmail.com");
+		User admin = new User("Eugenio", "Calcena", 28860590L, "eugeniocalcena@gmail.com");
+		User admin2 = new User("Elias", "Filipponi", 29085595L, "eliasfilipponi@gmail.com");
 		
 		userService.createOrUpdateUser(admin);
 		subjectService.createOrUpdateSubject(lea);
