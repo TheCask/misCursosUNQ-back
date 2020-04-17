@@ -22,8 +22,8 @@ public class Student implements Serializable {
 	// Default constructor for Hibernate
 	protected Student() {}
 	
-	public Student(String aFirstName, String aLastName, Long aDNI, String anEmail, Integer aFileNumber) {
-		setPersonalData(new PersonalData(aFirstName, aLastName, aDNI, anEmail));
+	public Student(String aFirstName, String aLastName, Integer aDNI, String anEmail, Integer aFileNumber) {
+		setPersonalData(new PersonalData(aFirstName, aLastName, anEmail));
 		setFileNumber(aFileNumber);
 		setCareers(new ArrayList<String>());
 		setTakenCourseStates(new ArrayList<CourseState>());

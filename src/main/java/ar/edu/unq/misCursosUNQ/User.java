@@ -4,7 +4,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 6671561417676772045L;
 	
-	private Long dni;
+	private Integer dni;
 	private PersonalData personalData;
 	private List<Subject> coordinatedSubjects;
 	private List<Course> taughtCourses;
@@ -23,8 +22,8 @@ public class User implements Serializable {
 	// Default constructor for Hibernate
 	protected User() {}
 	
-	public User(String aFirstName, String aLastName, Long aDNI, String anEmail) {
-		setPersonalData(new PersonalData(aFirstName, aLastName, aDNI, anEmail));
+	public User(String aFirstName, String aLastName, Integer aDNI, String anEmail) {
+		setPersonalData(new PersonalData(aFirstName, aLastName, anEmail));
 		setDni(aDNI);
 		setCoordinatedSubjects(new ArrayList<Subject>());
 		setTaughtCourses(new ArrayList<Course>());
@@ -33,10 +32,10 @@ public class User implements Serializable {
 	/* GETTERS & SETTERS */
 	
 	@Id
-	public Long getDni() { return dni; }
+	public Integer getDni() { return dni; }
 
 	/* Protected to avoid set the primary key */
-	protected void setDni(Long dni) { this.dni = dni; }
+	protected void setDni(Integer dni) { this.dni = dni; }
 
 	public PersonalData getPersonalData() { return personalData; }
 
@@ -55,4 +54,10 @@ public class User implements Serializable {
 	public void setTaughtCourses(List<Course> courses) { this.taughtCourses = courses; }
 
 	/* METHODS */
+	
+	// To print User basic details in logs.
+	@Override
+	public String toString() {
+		return "User [dni " + dni + " | " + personalData.getFirstName() + " " + personalData.getLastName() + ", " + personalData.getEmail() + "]";
+	}
 }

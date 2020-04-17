@@ -1,7 +1,12 @@
 package ar.edu.unq.misCursosUNQ;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
 import java.io.Serializable;
 
 @Entity
@@ -9,7 +14,7 @@ public class PersonalData implements Serializable {
 
 	private static final long serialVersionUID = -2414154033870368530L;
 	
-	private Long dni;
+	private Integer id;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -18,20 +23,20 @@ public class PersonalData implements Serializable {
 	// Default constructor for Hibernate
 	protected PersonalData() {}
 	
-	public PersonalData(String aFirstName, String aLastName, Long aDNI, String anEmail) {
+	public PersonalData(String aFirstName, String aLastName, String anEmail) {
 		this.setFirstName(aFirstName);
 		this.setLastName(aLastName);
-		this.setDni(aDNI);
 		this.setEmail(anEmail);
 	}
 
 	/* GETTERS & SETTERS */
 	
 	@Id
-	public Long getDni() { return dni; }
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public Integer getId() { return id; }
 
 	/* Protected to avoid set the primary key */
-	protected void setDni(Long dni) { this.dni = dni; }
+	protected void setId(Integer id) { this.id = id; }
 	
 	public String getFirstName() { return firstName; }
 
@@ -50,10 +55,4 @@ public class PersonalData implements Serializable {
 	public void setCellPhone(String cellPhone) { this.cellPhone = cellPhone; }
 
 	/* METHODS */
-	
-	// To print User basic details in logs.
-	@Override
-	public String toString() {
-		return "Person [dni " + dni + " | " + firstName + " " + lastName + ", " + email + "]";
-	}
 }
