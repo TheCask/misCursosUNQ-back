@@ -24,11 +24,11 @@ public class SubjectService {
         else { return new ArrayList<Subject>(); }
     }
      
-    public Subject getSubjectById(Long id) throws RecordNotFoundException {
-        Optional<Subject> subject = repository.findById(id);
+    public Subject getSubjectByCode(String code) throws RecordNotFoundException {
+        Optional<Subject> subject = repository.findByCode(code);
          
         if(subject.isPresent()) { return subject.get(); } 
-        else { throw new RecordNotFoundException("Subject record not exist for given id"); }
+        else { throw new RecordNotFoundException("Subject record not exist for given code"); }
     }
      
     public Subject createOrUpdateSubject(Subject entity) throws RecordNotFoundException {
@@ -40,7 +40,7 @@ public class SubjectService {
 
     		newEntity.setName(entity.getName());	
     		newEntity.setAcronym(entity.getAcronym());
-    		newEntity.setProgram(entity.getProgram());
+    		newEntity.setProgramURL(entity.getProgramURL());
     		newEntity.setCoordinators(entity.getCoordinators());
     		newEntity.setCourses(entity.getCourses());
 
@@ -52,10 +52,10 @@ public class SubjectService {
 	        
     } 
      
-    public void deleteSubjectById(Long id) throws RecordNotFoundException {
-        Optional<Subject> subject = repository.findById(id);
+    public void deleteSubjectByCode(String code) throws RecordNotFoundException {
+        Optional<Subject> subject = repository.findByCode(code);
          
-        if(subject.isPresent()) { repository.deleteById(id); } 
+        if(subject.isPresent()) { repository.deleteByCode(code); } 
         else { throw new RecordNotFoundException("Subject record not exist for given id"); }
     } 
 }

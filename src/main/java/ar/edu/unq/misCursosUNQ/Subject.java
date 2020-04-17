@@ -17,13 +17,14 @@ public class Subject implements Serializable {
 	
 	private static final long serialVersionUID = -3642091487086232955L;
 	
+	
+	private String subjectCode;
 	private String subjectName;
-	private String subjectCode = "";
+	private String subjectProgramURL;
 	private String subjectAcronym;
-	private String subjectProgramURL = "";
 
-	private List<User> coordinators = new ArrayList<User>();
-	private List<Course> courses = new ArrayList<Course>();
+	private List<User> subjectCoordinators;
+	private List<Course> subjectCourses;
 	
 	// Default constructor for Hibernate
 	protected Subject() {}
@@ -32,20 +33,22 @@ public class Subject implements Serializable {
 		this.subjectName = aName;
 		this.subjectCode = aCode;
 		this.subjectAcronym = anAcronym;
+		this.setProgramURL("");
+		this.setCoordinators(new ArrayList<User>());
+		this.setCourses(new ArrayList<Course>());
 	}
 	
 	/* GETTERS & SETTERS */
 	
 	@ManyToMany(mappedBy = "coordinatedSubjects")
-	//@JoinTable(name="person_coordinated_subjects")
-	public List<User> getCoordinators() { return coordinators; }
+	public List<User> getCoordinators() { return subjectCoordinators; }
 
-	public void setCoordinators(List<User> coordinators) { this.coordinators = coordinators; }
+	public void setCoordinators(List<User> coordinators) { this.subjectCoordinators = coordinators; }
 	
-	@OneToMany()
-	public List<Course> getCourses() { return courses; }
+	@OneToMany
+	public List<Course> getCourses() { return subjectCourses; }
 
-	public void setCourses(List<Course> courses) { this.courses = courses; }
+	public void setCourses(List<Course> courses) { this.subjectCourses = courses; }
 
 	public String getName() { return this.subjectName; }
 
@@ -61,9 +64,9 @@ public class Subject implements Serializable {
 
 	public void setAcronym(String anAcronym) { this.subjectAcronym = anAcronym; }
 
-	public String getProgram() { return subjectProgramURL; }
+	public String getProgramURL() { return subjectProgramURL; }
 
-	public void setProgram(String aProgram) { this.subjectProgramURL = aProgram; }
+	public void setProgramURL(String aProgramURL) { this.subjectProgramURL = aProgramURL; }
 
 	/* METHODS */
 	

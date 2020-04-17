@@ -5,6 +5,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,7 @@ public class Student implements Serializable {
 	protected Student() {}
 	
 	public Student(String aFirstName, String aLastName, Integer aDNI, String anEmail, Integer aFileNumber) {
-		setPersonalData(new PersonalData(aFirstName, aLastName, anEmail));
+		setPersonalData(new PersonalData(aDNI, aFirstName, aLastName, anEmail));
 		setFileNumber(aFileNumber);
 		setCareers(new ArrayList<String>());
 		setTakenCourseStates(new ArrayList<CourseState>());
@@ -37,6 +39,7 @@ public class Student implements Serializable {
 	/* Protected to avoid set the primary key */
 	protected void setFileNumber(Integer fileNumber) { this.fileNumber = fileNumber; }
 	
+	@OneToOne
 	public PersonalData getPersonalData() { return personalData; }
 
 	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
@@ -47,7 +50,7 @@ public class Student implements Serializable {
 	public void setTakenCourseStates(List<CourseState> courseStates) { this.takenCourseStates = courseStates; }
 
 	@Column
-    @ElementCollection()
+    @ElementCollection
 	public List<String> getCareers() { return careers; }
 
 	public void setCareers(List<String> careers) { this.careers = careers; }

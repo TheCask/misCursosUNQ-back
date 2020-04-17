@@ -3,10 +3,10 @@ package ar.edu.unq.misCursosUNQ.Repos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import ar.edu.unq.misCursosUNQ.User;
+import ar.edu.unq.misCursosUNQ.PersonalData;
 
 @Repository
-public interface PersonalDataRepo extends JpaRepository<User, Long> {
+public interface PersonalDataRepo extends JpaRepository<PersonalData, Integer> {
 
 	/* By this simple extension, MateriaRepo inherits several methods 
 	 * for working with Materia persistence, including methods for saving, deleting, and finding User entities.

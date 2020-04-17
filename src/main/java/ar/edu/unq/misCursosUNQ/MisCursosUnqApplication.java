@@ -33,8 +33,8 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		Subject mate = new Subject("Matemática", "80003-CYT1y2", "MATE");
 		Subject epyl = new Subject("Elementos de Programación y lógica", "80005-CYT2", "EPYL");
 		
-		User admin = new User("Eugenio", "Calcena", 28860590, "eugeniocalcena@gmail.com");
-		User admin2 = new User("Elias", "Filipponi", 29085595, "eliasfilipponi@gmail.com");
+		User admin = new User("Eugenio", "Calcena", "eugeniocalcena@gmail.com", 28860590);
+		User admin2 = new User("Elias", "Filipponi", "eliasfilipponi@gmail.com", 29085595);
 		
 		userService.createOrUpdateUser(admin);
 		subjectService.createOrUpdateSubject(lea);
@@ -44,7 +44,9 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		userService.createOrUpdateUser(admin2);
 		subjectService.createOrUpdateSubject(icfyq);
 		icfyq.getCoordinators().add(admin2);
-		subjectService.createOrUpdateSubject(icfyq);	
+		admin2.getCoordinatedSubjects().add(icfyq);
+		userService.createOrUpdateUser(admin2);
+		subjectService.createOrUpdateSubject(icfyq);
 		
         logger.info("Materias: -> {}", subjectService.getSubjects().toString());
         logger.info("Users: -> {}", userService.getUsers().toString());

@@ -31,8 +31,8 @@ public class SubjectController {
     }
  
     @GetMapping("/{id}")
-    public ResponseEntity<Subject> getSubjectById(@PathVariable("id") Long id) throws RecordNotFoundException {
-        Subject entity = service.getSubjectById(id);
+    public ResponseEntity<Subject> getSubjectByCode(@PathVariable("code") String code) throws RecordNotFoundException {
+        Subject entity = service.getSubjectByCode(code);
         return new ResponseEntity<Subject>(entity, new HttpHeaders(), HttpStatus.OK);
     }
  
@@ -43,8 +43,8 @@ public class SubjectController {
     }
  
     @DeleteMapping("/{id}")
-    public HttpStatus deleteSubjectById(@PathVariable("id") Long id) throws RecordNotFoundException {
-        service.deleteSubjectById(id);
+    public HttpStatus deleteSubjectById(@PathVariable("id") String code) throws RecordNotFoundException {
+        service.deleteSubjectByCode(code);
         return HttpStatus.FORBIDDEN;
     }
  

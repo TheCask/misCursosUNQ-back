@@ -24,8 +24,8 @@ public class UserService {
         else { return new ArrayList<User>(); }
     }
      
-    public User getUserById(Long id) throws RecordNotFoundException {
-        Optional<User> user = repository.findById(id);
+    public User getUserByDni(Integer dni) throws RecordNotFoundException {
+        Optional<User> user = repository.findByDni(dni);
          
         if(user.isPresent()) { return user.get(); } 
         else { throw new RecordNotFoundException("User record not exist for given id"); }
@@ -33,12 +33,13 @@ public class UserService {
      
     public User createOrUpdateUser(User entity) throws RecordNotFoundException {
     	
-    	Optional<User> user = repository.findBydni(entity.getDni());
+    	Optional<User> user = repository.findByDni(entity.getDni());
 
     	if(user.isPresent()) {
     		User newEntity = user.get();
 
     		newEntity.setPersonalData(entity.getPersonalData());
+    		newEntity.setJobDetail(entity.getJobDetail());
     		newEntity.setCoordinatedSubjects(entity.getCoordinatedSubjects());
     		newEntity.setTaughtCourses(entity.getTaughtCourses());
 
@@ -49,10 +50,10 @@ public class UserService {
     	else { return repository.save(entity); }
     } 
      
-    public void deleteUserById(Long id) throws RecordNotFoundException {
-        Optional<User> user = repository.findById(id);
+    public void deleteUserByDni(Integer dni) throws RecordNotFoundException {
+        Optional<User> user = repository.findByDni(dni);
          
-        if(user.isPresent()) { repository.deleteById(id); } 
+        if(user.isPresent()) { repository.deleteByDni(dni); } 
         else { throw new RecordNotFoundException("User record not exist for given id"); }
     } 
 }
