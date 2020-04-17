@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
 import java.io.Serializable;
@@ -19,7 +19,7 @@ public class Student implements Serializable {
 	private Integer fileNumber;
 	private PersonalData personalData;
 	private List<String> careers;
-	private List<CourseState> takenCourseStates;
+	private List<Course> takenCourses;
 	
 	// Default constructor for Hibernate
 	protected Student() {}
@@ -28,7 +28,7 @@ public class Student implements Serializable {
 		setPersonalData(new PersonalData(aDNI, aFirstName, aLastName, anEmail));
 		setFileNumber(aFileNumber);
 		setCareers(new ArrayList<String>());
-		setTakenCourseStates(new ArrayList<CourseState>());
+		setTakenCourses(new ArrayList<Course>());
 	}
 
 	/* GETTERS & SETTERS */
@@ -44,10 +44,10 @@ public class Student implements Serializable {
 
 	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
 
-	@OneToMany(orphanRemoval = true)
-	public List<CourseState> getTakenCourseStates() { return takenCourseStates; }
+	@ManyToMany
+	public List<Course> getTakenCourses() { return takenCourses; }
 
-	public void setTakenCourseStates(List<CourseState> courseStates) { this.takenCourseStates = courseStates; }
+	public void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }
 
 	@Column
     @ElementCollection

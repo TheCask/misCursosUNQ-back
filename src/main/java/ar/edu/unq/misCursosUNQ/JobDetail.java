@@ -17,7 +17,7 @@ public class JobDetail implements Serializable {
 
 	private static final long serialVersionUID = -8986445721969296677L;
 	
-	private Integer id;
+	private Integer jobDetailId;
 	private Long cuitNumber;
 	private String category;
 	private String grade; 
@@ -28,9 +28,6 @@ public class JobDetail implements Serializable {
 	private LocalDate lastUpdate;
 	private List<String> gradeTitles;
 	private List<String> posGradeTitles;
-	
-	// Default constructor for Hibernate
-	//public JobDetail() {}
 	
 	public JobDetail() {
 		this.setCuitNumber(0L);
@@ -49,10 +46,10 @@ public class JobDetail implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Integer getId() { return id; }
+	public Integer getJobDetailId() { return jobDetailId; }
 
 	/* Protected to avoid set the primary key */
-	protected void setId(Integer id) { this.id = id; }
+	protected void setJobDetailId(Integer id) { this.jobDetailId = id; }
 	
 	public Long getCuitNumber() { return cuitNumber; }
 	

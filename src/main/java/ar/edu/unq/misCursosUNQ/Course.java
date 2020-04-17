@@ -16,43 +16,72 @@ public class Course implements Serializable {
 
 	private static final long serialVersionUID = -1636249307802887638L;
 	
-	private Long courseId;
+	private Integer courseId;
 	
 	private String courseName;
-	private String courseCode = "";
-	private String courseShift = "";
+	private String courseCode;
+	private String courseShift;
+	private Boolean courseIsOpen;
 	
-	private LocalDate courseBeginDay = LocalDate.ofEpochDay(0); // First Epoch day is 1970-01-01;
-	private LocalDate courseEndDay = LocalDate.ofEpochDay(0);
+	private LocalDate courseBeginDay; 
+	private LocalDate courseEndDay;
 	//private CourseWeekSchedule courseWeekSchedule = new CourseWeekSchedule();
 	
-	private List<User> teachers = new ArrayList<User>();
-	private List<Student> students = new ArrayList<Student>();
-	//private List<Lesson> lessons = new ArrayList<Lesson>();
+	private List<User> teachers;
+	private List<Student> students;
+	private List<Lesson> lessons;
+	private List<Evaluation> evaluations;
+	private List<CourseDaySchedule> weekSchedule;
 
 	// Default constructor for Hibernate
 	protected Course() {}
 		
-	public Course(String aName) { this.setName(aName); }
+	public Course(String aName) { 
+		this.setName(aName); 
+		this.setCode("");
+		this.setCourseShift("");
+		this.setCourseIsOpen(true);
+		this.setCourseBeginDay(LocalDate.ofEpochDay(0)); // First Epoch day is 1970-01-01;
+		this.setCourseEndDay(LocalDate.ofEpochDay(0));
+		this.setTeachers(new ArrayList<User>());
+		this.setStudents(new ArrayList<Student>());
+		//this.setLessons( = new ArrayList<Lesson>();
+	
+	}
 	
 	/* GETTERS & SETTERS */
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getCourseId() { return courseId; }
+	public Integer getCourseId() { return courseId; }
 
 	/* Protected to avoid set the primary key */
-	protected void setCourseId(Long courseId) { this.courseId = courseId; }
+	protected void setCourseId(Integer courseId) { this.courseId = courseId; }
 
 	@ManyToMany(mappedBy = "taughtCourses")
 	public List<User> getTeachers() { return teachers; }
 
 	public void setTeachers(List<User> teachers) { this.teachers = teachers; }
 
-	@OneToMany()
+	@ManyToMany(mappedBy = "takenCourses")
 	public List<Student> getStudents() { return students; }
 
 	public void setStudents(List<Student> students) { this.students = students; }
+
+	@OneToMany
+	public List<Lesson> getLessons() { return lessons; }
+
+	public void setLessons(List<Lesson> lessons) { this.lessons = lessons; }
+
+	@OneToMany
+	public List<Evaluation> getEvaluations() { return evaluations; }
+
+	public void setEvaluations(List<Evaluation> evaluations) { this.evaluations = evaluations; }
+
+	@OneToMany
+	public List<CourseDaySchedule> getWeekSchedule() { return weekSchedule; }
+
+	public void setWeekSchedule(List<CourseDaySchedule> weekSchedule) { this.weekSchedule = weekSchedule; }
 
 	public String getCode() { return courseCode; }
 
@@ -65,6 +94,10 @@ public class Course implements Serializable {
 	public String getName() { return courseName; }
 
 	public void setName(String number) { this.courseName = number; }
+
+	public Boolean getCourseIsOpen() { return courseIsOpen; }
+
+	public void setCourseIsOpen(Boolean courseIsOpen) { this.courseIsOpen = courseIsOpen; }
 
 	public LocalDate getCourseBeginDay() { return courseBeginDay; }
 
