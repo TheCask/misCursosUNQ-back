@@ -40,10 +40,10 @@ public class Course implements Serializable {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getId() { return courseId; }
-	
+	public Long getCourseId() { return courseId; }
+
 	/* Protected to avoid set the primary key */
-	protected void setId(Long anId) { this.courseId = anId; }
+	protected void setCourseId(Long courseId) { this.courseId = courseId; }
 
 	@ManyToMany(mappedBy = "taughtCourses")
 	public List<User> getTeachers() { return teachers; }

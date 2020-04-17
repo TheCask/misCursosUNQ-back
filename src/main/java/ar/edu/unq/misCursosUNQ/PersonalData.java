@@ -5,20 +5,20 @@ import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
-public class Person implements Serializable {
+public class PersonalData implements Serializable {
 
 	private static final long serialVersionUID = -2414154033870368530L;
 	
-	private String dni;
+	private Long dni;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String cellPhone = "";
 	
 	// Default constructor for Hibernate
-	protected Person() {}
+	protected PersonalData() {}
 	
-	public Person(String aFirstName, String aLastName, String aDNI, String anEmail) {
+	public PersonalData(String aFirstName, String aLastName, Long aDNI, String anEmail) {
 		this.setFirstName(aFirstName);
 		this.setLastName(aLastName);
 		this.setDni(aDNI);
@@ -28,10 +28,10 @@ public class Person implements Serializable {
 	/* GETTERS & SETTERS */
 	
 	@Id
-	public String getDni() { return dni; }
+	public Long getDni() { return dni; }
 
 	/* Protected to avoid set the primary key */
-	protected void setDni(String dni) { this.dni = dni; }
+	protected void setDni(Long dni) { this.dni = dni; }
 	
 	public String getFirstName() { return firstName; }
 

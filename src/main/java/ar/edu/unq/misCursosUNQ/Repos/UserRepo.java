@@ -14,5 +14,5 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	 * for working with Materia persistence, including methods for saving, deleting, and finding User entities.
 	 * Along with default provided methods, we can add our own custom methods and queries to this interface. */
 	
-	Optional<User> findBydni(String dni);
+	Optional<User> findBydni(Long aLong);
 }

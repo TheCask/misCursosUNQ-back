@@ -44,7 +44,7 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		userService.createOrUpdateUser(admin2);
 		subjectService.createOrUpdateSubject(icfyq);
 		icfyq.getCoordinators().add(admin2);
-		subjectService.createOrUpdateSubject(icfyq);		
+		subjectService.createOrUpdateSubject(icfyq);	
 		
         logger.info("Materias: -> {}", subjectService.getSubjects().toString());
         logger.info("Users: -> {}", userService.getUsers().toString());

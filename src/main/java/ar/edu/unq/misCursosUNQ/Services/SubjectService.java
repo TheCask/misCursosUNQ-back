@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
- 
+
 import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Repos.SubjectRepo;
@@ -33,22 +33,23 @@ public class SubjectService {
      
     public Subject createOrUpdateSubject(Subject entity) throws RecordNotFoundException {
         
-    	if (entity.getCode() == null) { return repository.save(entity); }
-    	else {
-    	
-	    	Optional<Subject> subject = repository.findByCode(entity.getCode());
-	         
-	        if(subject.isPresent()) {
-	            Subject newEntity = subject.get();
-	            
-	            newEntity.setName(entity.getName());	
-	 
-	            newEntity = repository.save(newEntity);
-	             
-	            return newEntity;
-	        } 
-	        else { return repository.save(entity); }
-    	}
+    	Optional<Subject> subject = repository.findByCode(entity.getCode());
+
+    	if(subject.isPresent()) {
+    		Subject newEntity = subject.get();
+
+    		newEntity.setName(entity.getName());	
+    		newEntity.setAcronym(entity.getAcronym());
+    		newEntity.setProgram(entity.getProgram());
+    		newEntity.setCoordinators(entity.getCoordinators());
+    		newEntity.setCourses(entity.getCourses());
+
+    		newEntity = repository.save(newEntity);
+
+    		return newEntity;
+    	} 
+    	else { return repository.save(entity); }
+	        
     } 
      
     public void deleteSubjectById(Long id) throws RecordNotFoundException {

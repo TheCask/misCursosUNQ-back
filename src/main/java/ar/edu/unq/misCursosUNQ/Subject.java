@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -18,7 +20,7 @@ public class Subject implements Serializable {
 	private static final long serialVersionUID = -3642091487086232955L;
 	
 	private String subjectName;
-	private String subjectCode;
+	private String subjectCode = "";
 	private String subjectAcronym;
 	private String subjectProgramURL = "";
 
@@ -37,6 +39,7 @@ public class Subject implements Serializable {
 	/* GETTERS & SETTERS */
 	
 	@ManyToMany(mappedBy = "coordinatedSubjects")
+	//@JoinTable(name="person_coordinated_subjects")
 	public List<User> getCoordinators() { return coordinators; }
 
 	public void setCoordinators(List<User> coordinators) { this.coordinators = coordinators; }

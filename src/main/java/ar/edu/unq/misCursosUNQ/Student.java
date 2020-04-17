@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Student extends Person implements Serializable {
+public class Student extends PersonalData implements Serializable {
 
 	private static final long serialVersionUID = 4376258230787104838L;
 

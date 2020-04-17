@@ -1,6 +1,8 @@
 package ar.edu.unq.misCursosUNQ;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import java.io.Serializable;
@@ -9,25 +11,39 @@ import java.util.List;
 
 @Entity
 //@Table(name="USER")
-public class User extends Person implements Serializable {
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 6671561417676772045L;
 	
+	private Long dni;
+	private PersonalData personalData;
 	private List<Subject> coordinatedSubjects;
 	private List<Course> taughtCourses;
 	
 	// Default constructor for Hibernate
 	protected User() {}
 	
-	public User(String aFirstName, String aLastName, String aDNI, String anEmail) {
-		super(aFirstName, aLastName, aDNI, anEmail);
+	public User(String aFirstName, String aLastName, Long aDNI, String anEmail) {
+		setPersonalData(new PersonalData(aFirstName, aLastName, aDNI, anEmail));
+		setDni(aDNI);
 		setCoordinatedSubjects(new ArrayList<Subject>());
 		setTaughtCourses(new ArrayList<Course>());
 	}
 
 	/* GETTERS & SETTERS */
 	
-	@ManyToMany()	//cascade = { CascadeType.ALL })
+	@Id
+	public Long getDni() { return dni; }
+
+	/* Protected to avoid set the primary key */
+	protected void setDni(Long dni) { this.dni = dni; }
+
+	public PersonalData getPersonalData() { return personalData; }
+
+	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
+
+	@ManyToMany(cascade = { CascadeType.ALL })
+	//@JoinTable(name="person_coordinated_subjects")
 	//@JoinTable(joinColumns = { @JoinColumn(name = "subject_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
 	public List<Subject> getCoordinatedSubjects() { return coordinatedSubjects; }
 	

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
- 
+
 import ar.edu.unq.misCursosUNQ.User;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Repos.UserRepo;
@@ -32,26 +32,21 @@ public class UserService {
     }
      
     public User createOrUpdateUser(User entity) throws RecordNotFoundException {
-        
-    	if (entity.getDni() == null) { return repository.save(entity); }
-    	else {
     	
-	    	Optional<User> user = repository.findBydni(entity.getDni());
-	         
-	        if(user.isPresent()) {
-	            User newEntity = user.get();
-	            
-	            newEntity.setFirstName(entity.getFirstName());
-	            newEntity.setLastName(entity.getLastName());
-	            newEntity.setEmail(entity.getEmail());
-	            newEntity.setCoordinatedSubjects(entity.getCoordinatedSubjects());
-	 
-	            newEntity = repository.save(newEntity);
-	             
-	            return newEntity;
-	        } 
-	        else { return repository.save(entity); }
-    	}
+    	Optional<User> user = repository.findBydni(entity.getDni());
+
+    	if(user.isPresent()) {
+    		User newEntity = user.get();
+
+    		newEntity.setPersonalData(entity.getPersonalData());
+    		newEntity.setCoordinatedSubjects(entity.getCoordinatedSubjects());
+    		newEntity.setTaughtCourses(entity.getTaughtCourses());
+
+    		newEntity = repository.save(newEntity);
+
+    		return newEntity;
+    	} 
+    	else { return repository.save(entity); }
     } 
      
     public void deleteUserById(Long id) throws RecordNotFoundException {
