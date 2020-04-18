@@ -7,17 +7,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import ar.edu.unq.misCursosUNQ.Services.SubjectService;
-import ar.edu.unq.misCursosUNQ.Services.UserService;
+//import ar.edu.unq.misCursosUNQ.Services.SubjectService;
+//import ar.edu.unq.misCursosUNQ.Services.UserService;
 
 @SpringBootApplication
 public class MisCursosUnqApplication implements CommandLineRunner {
 
-	@Autowired
-	SubjectService subjectService;
+	//@Autowired
+	//SubjectService subjectService;
 	
-	@Autowired
-	UserService userService;
+	//@Autowired
+	//UserService userService;
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -26,8 +26,14 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 	}
 	
 	@Override
-    public void run(String... args) throws Exception { 
+    public void run(String... args) throws Exception {
 		
+		Student student1 = new Student("Student1", "Bla", 123123, "s1@gmail.com",14555);
+		Student student2 = new Student("Student2", "Ble", 123456, "s2@gmail.com",14666);
+		
+		
+		
+		/*
 		Subject lea = new Subject("Lectura y Escritura Académica", "80000-CYT1y2", "LEA");
 		Subject icfyq = new Subject("Introducción al Conocimiento de la Física y la Química", "80004-CYT1", "ICFYQ");
 		Subject mate = new Subject("Matemática", "80003-CYT1y2", "MATE");
@@ -50,6 +56,6 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		
         logger.info("Materias: -> {}", subjectService.getSubjects().toString());
         logger.info("Users: -> {}", userService.getUsers().toString());
-       
+       */
     }
 }

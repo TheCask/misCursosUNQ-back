@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-@Entity
+//@Entity
 public class CourseDaySchedule implements Serializable{
 
 	private static final long serialVersionUID = -8581761766618809621L;

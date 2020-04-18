@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 // Remember to include only JPA API annotations (javax.persistence.*) 
 // to decouple hibernate from application code.
 
-@Entity
+//@Entity
 public class Subject implements Serializable {
 	
 	private static final long serialVersionUID = -3642091487086232955L;

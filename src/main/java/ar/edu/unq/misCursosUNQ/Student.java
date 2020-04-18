@@ -18,7 +18,7 @@ public class Student implements Serializable {
 
 	private Integer fileNumber;
 	private PersonalData personalData;
-	private List<String> careers;
+//	private List<String> careers;
 	private List<Course> takenCourses;
 	
 	// Default constructor for Hibernate
@@ -27,7 +27,7 @@ public class Student implements Serializable {
 	public Student(String aFirstName, String aLastName, Integer aDNI, String anEmail, Integer aFileNumber) {
 		setPersonalData(new PersonalData(aDNI, aFirstName, aLastName, anEmail));
 		setFileNumber(aFileNumber);
-		setCareers(new ArrayList<String>());
+//		setCareers(new ArrayList<String>());
 		setTakenCourses(new ArrayList<Course>());
 	}
 
@@ -48,12 +48,12 @@ public class Student implements Serializable {
 	public List<Course> getTakenCourses() { return takenCourses; }
 
 	public void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }
-
+/*
 	@Column
     @ElementCollection
 	public List<String> getCareers() { return careers; }
 
 	public void setCareers(List<String> careers) { this.careers = careers; }
-
+*/
 	/* METHODS */
 }

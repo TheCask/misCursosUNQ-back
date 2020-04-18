@@ -11,7 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
+//@Entity
 public class Evaluation implements Serializable{
 
 	private static final long serialVersionUID = 5032810372266105358L;

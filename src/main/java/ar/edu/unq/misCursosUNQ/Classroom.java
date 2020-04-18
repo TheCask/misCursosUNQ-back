@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity
+//@Entity
 public class Classroom implements Serializable{
 
 	private static final long serialVersionUID = 7807228793147656046L;

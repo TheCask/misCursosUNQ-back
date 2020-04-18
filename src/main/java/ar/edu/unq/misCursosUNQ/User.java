@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+//@Entity
 //@Table(name="USER")
 public class User implements Serializable {
 
