@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 public class Course implements Serializable {
 
@@ -52,7 +54,8 @@ public class Course implements Serializable {
 	/* GETTERS & SETTERS */
 	
 	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "courseGen")
+	@GenericGenerator(strategy = "increment", name = "courseGen")
 	public Integer getCourseId() { return courseId; }
 
 	/* Protected to avoid set the primary key */

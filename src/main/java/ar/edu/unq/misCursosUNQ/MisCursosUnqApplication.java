@@ -7,6 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import ar.edu.unq.misCursosUNQ.Repos.CourseRepo;
+import ar.edu.unq.misCursosUNQ.Services.CourseService;
+
 //import ar.edu.unq.misCursosUNQ.Services.SubjectService;
 //import ar.edu.unq.misCursosUNQ.Services.UserService;
 
@@ -19,6 +22,12 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 	//@Autowired
 	//UserService userService;
 	
+	@Autowired
+	private CourseService courseService;
+	
+	@Autowired
+	private CourseRepo courseRepo;
+	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public static void main(String[] args) {
@@ -28,9 +37,20 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 	@Override
     public void run(String... args) throws Exception {
 		
+		
+		Course lea = new Course("Lea-C17");
 		Student student1 = new Student("Student1", "Bla", 123123, "s1@gmail.com",14555);
 		Student student2 = new Student("Student2", "Ble", 123456, "s2@gmail.com",14666);
 		
+		logger.info("Course: -> {}", lea.getCourseId());
+		//courseRepo.save(lea);
+		courseService.createOrUpdateCourse(lea);
+		logger.info("Course: -> {}", lea.getCourseId());
+		
+		lea.getStudents().add(student1);
+		lea.getStudents().add(student2);
+		
+		//courseService.createOrUpdateCourse(lea);
 		
 		
 		/*
