@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ar.edu.unq</groupId>
-	<artifactId>misCursosUNQ</artifactId>
+	<artifactId>misCursosUNQ-back</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>misCursosUNQ</name>
+	<name>misCursosUNQ-back</name>
 	<description>Gestión de cursos</description>
 
 	<properties>

@@ -56,4 +56,10 @@ public class Student implements Serializable {
 	public void setCareers(List<String> careers) { this.careers = careers; }
 */
 	/* METHODS */
+	
+	public void addCourse(Course aCourse) {
+		
+		this.takenCourses.add(aCourse);
+		aCourse.getStudents().add(this);
+	}
 }

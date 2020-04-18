@@ -7,15 +7,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.edu.unq.misCursosUNQ.Course;
 import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Repos.LessonRepo;
  
-//@Service
+@Service
 public class LessonService {
      
-    //@Autowired
+    @Autowired
 	LessonRepo repository;
      
     public List<Lesson> getLessons() {
@@ -32,8 +33,11 @@ public class LessonService {
         else { throw new RecordNotFoundException("Lesson record does not exist for given id"); }
     }
      
-    public Lesson createOrUpdateSubject(Lesson entity) throws RecordNotFoundException {
+    public Lesson createOrUpdateLesson(Lesson entity) throws RecordNotFoundException {
         
+    	
+    	
+    	/*
     	Optional<Lesson> optEntity = repository.findById(entity.getLessonId());
 
     	if(optEntity.isPresent()) {
@@ -47,7 +51,52 @@ public class LessonService {
     		return newEntity;
     	} 
     	else { return repository.save(entity); }
-	        
+    	*/
+    	///////////////
+    	if (entity.getLessonId() != null) {
+    		
+	    	Optional<Lesson> optEntity = repository.findById(entity.getLessonId());
+	
+	    	if(optEntity.isPresent()) {
+	    		
+	    		Lesson newEntity = optEntity.get();
+	
+	    		newEntity.setAttendantStudents(entity.getAttendantStudents());	
+	
+	    		newEntity = repository.save(newEntity);
+	
+	    		return newEntity;
+	    	} 
+    	}
+    	return repository.save(entity);
+    	
+    	/////////////
+    	/*
+    	if (entity.getCourseId() == null) {	return repository.save(entity); }
+		
+		else {
+			Optional<Course> course; course = repository.findById(entity.getCourseId());
+
+			Course newEntity = course.get();
+			
+			if(course.isPresent()) {
+				
+				newEntity.setName(entity.getName());	
+				newEntity.setCode(entity.getCode());
+				newEntity.setCourseIsOpen(entity.getCourseIsOpen());
+				newEntity.setCourseShift(entity.getCourseShift());
+				newEntity.setLessons(entity.getLessons());
+				newEntity.setStudents(entity.getStudents());
+	
+				newEntity = repository.save(newEntity);
+			}
+			else { newEntity = repository.save(entity); }
+			
+			return newEntity;
+		}
+    	
+    	
+	      */  
     } 
      
     public void deleteLessonById(Long id) throws RecordNotFoundException {

@@ -1,20 +1,15 @@
 package ar.edu.unq.misCursosUNQ;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-
-import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Course implements Serializable {
@@ -117,6 +112,13 @@ public class Course implements Serializable {
 	//public void setCourseWeekSchedule(CourseWeekSchedule courseWeekSchedule) { this.courseWeekSchedule = courseWeekSchedule; }
 	
 	/* METHODS */
+	
+	public void addStudent(Student aStudent) {
+		
+		this.students.add(aStudent);
+		aStudent.getTakenCourses().add(this);
+	}
+	
 	
 	// To print materia basic details in logs.
 	@Override
