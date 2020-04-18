@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class Lesson implements Serializable{
@@ -27,6 +31,8 @@ public class Lesson implements Serializable{
 	}
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lessonGen")
+	@GenericGenerator(strategy = "increment", name = "lessonGen")
 	public Long getLessonId() { return lessonId; }
 
 	/* Protected to avoid set the primary key */

@@ -116,6 +116,13 @@ public class Course implements Serializable {
 	
 	/* METHODS */
 	
+	public void addStudent(Student aStudent) {
+		
+		this.students.add(aStudent);
+		aStudent.getTakenCourses().add(this);
+	}
+	
+	
 	// To print materia basic details in logs.
 	@Override
 	public String toString() {

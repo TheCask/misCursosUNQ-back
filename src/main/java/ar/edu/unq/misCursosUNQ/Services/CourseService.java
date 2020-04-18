@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.unq.misCursosUNQ.Course;
@@ -14,7 +15,7 @@ import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 @Service
 public class CourseService {
 
-	//@Autowired
+	@Autowired
 	CourseRepo repository;
 
 	public List<Course> getCourses() {
