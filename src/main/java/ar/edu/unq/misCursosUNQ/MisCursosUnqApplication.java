@@ -25,9 +25,6 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 	@Autowired
 	private CourseService courseService;
 	
-	@Autowired
-	private CourseRepo courseRepo;
-	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public static void main(String[] args) {
@@ -43,14 +40,13 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		Student student2 = new Student("Student2", "Ble", 123456, "s2@gmail.com",14666);
 		
 		logger.info("Course: -> {}", lea.getCourseId());
-		//courseRepo.save(lea);
 		courseService.createOrUpdateCourse(lea);
-		logger.info("Course: -> {}", lea.getCourseId());
+		logger.info("Course: -> {}", courseService.getCourseById(1));
 		
 		lea.getStudents().add(student1);
 		lea.getStudents().add(student2);
 		
-		//courseService.createOrUpdateCourse(lea);
+		courseService.createOrUpdateCourse(lea);
 		
 		
 		/*

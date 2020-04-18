@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -38,7 +41,7 @@ public class Course implements Serializable {
 	// Default constructor for Hibernate
 	protected Course() {}
 		
-	public Course(String aName) { 
+	public Course(String aName) {
 		this.setName(aName); 
 		this.setCode("");
 		this.setCourseShift("");
@@ -54,8 +57,7 @@ public class Course implements Serializable {
 	/* GETTERS & SETTERS */
 	
 	@Id 
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "courseGen")
-	@GenericGenerator(strategy = "increment", name = "courseGen")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	public Integer getCourseId() { return courseId; }
 
 	/* Protected to avoid set the primary key */
