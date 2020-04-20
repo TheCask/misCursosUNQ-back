@@ -65,6 +65,10 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		course1.addLesson(lesson2);
 		course1.addLesson(lesson3);
 		
+		
+		lesson1.setAttendance(student1);
+		lesson1.setAttendance(student2);
+		
 		lnService.createOrUpdateLesson(lesson1);
 		lnService.createOrUpdateLesson(lesson2);
 		lnService.createOrUpdateLesson(lesson3);
