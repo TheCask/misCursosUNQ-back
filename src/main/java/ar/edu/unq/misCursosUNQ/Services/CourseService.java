@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.unq.misCursosUNQ.Course;
+import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 
 @Service
@@ -17,6 +18,9 @@ public class CourseService {
 
 	@Autowired
 	CourseRepo repository;
+	
+	@Autowired
+	StudentService stService;
 
 	public List<Course> getCourses() {
 		List<Course> courseList = repository.findAll();
@@ -58,9 +62,21 @@ public class CourseService {
 	}
 
 	public void deleteCourseById(Integer id) throws RecordNotFoundException {
-		Optional<Course> course = repository.findById(id);
+		Optional<Course> optEntity = repository.findById(id);
 
-		if(course.isPresent()) { repository.deleteById(id); } 
+		if(optEntity.isPresent()) { 
+			
+			Course course = optEntity.get();
+			
+			for (Student st: optEntity.get().getStudents()) {
+			
+				st.removeCourse(course);
+				stService.createOrUpdateStudent(st);
+			}
+			
+			repository.deleteById(id);
+			
+		} 
 		else { throw new RecordNotFoundException("Course record not exist for given id"); }
 	}
 }

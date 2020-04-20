@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -66,13 +67,13 @@ public class Course implements Serializable {
 
 	public void setTeachers(List<User> teachers) { this.teachers = teachers; }
 */
-	@ManyToMany(mappedBy = "takenCourses")
+	@ManyToMany(mappedBy = "takenCourses", cascade = CascadeType.REFRESH)
 	@JsonIgnoreProperties("takenCourses")
 	public List<Student> getStudents() { return students; }
 
 	public void setStudents(List<Student> students) { this.students = students; }
 
-	@OneToMany
+	@OneToMany(orphanRemoval = true)
 	@JsonIgnoreProperties("attendantStudents")
 	public List<Lesson> getLessons() { return lessons; }
 

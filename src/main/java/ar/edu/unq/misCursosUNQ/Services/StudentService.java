@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
-import ar.edu.unq.misCursosUNQ.Repos.PersonalDataRepo;
 import ar.edu.unq.misCursosUNQ.Repos.StudentRepo;
  
 @Service
@@ -17,9 +16,6 @@ public class StudentService {
      
     @Autowired
 	StudentRepo repository;
-    
-    @Autowired
-	PersonalDataRepo subRepo;
      
     public List<Student> getStudents() {
         List<Student> aList = repository.findAll();
@@ -37,23 +33,24 @@ public class StudentService {
      
     public Student createOrUpdateStudent(Student entity) throws RecordNotFoundException {
         
-    	Optional<Student> optEntity = repository.findById(entity.getFileNumber());
+    	if (entity.getFileNumber() != null) {
 
-    	if(optEntity.isPresent()) {
-    		
-    		Student newEntity = optEntity.get();
+			Optional<Student> optEntity = repository.findById(entity.getFileNumber());
 
-    		newEntity.setPersonalData(entity.getPersonalData());	
-    		newEntity.setTakenCourses(entity.getTakenCourses());	
+			if(optEntity.isPresent()) {
 
-    		newEntity = repository.save(newEntity);
+				Student newEntity = optEntity.get();
 
-    		return newEntity;
-    	} 
-    	else { 
-    		subRepo.save(entity.getPersonalData());
-    		return repository.save(entity);
-    	}
+				newEntity.setPersonalData(entity.getPersonalData());	
+	    		newEntity.setTakenCourses(entity.getTakenCourses());
+
+				newEntity = repository.save(newEntity);
+
+				return newEntity;
+			} 
+		}
+    	//subRepo.save(entity.getPersonalData());
+		return repository.save(entity);
     } 
      
     public void deleteStudentById(Integer id) throws RecordNotFoundException {

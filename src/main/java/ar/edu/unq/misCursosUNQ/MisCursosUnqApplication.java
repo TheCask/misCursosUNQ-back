@@ -2,8 +2,6 @@ package ar.edu.unq.misCursosUNQ;
 
 import java.time.LocalDate;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,15 +24,15 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 	//UserService userService;
 	
 	@Autowired
-	private CourseService courseService;
+	private CourseService csService;
 
 	@Autowired
-	private StudentService studentService;
+	private StudentService stService;
 	
 	@Autowired
-	private LessonService lessonService;
+	private LessonService lnService;
 	
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	//private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	public static void main(String[] args) {
 		SpringApplication.run(MisCursosUnqApplication.class, args);
@@ -45,35 +43,33 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		
 		
 		Course course1 = new Course("Lea-C17");
-		courseService.createOrUpdateCourse(course1);
+		csService.createOrUpdateCourse(course1);
 		
 		Student student1 = new Student("Student1", "Bla", 123123, "s1@gmail.com",14555);
 		Student student2 = new Student("Student2", "Ble", 123456, "s2@gmail.com",14666);
-		studentService.createOrUpdateStudent(student1);
-		studentService.createOrUpdateStudent(student2);
+		stService.createOrUpdateStudent(student1);
+		stService.createOrUpdateStudent(student2);
 		
 		Lesson lesson1 = new Lesson(LocalDate.now());
 		Lesson lesson2 = new Lesson(LocalDate.now().plusDays(1));
 		Lesson lesson3 = new Lesson(LocalDate.now().plusDays(2));
-		lessonService.createOrUpdateLesson(lesson1);
-		lessonService.createOrUpdateLesson(lesson2);
-		lessonService.createOrUpdateLesson(lesson3);
+		lnService.createOrUpdateLesson(lesson1);
+		lnService.createOrUpdateLesson(lesson2);
+		lnService.createOrUpdateLesson(lesson3);
 		
 		student1.getTakenCourses().add(course1);
-		studentService.createOrUpdateStudent(student1);
+		stService.createOrUpdateStudent(student1);
 
 		lesson1.getAttendantStudents().add(student1);
 		//lesson1.getAttendantStudents().add(student2);
-		lessonService.createOrUpdateLesson(lesson1);
+		lnService.createOrUpdateLesson(lesson1);
 		
 		course1.getLessons().add(lesson1);
 		course1.getLessons().add(lesson2);
 		course1.getLessons().add(lesson3);
 		course1.getStudents().add(student1);
 		course1.getStudents().add(student2);
-		courseService.createOrUpdateCourse(course1);
-		
-		logger.info("Course: -> {}", courseService.getCourseById(1));
+		csService.createOrUpdateCourse(course1);
 		
 		/*
 		Subject lea = new Subject("Lectura y Escritura Académica", "80000-CYT1y2", "LEA");

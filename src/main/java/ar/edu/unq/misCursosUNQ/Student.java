@@ -1,5 +1,6 @@
 package ar.edu.unq.misCursosUNQ;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -39,12 +40,12 @@ public class Student implements Serializable {
 	/* Protected to avoid set the primary key */
 	protected void setFileNumber(Integer fileNumber) { this.fileNumber = fileNumber; }
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	public PersonalData getPersonalData() { return personalData; }
 
 	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.REFRESH)
 	@JsonIgnoreProperties("students")
 	public List<Course> getTakenCourses() { return takenCourses; }
 
@@ -59,8 +60,11 @@ public class Student implements Serializable {
 	/* METHODS */
 	
 	public void addCourse(Course aCourse) {
-		
 		this.takenCourses.add(aCourse);
 		aCourse.getStudents().add(this);
+	}
+	
+	public void removeCourse(Course course) {
+		this.takenCourses.remove(course);
 	}
 }

@@ -33,24 +33,6 @@ public class LessonService {
      
     public Lesson createOrUpdateLesson(Lesson entity) throws RecordNotFoundException {
         
-    	
-    	
-    	/*
-    	Optional<Lesson> optEntity = repository.findById(entity.getLessonId());
-
-    	if(optEntity.isPresent()) {
-    		
-    		Lesson newEntity = optEntity.get();
-
-    		newEntity.setAttendantStudents(entity.getAttendantStudents());	
-
-    		newEntity = repository.save(newEntity);
-
-    		return newEntity;
-    	} 
-    	else { return repository.save(entity); }
-    	*/
-    	///////////////
     	if (entity.getLessonId() != null) {
     		
 	    	Optional<Lesson> optEntity = repository.findById(entity.getLessonId());
@@ -67,34 +49,6 @@ public class LessonService {
 	    	} 
     	}
     	return repository.save(entity);
-    	
-    	/////////////
-    	/*
-    	if (entity.getCourseId() == null) {	return repository.save(entity); }
-		
-		else {
-			Optional<Course> course; course = repository.findById(entity.getCourseId());
-
-			Course newEntity = course.get();
-			
-			if(course.isPresent()) {
-				
-				newEntity.setName(entity.getName());	
-				newEntity.setCode(entity.getCode());
-				newEntity.setCourseIsOpen(entity.getCourseIsOpen());
-				newEntity.setCourseShift(entity.getCourseShift());
-				newEntity.setLessons(entity.getLessons());
-				newEntity.setStudents(entity.getStudents());
-	
-				newEntity = repository.save(newEntity);
-			}
-			else { newEntity = repository.save(entity); }
-			
-			return newEntity;
-		}
-    	
-    	
-	      */  
     } 
      
     public void deleteLessonById(Long id) throws RecordNotFoundException {
