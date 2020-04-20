@@ -42,10 +42,10 @@ public class LessonController {
         return new ResponseEntity<Lesson>(updated, new HttpHeaders(), HttpStatus.OK);
     }
  
-    @DeleteMapping("/{id}")
-    public HttpStatus deleteLessonById(@PathVariable("id") Long id) throws RecordNotFoundException {
-        service.deleteLessonById(id);
-        return HttpStatus.FORBIDDEN;
+    @DeleteMapping("/{lessonId}")
+    public ResponseEntity<String> deleteLessonById(@PathVariable("lessonId") Long lessonId) throws RecordNotFoundException {
+        service.deleteLessonById(lessonId);
+        return new ResponseEntity<String>("Lesson " + lessonId + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);   
     }
- 
+    
 }

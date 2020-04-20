@@ -119,10 +119,20 @@ public class Course implements Serializable {
 	
 	/* METHODS */
 	
-	public void addStudent(Student aStudent) {
-		
+	public void addStudent(Student aStudent) {	
 		this.students.add(aStudent);
 		aStudent.getTakenCourses().add(this);
+	}
+	
+	public void addLesson(Lesson aLesson) {	
+		this.lessons.add(aLesson);
+		aLesson.setCourse(this);
+	}
+	
+	public void removeLesson(Lesson aLesson) {	
+		if (this.lessons.remove(aLesson)) {
+			aLesson.setCourse(null);
+		}	
 	}
 	
 	

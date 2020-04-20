@@ -3,7 +3,6 @@ package ar.edu.unq.misCursosUNQ.Services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +15,9 @@ public class LessonService {
      
     @Autowired
 	LessonRepo repository;
+    
+    @Autowired
+	StudentService stService;
      
     public List<Lesson> getLessons() {
         List<Lesson> aList = repository.findAll();
@@ -52,9 +54,16 @@ public class LessonService {
     } 
      
     public void deleteLessonById(Long id) throws RecordNotFoundException {
-        Optional<Lesson> optEntity = repository.findById(id);
+        
+    	Optional<Lesson> optEntity = repository.findById(id);
          
-        if(optEntity.isPresent()) { repository.deleteById(id); } 
+        if(optEntity.isPresent()) { 
+        	
+        	Lesson lesson = optEntity.get();
+        	lesson.getCourse().removeLesson(lesson);
+
+        	repository.deleteById(id); 
+        } 
         else { throw new RecordNotFoundException("Lesson record does not exist for given id"); }
     } 
 }

@@ -68,14 +68,12 @@ public class CourseService {
 			
 			Course course = optEntity.get();
 			
-			for (Student st: optEntity.get().getStudents()) {
+			for (Student st: course.getStudents()) {
 			
 				st.removeCourse(course);
 				stService.createOrUpdateStudent(st);
 			}
-			
 			repository.deleteById(id);
-			
 		} 
 		else { throw new RecordNotFoundException("Course record not exist for given id"); }
 	}

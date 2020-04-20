@@ -53,22 +53,25 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		Lesson lesson1 = new Lesson(LocalDate.now());
 		Lesson lesson2 = new Lesson(LocalDate.now().plusDays(1));
 		Lesson lesson3 = new Lesson(LocalDate.now().plusDays(2));
+		
+		course1.addLesson(lesson1);
+		course1.addLesson(lesson2);
+		course1.addLesson(lesson3);
+		course1.addStudent(student1);
+		course1.addStudent(student2);
+		
 		lnService.createOrUpdateLesson(lesson1);
 		lnService.createOrUpdateLesson(lesson2);
 		lnService.createOrUpdateLesson(lesson3);
 		
-		student1.getTakenCourses().add(course1);
+		
 		stService.createOrUpdateStudent(student1);
 
 		lesson1.getAttendantStudents().add(student1);
 		//lesson1.getAttendantStudents().add(student2);
 		lnService.createOrUpdateLesson(lesson1);
 		
-		course1.getLessons().add(lesson1);
-		course1.getLessons().add(lesson2);
-		course1.getLessons().add(lesson3);
-		course1.getStudents().add(student1);
-		course1.getStudents().add(student2);
+		
 		csService.createOrUpdateCourse(course1);
 		
 		/*

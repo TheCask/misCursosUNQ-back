@@ -45,8 +45,8 @@ public class CourseController {
     }
  
     @DeleteMapping("/{courseId}")
-    public HttpStatus deleteCourseById(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
+    public ResponseEntity<String> deleteCourseById(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
         service.deleteCourseById(courseId);
-        return HttpStatus.FORBIDDEN;
+        return new ResponseEntity<String>("Course " + courseId + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);
     }
 }
