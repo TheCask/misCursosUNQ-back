@@ -40,7 +40,6 @@ public class StudentController {
  
     @PostMapping
     public @ResponseBody ResponseEntity<Student> createOrUpdateStudent(@RequestBody Student student) throws RecordNotFoundException {
-    	
     	Student updated = service.createOrUpdateStudent(student);
         return new ResponseEntity<Student>(updated, new HttpHeaders(), HttpStatus.OK);
     }
