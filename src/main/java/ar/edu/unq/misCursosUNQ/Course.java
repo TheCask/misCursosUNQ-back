@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Course implements Serializable {
 
@@ -65,11 +67,13 @@ public class Course implements Serializable {
 	public void setTeachers(List<User> teachers) { this.teachers = teachers; }
 */
 	@ManyToMany(mappedBy = "takenCourses")
+	@JsonIgnoreProperties("takenCourses")
 	public List<Student> getStudents() { return students; }
 
 	public void setStudents(List<Student> students) { this.students = students; }
 
 	@OneToMany
+	@JsonIgnoreProperties("attendantStudents")
 	public List<Lesson> getLessons() { return lessons; }
 
 	public void setLessons(List<Lesson> lessons) { this.lessons = lessons; }

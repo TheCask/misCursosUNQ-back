@@ -5,6 +5,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ public class Student implements Serializable {
 	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
 
 	@ManyToMany
+	@JsonIgnoreProperties("students")
 	public List<Course> getTakenCourses() { return takenCourses; }
 
 	public void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }

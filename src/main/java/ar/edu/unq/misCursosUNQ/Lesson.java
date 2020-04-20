@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class Lesson implements Serializable{
 
@@ -43,6 +45,7 @@ public class Lesson implements Serializable{
 	public void setLessonDay(LocalDate day) { this.lessonDay = day; }
 */
 	@OneToMany
+	@JsonIgnoreProperties("lessons")
 	public List<Student> getAttendantStudents() { return attendantStudents; }
 
 	public void setAttendantStudents(List<Student> attendantStudents) { this.attendantStudents = attendantStudents; }
