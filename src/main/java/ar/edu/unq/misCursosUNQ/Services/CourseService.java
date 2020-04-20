@@ -70,7 +70,7 @@ public class CourseService {
 			
 			for (Student st: course.getStudents()) {
 			
-				st.removeCourse(course);
+				st.signOffCurse(course);
 				stService.createOrUpdateStudent(st);
 			}
 			repository.deleteById(id);

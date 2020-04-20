@@ -12,11 +12,18 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import ar.edu.unq.misCursosUNQ.Services.CourseService;
 
 @Entity
 public class Course implements Serializable {
 
+	@Autowired
+	CourseService csService;
+	
 	private static final long serialVersionUID = -1636249307802887638L;
 	
 	private Integer courseId;
@@ -49,7 +56,6 @@ public class Course implements Serializable {
 //		this.setTeachers(new ArrayList<User>());
 		this.setStudents(new ArrayList<Student>());
 		this.setLessons(new ArrayList<Lesson>());
-	
 	}
 	
 	/* GETTERS & SETTERS */
@@ -121,7 +127,12 @@ public class Course implements Serializable {
 	
 	public void addStudent(Student aStudent) {	
 		this.students.add(aStudent);
-		aStudent.getTakenCourses().add(this);
+		aStudent.signOnCurse(this);
+	}
+	
+	public void removeStudent(Student aStudent) {	
+		this.students.remove(aStudent);
+		aStudent.signOffCurse(this);
 	}
 	
 	public void addLesson(Lesson aLesson) {	

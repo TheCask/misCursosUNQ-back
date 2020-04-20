@@ -43,7 +43,8 @@ public class LessonService {
 	    		
 	    		Lesson newEntity = optEntity.get();
 	
-	    		newEntity.setAttendantStudents(entity.getAttendantStudents());	
+	    		newEntity.setAttendantStudents(entity.getAttendantStudents());
+	    		newEntity.setCourse(entity.getCourse());
 	
 	    		newEntity = repository.save(newEntity);
 	

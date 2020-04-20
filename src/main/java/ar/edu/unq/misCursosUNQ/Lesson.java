@@ -12,10 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
-import org.hibernate.annotations.GenericGenerator;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -37,8 +33,7 @@ public class Lesson implements Serializable{
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lessonGen")
-	@GenericGenerator(strategy = "increment", name = "lessonGen")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	public Long getLessonId() { return lessonId; }
 
 	/* Protected to avoid set the primary key */
@@ -59,5 +54,13 @@ public class Lesson implements Serializable{
 	public Course getCourse() { return course; }
 
 	public void setCourse(Course course) { this.course = course; }
+	
+	public void setAttendance(Student aStudent) {
+		this.attendantStudents.add(aStudent);
+	}
+	
+	public void removeAttendance(Student aStudent) {
+		this.attendantStudents.remove(aStudent);
+	}
 
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 public class Student implements Serializable {
-
+	
 	private static final long serialVersionUID = 4376258230787104838L;
 
 	private Integer fileNumber;
@@ -58,13 +58,13 @@ public class Student implements Serializable {
 	public void setCareers(List<String> careers) { this.careers = careers; }
 */
 	/* METHODS */
-	
-	public void addCourse(Course aCourse) {
+
+	public void signOnCurse(Course aCourse) {
 		this.takenCourses.add(aCourse);
-		aCourse.getStudents().add(this);
 	}
-	
-	public void removeCourse(Course course) {
+
+	public void signOffCurse(Course course) {
+		//course.getLessons().forEach(lesson -> lesson.getAttendantStudents().remove(this));
 		this.takenCourses.remove(course);
 	}
 }
