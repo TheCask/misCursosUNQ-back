@@ -17,11 +17,11 @@
 //import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 //import ar.edu.unq.misCursosUNQ.Services.SubjectService;
 // 
-////@RestController
-////@RequestMapping("/subjects")
+//@RestController
+//@RequestMapping("/subjects")
 //public class SubjectController {
 //    
-//	//@Autowired
+//	@Autowired
 //    SubjectService service;
 // 
 //    @GetMapping
@@ -30,7 +30,7 @@
 //        return new ResponseEntity<List<Subject>>(list, new HttpHeaders(), HttpStatus.OK);
 //    }
 // 
-//    @GetMapping("/{id}")
+//    @GetMapping("/{code}")
 //    public ResponseEntity<Subject> getSubjectByCode(@PathVariable("code") String code) throws RecordNotFoundException {
 //        Subject entity = service.getSubjectByCode(code);
 //        return new ResponseEntity<Subject>(entity, new HttpHeaders(), HttpStatus.OK);
@@ -42,8 +42,8 @@
 //        return new ResponseEntity<Subject>(updated, new HttpHeaders(), HttpStatus.OK);
 //    }
 // 
-//    @DeleteMapping("/{id}")
-//    public HttpStatus deleteSubjectById(@PathVariable("id") String code) throws RecordNotFoundException {
+//    @DeleteMapping("/{code}")
+//    public HttpStatus deleteSubjectById(@PathVariable("code") String code) throws RecordNotFoundException {
 //        service.deleteSubjectByCode(code);
 //        return HttpStatus.FORBIDDEN;
 //    }

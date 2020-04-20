@@ -7,12 +7,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ar.edu.unq.misCursosUNQ.Lesson;
-import ar.edu.unq.misCursosUNQ.PersonalData;
 import ar.edu.unq.misCursosUNQ.Student;
-import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
-import ar.edu.unq.misCursosUNQ.Repos.LessonRepo;
 import ar.edu.unq.misCursosUNQ.Repos.PersonalDataRepo;
 import ar.edu.unq.misCursosUNQ.Repos.StudentRepo;
  
@@ -47,7 +43,6 @@ public class StudentService {
     		
     		Student newEntity = optEntity.get();
 
-
     		newEntity.setPersonalData(entity.getPersonalData());	
     		newEntity.setTakenCourses(entity.getTakenCourses());	
 
@@ -56,11 +51,9 @@ public class StudentService {
     		return newEntity;
     	} 
     	else { 
-
     		subRepo.save(entity.getPersonalData());
     		return repository.save(entity);
     	}
-	        
     } 
      
     public void deleteStudentById(Integer id) throws RecordNotFoundException {

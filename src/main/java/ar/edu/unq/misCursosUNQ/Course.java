@@ -53,6 +53,7 @@ public class Course implements Serializable {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	//@Column(columnDefinition = "integer auto_increment")
 	public Integer getCourseId() { return courseId; }
 
 	/* Protected to avoid set the primary key */

@@ -29,31 +29,32 @@ public class CourseService {
 		Optional<Course> course = repository.findById(id);
 
 		if(course.isPresent()) { return course.get(); } 
-		else { throw new RecordNotFoundException("Course record not exist for given code"); }
+		else { throw new RecordNotFoundException("Course record not exist for given id"); }
 	}
 
 	public Course createOrUpdateCourse(Course entity) throws RecordNotFoundException {
 
-		if (entity.getCourseId() == null) {	return repository.save(entity); }
-		
-		else {
-			Optional<Course> course; course = repository.findById(entity.getCourseId());
+		if (entity.getCourseId() != null) {
 
-			Course newEntity = course.get();
-			
-			if(course.isPresent()) {
-				
+			Optional<Course> optEntity = repository.findById(entity.getCourseId());
+
+			if(optEntity.isPresent()) {
+
+				Course newEntity = optEntity.get();
+
 				newEntity.setName(entity.getName());	
 				newEntity.setCode(entity.getCode());
 				newEntity.setCourseIsOpen(entity.getCourseIsOpen());
 				newEntity.setCourseShift(entity.getCourseShift());
 				newEntity.setLessons(entity.getLessons());
 				newEntity.setStudents(entity.getStudents());
-	
-				return repository.save(newEntity);
-			}
-			else { return repository.save(entity); }
+
+				newEntity = repository.save(newEntity);
+
+				return newEntity;
+			} 
 		}
+		return repository.save(entity);
 	}
 
 	public void deleteCourseById(Integer id) throws RecordNotFoundException {
@@ -61,6 +62,5 @@ public class CourseService {
 
 		if(course.isPresent()) { repository.deleteById(id); } 
 		else { throw new RecordNotFoundException("Course record not exist for given id"); }
-	} 
-	
+	}
 }

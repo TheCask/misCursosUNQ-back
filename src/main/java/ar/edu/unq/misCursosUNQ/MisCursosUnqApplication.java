@@ -47,26 +47,21 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		Course course1 = new Course("Lea-C17");
 		courseService.createOrUpdateCourse(course1);
 		
-		
 		Student student1 = new Student("Student1", "Bla", 123123, "s1@gmail.com",14555);
 		Student student2 = new Student("Student2", "Ble", 123456, "s2@gmail.com",14666);
-		student1.getTakenCourses().add(course1);
 		studentService.createOrUpdateStudent(student1);
 		studentService.createOrUpdateStudent(student2);
 		
-
-		logger.info("Course: -> {}", course1.getCourseId());
-		courseService.createOrUpdateCourse(course1);
-		logger.info("Course: -> {}", courseService.getCourseById(1));
-
 		Lesson lesson1 = new Lesson(LocalDate.now());
 		Lesson lesson2 = new Lesson(LocalDate.now().plusDays(1));
 		Lesson lesson3 = new Lesson(LocalDate.now().plusDays(2));
-		
 		lessonService.createOrUpdateLesson(lesson1);
 		lessonService.createOrUpdateLesson(lesson2);
 		lessonService.createOrUpdateLesson(lesson3);
 		
+		student1.getTakenCourses().add(course1);
+		studentService.createOrUpdateStudent(student1);
+
 		lesson1.getAttendantStudents().add(student1);
 		//lesson1.getAttendantStudents().add(student2);
 		lessonService.createOrUpdateLesson(lesson1);
@@ -77,6 +72,8 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 		course1.getStudents().add(student1);
 		course1.getStudents().add(student2);
 		courseService.createOrUpdateCourse(course1);
+		
+		logger.info("Course: -> {}", courseService.getCourseById(1));
 		
 		/*
 		Subject lea = new Subject("Lectura y Escritura Académica", "80000-CYT1y2", "LEA");
