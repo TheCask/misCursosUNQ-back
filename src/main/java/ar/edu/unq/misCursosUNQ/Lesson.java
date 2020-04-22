@@ -50,7 +50,7 @@ public class Lesson implements Serializable{
 	public void setAttendantStudents(List<Student> attendantStudents) { this.attendantStudents = attendantStudents; }
 
 	@ManyToOne
-	@JsonIgnoreProperties("lessons")
+	@JsonIgnoreProperties({"lessons", "students"})
 	public Course getCourse() { return course; }
 
 	public void setCourse(Course course) { this.course = course; }

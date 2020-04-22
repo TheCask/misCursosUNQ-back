@@ -40,7 +40,8 @@ public class LessonController {
  
     @PostMapping
     public @ResponseBody ResponseEntity<Lesson> createOrUpdateLesson(@RequestBody Lesson lesson) throws RecordNotFoundException {
-        Lesson updated = service.createOrUpdateLesson(lesson);
+        
+    	Lesson updated = service.createOrUpdateLesson(lesson);
         return new ResponseEntity<Lesson>(updated, new HttpHeaders(), HttpStatus.OK);
     }
  
@@ -48,6 +49,5 @@ public class LessonController {
     public ResponseEntity<String> deleteLessonById(@PathVariable("lessonId") Long lessonId) throws RecordNotFoundException {
         service.deleteLessonById(lessonId);
         return new ResponseEntity<String>("Lesson " + lessonId + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);   
-    }
-    
+    }  
 }

@@ -12,17 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import ar.edu.unq.misCursosUNQ.Services.CourseService;
+import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 
 @Entity
 public class Course implements Serializable {
-
-	@Autowired
-	CourseService csService;
 	
 	private static final long serialVersionUID = -1636249307802887638L;
 	
@@ -79,7 +74,7 @@ public class Course implements Serializable {
 
 	public void setStudents(List<Student> students) { this.students = students; }
 
-	@OneToMany(orphanRemoval = true)
+	@OneToMany(orphanRemoval = true, mappedBy = "course")
 	@JsonIgnoreProperties("attendantStudents")
 	public List<Lesson> getLessons() { return lessons; }
 
@@ -125,7 +120,7 @@ public class Course implements Serializable {
 	
 	/* METHODS */
 	
-	public void addStudent(Student aStudent) {	
+	public void addStudent(Student aStudent) throws RecordNotFoundException {	
 		this.students.add(aStudent);
 		aStudent.signOnCurse(this);
 	}

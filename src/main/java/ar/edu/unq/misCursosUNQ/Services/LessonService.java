@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
+import ar.edu.unq.misCursosUNQ.Repos.CourseRepo;
 import ar.edu.unq.misCursosUNQ.Repos.LessonRepo;
  
 @Service
@@ -17,7 +18,10 @@ public class LessonService {
 	LessonRepo repository;
     
     @Autowired
-	StudentService stService;
+	CourseRepo csRepo;
+    
+    @Autowired
+    CourseService csService;
      
     public List<Lesson> getLessons() {
         List<Lesson> aList = repository.findAll();
@@ -39,7 +43,7 @@ public class LessonService {
     		
 	    	Optional<Lesson> optEntity = repository.findById(entity.getLessonId());
 	
-	    	if(optEntity.isPresent()) {
+	    	if(optEntity.isPresent()) { // lesson tienen id y existe en db
 	    		
 	    		Lesson newEntity = optEntity.get();
 	
@@ -49,10 +53,12 @@ public class LessonService {
 	    		newEntity = repository.save(newEntity);
 	
 	    		return newEntity;
-	    	} 
+	    	}
     	}
-    	return repository.save(entity);
+	    
+	    return repository.save(entity);
     } 
+    	
      
     public void deleteLessonById(Long id) throws RecordNotFoundException {
         
