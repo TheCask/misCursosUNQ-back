@@ -1,7 +1,5 @@
 package ar.edu.unq.misCursosUNQ;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -42,13 +40,6 @@ public class MisCursosUnqApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 		
 		
-//		Course course1 = new Course("Lea-C17");
-//		Student student1 = new Student("Student1", "Bla", 123123, "s1@gmail.com",14555);
-//		Student student2 = new Student("Student2", "Ble", 123456, "s2@gmail.com",14666);
-//		Lesson lesson1 = new Lesson(LocalDate.now());
-//		Lesson lesson2 = new Lesson(LocalDate.now().plusDays(1));
-//		Lesson lesson3 = new Lesson(LocalDate.now().plusDays(2));
-//		
 //		csService.createOrUpdateCourse(course1);
 //		
 //		stService.createOrUpdateStudent(student1);

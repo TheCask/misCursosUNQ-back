@@ -10,8 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -43,8 +43,8 @@ public class Lesson implements Serializable{
 
 	public void setLessonDay(LocalDate day) { this.lessonDay = day; }
 */
-	@OneToMany(cascade = CascadeType.REFRESH)
-	@JsonIgnoreProperties("lessons")
+	@ManyToMany(cascade = { CascadeType.PERSIST })
+	@JsonIgnoreProperties("takenCourses")
 	public List<Student> getAttendantStudents() { return attendantStudents; }
 
 	public void setAttendantStudents(List<Student> attendantStudents) { this.attendantStudents = attendantStudents; }
@@ -62,5 +62,12 @@ public class Lesson implements Serializable{
 	public void removeAttendance(Student aStudent) {
 		this.attendantStudents.remove(aStudent);
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Lesson)) return false;
+        return lessonId != null && lessonId.equals(((Lesson) o).lessonId);
+    }
 
 }

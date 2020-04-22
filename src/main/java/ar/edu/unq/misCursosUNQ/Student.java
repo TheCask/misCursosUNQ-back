@@ -21,6 +21,7 @@ public class Student implements Serializable {
 	private PersonalData personalData;
 //	private List<String> careers;
 	private List<Course> takenCourses;
+	private List<Lesson> attendedLessons;
 	
 	// Default constructor for Hibernate
 	protected Student() {}
@@ -40,12 +41,12 @@ public class Student implements Serializable {
 	/* Protected to avoid set the primary key */
 	protected void setFileNumber(Integer fileNumber) { this.fileNumber = fileNumber; }
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	public PersonalData getPersonalData() { return personalData; }
 
 	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
 
-	@ManyToMany(cascade = CascadeType.REFRESH)
+	@ManyToMany(cascade = { CascadeType.PERSIST })
 	@JsonIgnoreProperties("students")
 	public List<Course> getTakenCourses() { return takenCourses; }
 
@@ -59,12 +60,25 @@ public class Student implements Serializable {
 */
 	/* METHODS */
 
+	@ManyToMany(mappedBy = "attendantStudents", cascade = { CascadeType.PERSIST, CascadeType.MERGE } )
+	@JsonIgnoreProperties("attendantStudents")
+	public List<Lesson> getAttendedLessons() { return attendedLessons; }
+
+	public void setAttendedLessons(List<Lesson> attendedLessons) { this.attendedLessons = attendedLessons; }
+
 	public void signOnCurse(Course aCourse) {
 		this.takenCourses.add(aCourse);
 	}
 
 	public void signOffCurse(Course course) {
-		//course.getLessons().forEach(lesson -> lesson.getAttendantStudents().remove(this));
 		this.takenCourses.remove(course);
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Student)) return false;
+        return fileNumber != null && fileNumber.equals(((Student) o).getFileNumber());
+    }
+ 
 }

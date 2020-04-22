@@ -68,14 +68,14 @@ public class Course implements Serializable {
 
 	public void setTeachers(List<User> teachers) { this.teachers = teachers; }
 */
-	@ManyToMany(mappedBy = "takenCourses", cascade = CascadeType.REFRESH)
+	@ManyToMany(mappedBy = "takenCourses", cascade = { CascadeType.PERSIST, CascadeType.MERGE } )
 	@JsonIgnoreProperties("takenCourses")
 	public List<Student> getStudents() { return students; }
 
 	public void setStudents(List<Student> students) { this.students = students; }
 
-	@OneToMany(orphanRemoval = true, mappedBy = "course")
-	@JsonIgnoreProperties("attendantStudents")
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnoreProperties("course")
 	public List<Lesson> getLessons() { return lessons; }
 
 	public void setLessons(List<Lesson> lessons) { this.lessons = lessons; }
@@ -130,21 +130,31 @@ public class Course implements Serializable {
 		aStudent.signOffCurse(this);
 	}
 	
+	public void removeStudents() {
+		for(Student st : new ArrayList<>(students)) {
+			removeStudent(st);
+		}
+	}
+	
 	public void addLesson(Lesson aLesson) {	
 		this.lessons.add(aLesson);
 		aLesson.setCourse(this);
 	}
 	
 	public void removeLesson(Lesson aLesson) {	
-		if (this.lessons.remove(aLesson)) {
-			aLesson.setCourse(null);
-		}	
+		if (this.lessons.remove(aLesson)) { aLesson.setCourse(null); }	
 	}
-	
 	
 	// To print materia basic details in logs.
 	@Override
 	public String toString() {
 		return "Course [Id " + courseId + " | " + courseName + "]";
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Course)) return false;
+        return courseId != null && courseId.equals(((Course) o).getCourseId());
+    }
 }

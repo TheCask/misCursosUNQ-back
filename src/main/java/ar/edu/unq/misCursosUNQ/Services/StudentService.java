@@ -42,11 +42,9 @@ public class StudentService {
 				Student newEntity = optEntity.get();
 
 				newEntity.setPersonalData(entity.getPersonalData());	
-	    		newEntity.setTakenCourses(entity.getTakenCourses());
+	    		newEntity.setTakenCourses(entity.getTakenCourses()); 
 
-				newEntity = repository.save(newEntity);
-
-				return newEntity;
+				return repository.save(newEntity);
 			} 
 		}
     	//subRepo.save(entity.getPersonalData());

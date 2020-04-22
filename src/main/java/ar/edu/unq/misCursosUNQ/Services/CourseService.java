@@ -1,16 +1,16 @@
 package ar.edu.unq.misCursosUNQ.Services;
 
 import ar.edu.unq.misCursosUNQ.Repos.CourseRepo;
+import ar.edu.unq.misCursosUNQ.Repos.StudentRepo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unq.misCursosUNQ.Course;
-import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 
 @Service
@@ -18,6 +18,9 @@ public class CourseService {
 
 	@Autowired
 	CourseRepo repository;
+	
+	@Autowired
+	StudentRepo stRepo;
 	
 	@Autowired
 	StudentService stService;
@@ -36,6 +39,7 @@ public class CourseService {
 		else { throw new RecordNotFoundException("Course record not exist for given id"); }
 	}
 
+	@Transactional
 	public Course createOrUpdateCourse(Course entity) throws RecordNotFoundException {
 
 		if (entity.getCourseId() != null) {
@@ -51,16 +55,14 @@ public class CourseService {
 				newEntity.setCourseIsOpen(entity.getCourseIsOpen());
 				newEntity.setCourseShift(entity.getCourseShift());
 				newEntity.setLessons(entity.getLessons());
-				newEntity.setStudents(entity.getStudents());
-
-				newEntity = repository.save(newEntity);
-
-				return newEntity;
+				newEntity.setStudents(entity.getStudents());				
+				return repository.save(newEntity);
 			} 
 		}
 		return repository.save(entity);
 	}
 
+	@Transactional
 	public void deleteCourseById(Integer id) throws RecordNotFoundException {
 		Optional<Course> optEntity = repository.findById(id);
 
@@ -68,12 +70,9 @@ public class CourseService {
 			
 			Course course = optEntity.get();
 			
-			for (Student st: course.getStudents()) {
-			
-				st.signOffCurse(course);
-				stService.createOrUpdateStudent(st);
-			}
-			repository.deleteById(id);
+			course.removeStudents();
+			repository.saveAndFlush(course);
+			repository.delete(course);
 		} 
 		else { throw new RecordNotFoundException("Course record not exist for given id"); }
 	}

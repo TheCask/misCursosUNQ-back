@@ -51,4 +51,11 @@ public class PersonalData implements Serializable {
 	public void setCellPhone(String cellPhone) { this.cellPhone = cellPhone; }
 
 	/* METHODS */
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PersonalData)) return false;
+        return dni != null && dni.equals(((PersonalData) o).getDni());
+    }
 }
