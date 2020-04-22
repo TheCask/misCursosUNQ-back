@@ -47,7 +47,7 @@ public class Student implements Serializable {
 	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
 
 	@ManyToMany(cascade = { CascadeType.PERSIST })
-	@JsonIgnoreProperties("students")
+	@JsonIgnoreProperties({"students", "lessons"})
 	public List<Course> getTakenCourses() { return takenCourses; }
 
 	public void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }
@@ -61,7 +61,7 @@ public class Student implements Serializable {
 	/* METHODS */
 
 	@ManyToMany(mappedBy = "attendantStudents", cascade = { CascadeType.PERSIST, CascadeType.MERGE } )
-	@JsonIgnoreProperties("attendantStudents")
+	@JsonIgnoreProperties({"attendantStudents", "course"})
 	public List<Lesson> getAttendedLessons() { return attendedLessons; }
 
 	public void setAttendedLessons(List<Lesson> attendedLessons) { this.attendedLessons = attendedLessons; }

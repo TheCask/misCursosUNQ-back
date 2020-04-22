@@ -69,13 +69,13 @@ public class Course implements Serializable {
 	public void setTeachers(List<User> teachers) { this.teachers = teachers; }
 */
 	@ManyToMany(mappedBy = "takenCourses", cascade = { CascadeType.PERSIST, CascadeType.MERGE } )
-	@JsonIgnoreProperties("takenCourses")
+	@JsonIgnoreProperties({"takenCourses", "attendedLessons"})
 	public List<Student> getStudents() { return students; }
 
 	public void setStudents(List<Student> students) { this.students = students; }
 
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnoreProperties("course")
+	@JsonIgnoreProperties({"course", "attendantStudents"})
 	public List<Lesson> getLessons() { return lessons; }
 
 	public void setLessons(List<Lesson> lessons) { this.lessons = lessons; }
