@@ -39,7 +39,7 @@ public class CourseService {
 		else { throw new RecordNotFoundException("Course record not exist for given id"); }
 	}
 
-	@Transactional
+	//@Transactional
 	public Course createOrUpdateCourse(Course entity) throws RecordNotFoundException {
 
 		if (entity.getCourseId() != null) {
@@ -50,8 +50,8 @@ public class CourseService {
 
 				Course newEntity = optEntity.get();
 
-				newEntity.setName(entity.getName());	
-				newEntity.setCode(entity.getCode());
+				newEntity.setCourseName(entity.getCourseName());	
+				newEntity.setCourseCode(entity.getCourseCode());
 				newEntity.setCourseIsOpen(entity.getCourseIsOpen());
 				newEntity.setCourseShift(entity.getCourseShift());
 				newEntity.setLessons(entity.getLessons());

@@ -42,8 +42,8 @@ public class Course implements Serializable {
 	protected Course() {}
 		
 	public Course(String aName) {
-		this.setName(aName); 
-		this.setCode("");
+		this.setCourseName(aName); 
+		this.setCourseCode("");
 		this.setCourseShift("");
 		this.setCourseIsOpen(true);
 //		this.setCourseBeginDay(LocalDate.ofEpochDay(0)); // First Epoch day is 1970-01-01;
@@ -90,17 +90,17 @@ public class Course implements Serializable {
 
 	public void setWeekSchedule(List<CourseDaySchedule> weekSchedule) { this.weekSchedule = weekSchedule; }
 */
-	public String getCode() { return courseCode; }
+	public String getCourseCode() { return courseCode; }
 
-	public void setCode(String code) { this.courseCode = code; }
+	public void setCourseCode(String code) { this.courseCode = code; }
 
 	public String getCourseShift() { return courseShift; }
 
 	public void setCourseShift(String courseShift) { this.courseShift = courseShift; }
 
-	public String getName() { return courseName; }
+	public String getCourseName() { return courseName; }
 
-	public void setName(String number) { this.courseName = number; }
+	public void setCourseName(String number) { this.courseName = number; }
 
 	public Boolean getCourseIsOpen() { return courseIsOpen; }
 

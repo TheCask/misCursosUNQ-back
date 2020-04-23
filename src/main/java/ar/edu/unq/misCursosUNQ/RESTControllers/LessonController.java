@@ -20,32 +20,32 @@ import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Services.LessonService;
  
 @RestController
-@RequestMapping("/lessons")
+@RequestMapping("/api")
 public class LessonController {
     
 	@Autowired
     LessonService service;
  
-    @GetMapping
+    @GetMapping("/lessons")
     public ResponseEntity<List<Lesson>> getAllLessons() {
         List<Lesson> list = service.getLessons();
         return new ResponseEntity<List<Lesson>>(list, new HttpHeaders(), HttpStatus.OK);
     }
  
-    @GetMapping("/{id}")
-    public ResponseEntity<Lesson> getLessonById(@PathVariable("id") Long id) throws RecordNotFoundException {
-        Lesson entity = service.getLessonById(id);
+    @GetMapping("/lesson/{lessonId}")
+    public ResponseEntity<Lesson> getLessonById(@PathVariable("lessonId") Long lessonId) throws RecordNotFoundException {
+        Lesson entity = service.getLessonById(lessonId);
         return new ResponseEntity<Lesson>(entity, new HttpHeaders(), HttpStatus.OK);
     }
  
-    @PostMapping
+    @PostMapping("/lesson")
     public @ResponseBody ResponseEntity<Lesson> createOrUpdateLesson(@RequestBody Lesson lesson) throws RecordNotFoundException {
         
     	Lesson updated = service.createOrUpdateLesson(lesson);
         return new ResponseEntity<Lesson>(updated, new HttpHeaders(), HttpStatus.OK);
     }
  
-    @DeleteMapping("/{lessonId}")
+    @DeleteMapping("/lesson/{lessonId}")
     public ResponseEntity<String> deleteLessonById(@PathVariable("lessonId") Long lessonId) throws RecordNotFoundException {
         service.deleteLessonById(lessonId);
         return new ResponseEntity<String>("Lesson " + lessonId + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);   
