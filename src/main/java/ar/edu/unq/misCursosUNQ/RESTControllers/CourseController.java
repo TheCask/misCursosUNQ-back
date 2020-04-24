@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.unq.misCursosUNQ.Course;
@@ -37,9 +38,8 @@ public class CourseController {
         return new ResponseEntity<Course>(entity, new HttpHeaders(), HttpStatus.OK);
     }
  
-    @RequestMapping
     @PostMapping("/course")
-    public ResponseEntity<Course> createOrUpdateCourse(@RequestBody Course course) throws RecordNotFoundException {
+    public @ResponseBody ResponseEntity<Course> createOrUpdateCourse(@RequestBody Course course) throws RecordNotFoundException {
         Course updated = service.createOrUpdateCourse(course);
         return new ResponseEntity<Course>(updated, new HttpHeaders(), HttpStatus.OK);
     }
