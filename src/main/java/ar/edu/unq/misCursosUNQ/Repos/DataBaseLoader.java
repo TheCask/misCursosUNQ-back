@@ -25,6 +25,9 @@ public class DataBaseLoader implements CommandLineRunner  {
 	public void run(String... strings) throws Exception {
 		
 		Course aCourse = new Course("Lea-C17");
+		aCourse.setCourseCode("80000-C17-CYT1Y2");
+		aCourse.setCourseIsOpen(false);
+		aCourse.setCourseShift("Noche");
 		
 		Student student1 = new Student("Student1", "Bla", 123123, "s1@gmail.com",14555);
 		Student student2 = new Student("Student2", "Ble", 123456, "s2@gmail.com",14666);
