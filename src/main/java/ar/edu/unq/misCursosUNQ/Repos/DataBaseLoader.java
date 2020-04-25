@@ -1,7 +1,6 @@
 package ar.edu.unq.misCursosUNQ.Repos;
 
 import java.time.LocalDate;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -10,7 +9,6 @@ import ar.edu.unq.misCursosUNQ.Course;
 import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Services.CourseService;
-import ar.edu.unq.misCursosUNQ.Services.LessonService;
 
 @Component
 public class DataBaseLoader implements CommandLineRunner  {
@@ -19,22 +17,19 @@ public class DataBaseLoader implements CommandLineRunner  {
 	private CourseService csService;
 	
 	@Autowired
-	private LessonService lnService;
-	
-	@Autowired
 	public DataBaseLoader(StudentRepo aStRepo, CourseRepo aCsRepo, LessonRepo aLnRepo) {
 	}
 
 	@Override
 	public void run(String... strings) throws Exception {
 		
-		Course aCourse = new Course("Lea-C17");
+		Course aCourse = new Course("LEA-C17");
 		aCourse.setCourseCode("80000-C17-CYT1Y2");
 		aCourse.setCourseIsOpen(false);
 		aCourse.setCourseShift("Noche");
 		
-		Student student1 = new Student("Student1", "Bla", 123123, "s1@gmail.com",14555);
-		Student student2 = new Student("Student2", "Ble", 123456, "s2@gmail.com",14666);
+		Student student1 = new Student("Eugenio", "Calcena", 28123123, "eugeniocalcena@gmail.com",14555);
+		Student student2 = new Student("Elias", "Filipponi", 29123456, "eliasfilipponi@gmail.com",14666);
 		
 		Lesson lesson1 = new Lesson(LocalDate.now());
 		Lesson lesson2 = new Lesson(LocalDate.now().plusDays(1));
@@ -52,7 +47,7 @@ public class DataBaseLoader implements CommandLineRunner  {
 		lesson3.setAttendance(student1);
 		lesson3.setAttendance(student2);
 		
-		this.csService.createOrUpdateCourse(aCourse);	
+		this.csService.createOrUpdateCourse(aCourse);
 	}
 	
 }
