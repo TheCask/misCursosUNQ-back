@@ -28,8 +28,11 @@ public class DataBaseLoader implements CommandLineRunner  {
 		aCourse.setCourseIsOpen(false);
 		aCourse.setCourseShift("Noche");
 		
-		Student student1 = new Student("Eugenio", "Calcena", 28123123, "eugeniocalcena@gmail.com",14555);
-		Student student2 = new Student("Elias", "Filipponi", 29123456, "eliasfilipponi@gmail.com",14666);
+		Student student1 = new Student("Eugenio", "Calcena", 28123123, "eugeniocalcena@gmail.com",14111);
+		Student student2 = new Student("Elias", "Filipponi", 29123456, "eliasfilipponi@gmail.com",14222);
+		Student student3 = new Student("Regina", "Falange",  33333333, "s3@gmail.com",14333);
+		Student student4 = new Student("Aurelio", "Gomez",   44444444, "s4@gmail.com",14444);
+		Student student5 = new Student("Nahuel", "Huapi",    55555555, "s5@gmail.com",14555);
 		
 		Lesson lesson1 = new Lesson(LocalDate.now());
 		Lesson lesson2 = new Lesson(LocalDate.now().plusDays(1));
@@ -41,11 +44,17 @@ public class DataBaseLoader implements CommandLineRunner  {
 		
 		aCourse.addStudent(student1);
 		aCourse.addStudent(student2);
+		aCourse.addStudent(student3);
+		aCourse.addStudent(student4);
+		aCourse.addStudent(student5);
+
+		
 		
 		lesson1.setAttendance(student1);
 		lesson2.setAttendance(student2);
 		lesson3.setAttendance(student1);
 		lesson3.setAttendance(student2);
+		
 		
 		this.csService.createOrUpdateCourse(aCourse);
 	}
