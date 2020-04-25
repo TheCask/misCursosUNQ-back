@@ -43,7 +43,7 @@ public class Lesson implements Serializable{
 
 	public void setLessonDay(LocalDate day) { this.lessonDay = day; }
 */
-	@ManyToMany(cascade = { CascadeType.PERSIST })
+	@ManyToMany(cascade = { CascadeType.MERGE })
 	@JsonIgnoreProperties("takenCourses")
 	public List<Student> getAttendantStudents() { return attendantStudents; }
 

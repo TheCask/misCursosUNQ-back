@@ -10,12 +10,16 @@ import ar.edu.unq.misCursosUNQ.Course;
 import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Services.CourseService;
+import ar.edu.unq.misCursosUNQ.Services.LessonService;
 
 @Component
 public class DataBaseLoader implements CommandLineRunner  {
 
 	@Autowired
 	private CourseService csService;
+	
+	@Autowired
+	private LessonService lnService;
 	
 	@Autowired
 	public DataBaseLoader(StudentRepo aStRepo, CourseRepo aCsRepo, LessonRepo aLnRepo) {
@@ -48,7 +52,7 @@ public class DataBaseLoader implements CommandLineRunner  {
 		lesson3.setAttendance(student1);
 		lesson3.setAttendance(student2);
 		
-		this.csService.createOrUpdateCourse(aCourse);
+		this.csService.createOrUpdateCourse(aCourse);	
 	}
 	
 }

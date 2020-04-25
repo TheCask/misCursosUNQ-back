@@ -49,5 +49,5 @@ public class LessonController {
     public ResponseEntity<String> deleteLessonById(@PathVariable("lessonId") Long lessonId) throws RecordNotFoundException {
         service.deleteLessonById(lessonId);
         return new ResponseEntity<String>("Lesson " + lessonId + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);   
-    }  
+    }
 }

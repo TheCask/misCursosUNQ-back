@@ -55,7 +55,6 @@ public class LessonService {
 	    		return newEntity;
 	    	}
     	}
-	    
 	    return repository.save(entity);
     } 
     	

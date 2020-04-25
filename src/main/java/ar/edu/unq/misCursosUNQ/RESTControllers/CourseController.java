@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.unq.misCursosUNQ.Course;
+import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Services.CourseService;
@@ -60,5 +61,16 @@ public class CourseController {
     	List<Student> list = entity.getStudents();
         
         return new ResponseEntity<List<Student>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
+    
+    @GetMapping("/course/{courseId}/lessons")
+    public ResponseEntity<List<Lesson>> getCourseLessons(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
+        
+    	Course entity = service.getCourseById(courseId);
+    	
+    	//TODO Chquear si no hay que traer los estudiantes de la base de datos en vez del objeto...
+    	List<Lesson> list = entity.getLessons();
+        
+        return new ResponseEntity<List<Lesson>>(list, new HttpHeaders(), HttpStatus.OK);
     }
 }
