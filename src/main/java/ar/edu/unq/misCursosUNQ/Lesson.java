@@ -56,11 +56,22 @@ public class Lesson implements Serializable{
 	public void setCourse(Course course) { this.course = course; }
 	
 	public void setAttendance(Student aStudent) {
-		this.attendantStudents.add(aStudent);
+		// Check if the lesson course is among the taken courses of the student
+		if (aStudent.getTakenCourses().contains(this.getCourse())) {
+			this.attendantStudents.add(aStudent);
+			aStudent.attendLesson(this);
+		}
 	}
 	
 	public void removeAttendance(Student aStudent) {
-		this.attendantStudents.remove(aStudent);
+		if (this.attendantStudents.remove(aStudent)) {
+			aStudent.unattendLesson(this);
+		};
+	}
+	
+	public void removeAllAttendance() {
+		this.attendantStudents.forEach(aST -> aST.unattendLesson(this));
+		this.attendantStudents.clear();
 	}
 	
 	@Override

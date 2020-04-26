@@ -31,6 +31,7 @@ public class Student implements Serializable {
 		setFileNumber(aFileNumber);
 //		setCareers(new ArrayList<String>());
 		setTakenCourses(new ArrayList<Course>());
+		setAttendedLessons(new ArrayList<Lesson>());
 	}
 
 	/* GETTERS & SETTERS */
@@ -71,8 +72,21 @@ public class Student implements Serializable {
 	}
 
 	public void signOffCurse(Course course) {
+		// Note that this method is not removing the student attended lessons of this course
+		// Even if the student sing off this course, it will continue to have knowledge of assisted lessons 
 		this.takenCourses.remove(course);
 	}
+
+	public void attendLesson(Lesson aLesson) {
+		this.attendedLessons.add(aLesson);
+	}
+	
+	public void unattendLesson(Lesson aLesson) {
+		this.attendedLessons.remove(aLesson);
+	}
+
+
+	
 	
 	@Override
     public boolean equals(Object o) {

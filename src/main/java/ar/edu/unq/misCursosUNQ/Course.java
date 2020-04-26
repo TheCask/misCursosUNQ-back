@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import ar.edu.unq.misCursosUNQ.Exceptions.LessonException;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 
 @Entity
@@ -136,14 +137,36 @@ public class Course implements Serializable {
 		}
 	}
 	
-	public void addLesson(Lesson aLesson) {	
-		this.lessons.add(aLesson);
-		aLesson.setCourse(this);
+	public void addLesson(Lesson aLesson) throws LessonException {	
+		// Evaluates if all students in lesson to add, are taken the present course. 
+		// Only in this case adds the lesson to the course.
+		if (aLesson.getAttendantStudents().stream()
+				.allMatch(st -> st.getTakenCourses()
+						.contains(this))) {
+			this.lessons.add(aLesson);
+			aLesson.setCourse(this);
+		}
+		else {
+			throw new LessonException("There are at least one attendant student not taken this course");
+		}
 	}
 	
-	public void removeLesson(Lesson aLesson) {	
-		if (this.lessons.remove(aLesson)) { aLesson.setCourse(null); }	
+	public void removeLesson(Lesson aLesson) {
+		if (this.lessons.remove(aLesson)) { 
+			aLesson.setCourse(null);
+			// Remove a lesson implies removing attendance of students to the lesson
+			aLesson.removeAllAttendance();
+		}
 	}
+	
+	public void removeAllLessons() {
+		this.lessons.forEach(ln -> {
+			ln.setCourse(null); 
+			ln.removeAllAttendance();
+		});
+		this.lessons.clear();
+	}
+	
 	
 	// To print materia basic details in logs.
 	@Override
