@@ -85,9 +85,6 @@ public class Student implements Serializable {
 		this.attendedLessons.remove(aLesson);
 	}
 
-
-	
-	
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -33,6 +33,11 @@ public class DataBaseLoader implements CommandLineRunner  {
 		otherCourse.setCourseIsOpen(true);
 		otherCourse.setCourseShift("Mañana");
 		
+		Course anotherCourse = new Course("ICFYQ-C12");
+		anotherCourse.setCourseCode("80004-C12-CYT1");
+		anotherCourse.setCourseIsOpen(true);
+		anotherCourse.setCourseShift("Tarde");
+		
 		Student student1 = new Student("Eugenio", "Calcena", 28123123, "eugeniocalcena@gmail.com",14111);
 		Student student2 = new Student("Elias", "Filipponi", 29123456, "eliasfilipponi@gmail.com",14222);
 		Student student3 = new Student("Regina", "Falange",  33333333, "s3@gmail.com",14333);
@@ -68,6 +73,7 @@ public class DataBaseLoader implements CommandLineRunner  {
 
 		this.csService.createOrUpdateCourse(aCourse);
 		this.csService.createOrUpdateCourse(otherCourse);
+		this.csService.createOrUpdateCourse(anotherCourse);
 	}
 	
 }

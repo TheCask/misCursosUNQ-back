@@ -15,7 +15,6 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import ar.edu.unq.misCursosUNQ.Exceptions.LessonException;
-import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 
 @Entity
 public class Course implements Serializable {
@@ -50,8 +49,8 @@ public class Course implements Serializable {
 //		this.setCourseBeginDay(LocalDate.ofEpochDay(0)); // First Epoch day is 1970-01-01;
 //		this.setCourseEndDay(LocalDate.ofEpochDay(0));
 //		this.setTeachers(new ArrayList<User>());
-		this.setStudents(new ArrayList<Student>());
-		this.setLessons(new ArrayList<Lesson>());
+		this.students = new ArrayList<Student>();
+		this.lessons = new ArrayList<Lesson>();
 	}
 	
 	/* GETTERS & SETTERS */
@@ -73,12 +72,14 @@ public class Course implements Serializable {
 	@JsonIgnoreProperties({"takenCourses", "attendedLessons"})
 	public List<Student> getStudents() { return students; }
 
+	// Not allowed to set students directly because database corruption
 	public void setStudents(List<Student> students) { this.students = students; }
 
-	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)//, orphanRemoval = true)
 	@JsonIgnoreProperties({"course", "attendantStudents"})
 	public List<Lesson> getLessons() { return lessons; }
 
+	// Not allowed to set lessons directly because database corruption
 	public void setLessons(List<Lesson> lessons) { this.lessons = lessons; }
 /*
 	@OneToMany
@@ -121,9 +122,11 @@ public class Course implements Serializable {
 	
 	/* METHODS */
 	
-	public void addStudent(Student aStudent) throws RecordNotFoundException {	
-		this.students.add(aStudent);
-		aStudent.signOnCurse(this);
+	public void addStudent(Student aStudent) {	
+		if (!this.students.contains(aStudent)) {
+			this.students.add(aStudent);
+			aStudent.signOnCurse(this);
+		}
 	}
 	
 	public void removeStudent(Student aStudent) {	
@@ -157,6 +160,10 @@ public class Course implements Serializable {
 			// Remove a lesson implies removing attendance of students to the lesson
 			aLesson.removeAllAttendance();
 		}
+	}
+	
+	public void removeLessons(List<Lesson> lessonList) {
+		lessonList.forEach(ln -> this.removeLesson(ln));
 	}
 	
 	public void removeAllLessons() {
