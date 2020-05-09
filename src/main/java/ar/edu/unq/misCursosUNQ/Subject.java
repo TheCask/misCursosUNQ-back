@@ -1,79 +1,65 @@
 package ar.edu.unq.misCursosUNQ;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 // Remember to include only JPA API annotations (javax.persistence.*) 
 // to decouple hibernate from application code.
 
-//@Entity
+@Entity
 public class Subject implements Serializable {
 	
 	private static final long serialVersionUID = -3642091487086232955L;
 	
-	
-	private String subjectCode;
-	private String subjectName;
-	private String subjectProgramURL;
-	private String subjectAcronym;
-
-	private List<User> subjectCoordinators;
-	private List<Course> subjectCourses;
+	private String code;
+	private String name;
+	private String programURL;
+	private String acronym;
 	
 	// Default constructor for Hibernate
 	protected Subject() {}
 	
 	public Subject(String aName, String aCode, String anAcronym) { 
-		this.subjectName = aName;
-		this.subjectCode = aCode;
-		this.subjectAcronym = anAcronym;
+		this.name = aName;
+		this.code = aCode;
+		this.acronym = anAcronym;
 		this.setProgramURL("");
-		this.setCoordinators(new ArrayList<User>());
-		this.setCourses(new ArrayList<Course>());
 	}
 	
 	/* GETTERS & SETTERS */
 	
-	@ManyToMany(mappedBy = "coordinatedSubjects")
-	public List<User> getCoordinators() { return subjectCoordinators; }
-
-	public void setCoordinators(List<User> coordinators) { this.subjectCoordinators = coordinators; }
-	
-	@OneToMany
-	public List<Course> getCourses() { return subjectCourses; }
-
-	public void setCourses(List<Course> courses) { this.subjectCourses = courses; }
-
-	public String getName() { return this.subjectName; }
-
-	public void setName(String aName) { this.subjectName = aName; }
-	
 	@Id
-	public String getCode() { return subjectCode; }
+	public String getCode() { return code; }
 
 	/* Protected to avoid set the primary key */
-	protected void setCode(String aCode) { this.subjectCode = aCode; }
+	protected void setCode(String aCode) { this.code = aCode; }
 	
-	public String getAcronym() { return subjectAcronym; }
+	public String getName() { return this.name; }
 
-	public void setAcronym(String anAcronym) { this.subjectAcronym = anAcronym; }
+	public void setName(String aName) { this.name = aName; }
+	
+	public String getAcronym() { return acronym; }
 
-	public String getProgramURL() { return subjectProgramURL; }
+	public void setAcronym(String anAcronym) { this.acronym = anAcronym; }
 
-	public void setProgramURL(String aProgramURL) { this.subjectProgramURL = aProgramURL; }
+	public String getProgramURL() { return programURL; }
+
+	public void setProgramURL(String aProgramURL) { this.programURL = aProgramURL; }
 
 	/* METHODS */
 	
 	// To print materia basic details in logs.
 	@Override
 	public String toString() {
-		return "Subject [Code " + subjectCode + " | " + subjectAcronym + "]";
+		return "Subject [Code " + code + " | " + acronym + "]";
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Subject)) return false;
+        return code != null && code.equals(((Subject) o).getCode());
+    }
 
 }

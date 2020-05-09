@@ -30,7 +30,7 @@ public class StudentService {
         if(optional.isPresent()) { return optional.get(); } 
         else { throw new RecordNotFoundException("Student record does not exist for given id"); }
     }
-     
+    
     public Student createOrUpdateStudent(Student entity) throws RecordNotFoundException {
         
     	if (entity.getFileNumber() != null) {
@@ -42,7 +42,7 @@ public class StudentService {
 				Student newEntity = optEntity.get();
 
 				newEntity.setPersonalData(entity.getPersonalData());	
-	    		newEntity.setTakenCourses(entity.getTakenCourses()); 
+	    		//newEntity.setTakenCourses(entity.getTakenCourses()); 
 
 				return repository.save(newEntity);
 			} 

@@ -5,14 +5,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-//@Entity
+@Entity
 public class JobDetail implements Serializable {
 
 	private static final long serialVersionUID = -8986445721969296677L;
@@ -45,7 +44,7 @@ public class JobDetail implements Serializable {
 	/* GETTERS & SETTERS */
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	public Integer getJobDetailId() { return jobDetailId; }
 
 	/* Protected to avoid set the primary key */
@@ -83,16 +82,33 @@ public class JobDetail implements Serializable {
 	
 	public void setLastUpdate(LocalDate lastUpdate) { this.lastUpdate = lastUpdate; }
 	
-	@Column
+	//@Column
     @ElementCollection
 	public List<String> getGradeTitles() { return gradeTitles; }
 	
 	public void setGradeTitles(List<String> gradeTitles) { this.gradeTitles = gradeTitles; }
 	
-	@Column
+	//@Column
     @ElementCollection
 	public List<String> getPosGradeTitles() { return posGradeTitles; }
 	
 	public void setPosGradeTitles(List<String> posGradeTitles) { this.posGradeTitles = posGradeTitles; }
+
 	
+	/* METHODS */
+	
+	public void addGradeTitle(String aTitle) { this.getGradeTitles().add(aTitle); }
+	
+	public void removeGradeTitle(String aTitle) { this.getGradeTitles().remove(aTitle);	}
+	
+	public void addPosGradeTitle(String aTitle) { this.getPosGradeTitles().add(aTitle); }
+	
+	public void removePosGradeTitle(String aTitle) { this.getPosGradeTitles().remove(aTitle);	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof JobDetail)) return false;
+        return jobDetailId != null && jobDetailId.equals(((JobDetail) o).getJobDetailId());
+    }
 }

@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import ar.edu.unq.misCursosUNQ.Exceptions.LessonException;
@@ -22,7 +21,7 @@ public class Course implements Serializable {
 	private static final long serialVersionUID = -1636249307802887638L;
 	
 	private Integer courseId;
-	
+	//private Subject subject;
 	private String courseName;
 	private String courseCode;
 	private String courseShift;
@@ -32,7 +31,7 @@ public class Course implements Serializable {
 //	private LocalDate courseEndDay;
 	//private CourseWeekSchedule courseWeekSchedule = new CourseWeekSchedule();
 	
-	//private List<User> teachers;
+//	private List<User> teachers;
 	private List<Student> students;
 	private List<Lesson> lessons;
 	//private List<Evaluation> evaluations;
@@ -42,7 +41,8 @@ public class Course implements Serializable {
 	protected Course() {}
 		
 	public Course(String aName) {
-		this.setCourseName(aName); 
+//		this.setSubject(null);
+		this.setCourseName(aName);
 		this.setCourseCode("");
 		this.setCourseShift("");
 		this.setCourseIsOpen(true);
@@ -62,26 +62,34 @@ public class Course implements Serializable {
 
 	/* Protected to avoid set the primary key */
 	protected void setCourseId(Integer courseId) { this.courseId = courseId; }
-/*
-	@ManyToMany(mappedBy = "taughtCourses")
-	public List<User> getTeachers() { return teachers; }
 
-	public void setTeachers(List<User> teachers) { this.teachers = teachers; }
-*/
-	@ManyToMany(mappedBy = "takenCourses", cascade = { CascadeType.PERSIST, CascadeType.MERGE } )
+//	@ManyToMany(mappedBy = "taughtCourses",  cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+//	public List<User> getTeachers() { return teachers; }
+//
+//	// Not allowed to set teachers directly because database corruption
+//	protected void setTeachers(List<User> teachers) { this.teachers = teachers; }
+
+	@ManyToMany(mappedBy = "takenCourses", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JsonIgnoreProperties({"takenCourses", "attendedLessons"})
+	//@Fetch(FetchMode.SELECT)
 	public List<Student> getStudents() { return students; }
 
 	// Not allowed to set students directly because database corruption
-	public void setStudents(List<Student> students) { this.students = students; }
+	protected void setStudents(List<Student> students) { this.students = students; }
 
-	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL)//, orphanRemoval = true)
+	@OneToMany(mappedBy = "course", cascade = { CascadeType.ALL })//, orphanRemoval = true)
 	@JsonIgnoreProperties({"course", "attendantStudents"})
 	public List<Lesson> getLessons() { return lessons; }
 
 	// Not allowed to set lessons directly because database corruption
-	public void setLessons(List<Lesson> lessons) { this.lessons = lessons; }
-/*
+	protected void setLessons(List<Lesson> lessons) { this.lessons = lessons; }
+	
+//	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+//	public Subject getSubject() { return subject; }
+//
+//	public void setSubject(Subject subject) { this.subject = subject; }
+
+	/*
 	@OneToMany
 	public List<Evaluation> getEvaluations() { return evaluations; }
 

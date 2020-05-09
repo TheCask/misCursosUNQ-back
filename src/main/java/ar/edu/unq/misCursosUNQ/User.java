@@ -4,22 +4,19 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
-import ar.edu.unq.misCursosUNQ.Repos.PersonalDataRepo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-//@Entity
+@Entity
 //@Table(name="USER")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 6671561417676772045L;
-	
-	PersonalDataRepo repo;
 	
 	private Integer dni;
 	private PersonalData personalData;
@@ -46,24 +43,26 @@ public class User implements Serializable {
 	/* Protected to avoid set the primary key */
 	protected void setDni(Integer dni) { this.dni = dni; }
 
-	@OneToOne(cascade = CascadeType.ALL, optional = false)
-	@MapsId
+	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+	//@MapsId
 	public PersonalData getPersonalData() { return personalData; }
 
 	public void setPersonalData(PersonalData aPersonalData) { this.personalData = aPersonalData; }
 
-	@OneToOne(cascade = CascadeType.ALL, optional = false)
+	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	public JobDetail getJobDetail() { return jobDetail; }
 
 	public void setJobDetail(JobDetail jobDetail) { this.jobDetail = jobDetail; }
 
 	//@JoinTable(name= "user_coordinated_subjects", joinColumns = { @JoinColumn(name = "subject_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
-	@ManyToMany
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JsonIgnoreProperties({"coordinatedSubjects", "taughtCourses", "subjectCourses"})
 	public List<Subject> getCoordinatedSubjects() { return coordinatedSubjects; }
 	
 	public void setCoordinatedSubjects(List<Subject> coordinatedSubjects) { this.coordinatedSubjects= coordinatedSubjects; }
 	
-	@ManyToMany
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JsonIgnoreProperties({"students", "lessons"})
 	public List<Course> getTaughtCourses() { return taughtCourses; }
 
 	public void setTaughtCourses(List<Course> courses) { this.taughtCourses = courses; }
@@ -75,4 +74,12 @@ public class User implements Serializable {
 	public String toString() {
 		return "User [dni " + dni + " | " + personalData.getFirstName() + " " + personalData.getLastName() + ", " + personalData.getEmail() + "]";
 	}
+	
+	@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        return dni != null && dni.equals(((User) o).getDni());
+    }
+ 
 }

@@ -1,11 +1,10 @@
 package ar.edu.unq.misCursosUNQ.Services;
 
 import ar.edu.unq.misCursosUNQ.Repos.CourseRepo;
-import ar.edu.unq.misCursosUNQ.Repos.StudentRepo;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +17,6 @@ public class CourseService {
 
 	@Autowired
 	CourseRepo repository;
-	
-	@Autowired
-	StudentRepo stRepo;
-	
-	@Autowired
-	StudentService stService;
 
 	public List<Course> getCourses() {
 		List<Course> courseList = repository.findAll();
@@ -44,16 +37,18 @@ public class CourseService {
 
 		if (entity.getCourseId() != null) {
 
-			Optional<Course> optEntity = repository.findById(entity.getCourseId());
+			Optional<Course> course = repository.findById(entity.getCourseId());
 
-			if(optEntity.isPresent()) {
+			if(course.isPresent()) {
 
-				Course newEntity = optEntity.get();
+				Course newEntity = course.get();
 
+//				newEntity.setSubject(entity.getSubject());
 				newEntity.setCourseName(entity.getCourseName());
 				newEntity.setCourseCode(entity.getCourseCode());
 				newEntity.setCourseIsOpen(entity.getCourseIsOpen());
-				newEntity.setCourseShift(entity.getCourseShift());				
+				newEntity.setCourseShift(entity.getCourseShift());	
+				
 				return repository.save(newEntity);
 			} 
 		}

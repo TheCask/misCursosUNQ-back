@@ -51,7 +51,8 @@ public class Student implements Serializable {
 	@JsonIgnoreProperties({"students", "lessons"})
 	public List<Course> getTakenCourses() { return takenCourses; }
 
-	public void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }
+	// Not allowed to set courses directly because database corruption
+	private void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }
 /*
 	@Column
     @ElementCollection
@@ -59,14 +60,16 @@ public class Student implements Serializable {
 
 	public void setCareers(List<String> careers) { this.careers = careers; }
 */
-	/* METHODS */
 
 	@ManyToMany(mappedBy = "attendantStudents", cascade = { CascadeType.PERSIST, CascadeType.MERGE } )
 	@JsonIgnoreProperties({"attendantStudents", "course"})
 	public List<Lesson> getAttendedLessons() { return attendedLessons; }
 
-	public void setAttendedLessons(List<Lesson> attendedLessons) { this.attendedLessons = attendedLessons; }
+	// Not allowed to set lessons directly because database corruption
+	private void setAttendedLessons(List<Lesson> attendedLessons) { this.attendedLessons = attendedLessons; }
 
+	/* METHODS */
+	
 	public void signOnCurse(Course aCourse) {
 		this.takenCourses.add(aCourse);
 	}
