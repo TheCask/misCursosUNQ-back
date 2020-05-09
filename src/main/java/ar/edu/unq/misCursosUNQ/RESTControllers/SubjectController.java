@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.unq.misCursosUNQ.Subject;
@@ -37,7 +39,7 @@ public class SubjectController {
     }
  
     @PostMapping("/subject")
-    public ResponseEntity<Subject> createOrUpdateSubject(Subject subject) throws RecordNotFoundException {
+    public  @ResponseBody ResponseEntity<Subject> createOrUpdateSubject(@RequestBody Subject subject) throws RecordNotFoundException {
         Subject updated = service.createOrUpdateSubject(subject);
         return new ResponseEntity<Subject>(updated, new HttpHeaders(), HttpStatus.OK);
     }

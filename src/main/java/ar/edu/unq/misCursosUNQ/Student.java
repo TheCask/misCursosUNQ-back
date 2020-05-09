@@ -52,7 +52,7 @@ public class Student implements Serializable {
 	public List<Course> getTakenCourses() { return takenCourses; }
 
 	// Not allowed to set courses directly because database corruption
-	private void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }
+	public void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }
 /*
 	@Column
     @ElementCollection
