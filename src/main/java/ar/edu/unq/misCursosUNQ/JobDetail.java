@@ -82,13 +82,11 @@ public class JobDetail implements Serializable {
 	
 	public void setLastUpdate(LocalDate lastUpdate) { this.lastUpdate = lastUpdate; }
 	
-	//@Column
     @ElementCollection
 	public List<String> getGradeTitles() { return gradeTitles; }
 	
 	public void setGradeTitles(List<String> gradeTitles) { this.gradeTitles = gradeTitles; }
 	
-	//@Column
     @ElementCollection
 	public List<String> getPosGradeTitles() { return posGradeTitles; }
 	

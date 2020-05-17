@@ -41,7 +41,6 @@ public class UserService {
     		newEntity.setPersonalData(entity.getPersonalData());
     		newEntity.setJobDetail(entity.getJobDetail());
     		newEntity.setCoordinatedSubjects(entity.getCoordinatedSubjects());
-    		newEntity.setTaughtCourses(entity.getTaughtCourses());
 
     		newEntity = repository.save(newEntity);
 

@@ -43,11 +43,10 @@ public class CourseService {
 
 				Course newEntity = course.get();
 
-//				newEntity.setSubject(entity.getSubject());
 				newEntity.setCourseName(entity.getCourseName());
-				newEntity.setCourseCode(entity.getCourseCode());
 				newEntity.setCourseIsOpen(entity.getCourseIsOpen());
-				newEntity.setCourseShift(entity.getCourseShift());	
+				newEntity.setCourseShift(entity.getCourseShift());
+				newEntity.setSubject(entity.getSubject());
 				
 				return repository.save(newEntity);
 			} 

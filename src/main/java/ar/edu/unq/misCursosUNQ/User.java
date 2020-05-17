@@ -4,6 +4,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -44,7 +45,7 @@ public class User implements Serializable {
 	protected void setDni(Integer dni) { this.dni = dni; }
 
 	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	//@MapsId
+	@MapsId
 	public PersonalData getPersonalData() { return personalData; }
 
 	public void setPersonalData(PersonalData aPersonalData) { this.personalData = aPersonalData; }
@@ -65,14 +66,23 @@ public class User implements Serializable {
 	@JsonIgnoreProperties({"students", "lessons"})
 	public List<Course> getTaughtCourses() { return taughtCourses; }
 
-	public void setTaughtCourses(List<Course> courses) { this.taughtCourses = courses; }
+	// Not allowed to set lessons directly because database corruption
+	private void setTaughtCourses(List<Course> courses) { this.taughtCourses = courses; }
 
 	/* METHODS */
+	
+	public void assignCourse(Course aCourse) {
+		this.taughtCourses.add(aCourse);
+	}
+
+	public void unAssignCourse(Course course) { 
+		this.taughtCourses.remove(course);
+	}
 	
 	// To print User basic details in logs.
 	@Override
 	public String toString() {
-		return "User [dni " + dni + " | " + personalData.getFirstName() + " " + personalData.getLastName() + ", " + personalData.getEmail() + "]";
+		return "User [DNI " + dni + " | " + personalData.getFirstName() + " " + personalData.getLastName() + ", " + personalData.getEmail() + "]";
 	}
 	
 	@Override

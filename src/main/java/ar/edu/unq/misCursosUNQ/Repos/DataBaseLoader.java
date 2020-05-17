@@ -9,6 +9,7 @@ import ar.edu.unq.misCursosUNQ.Course;
 import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Subject;
+import ar.edu.unq.misCursosUNQ.User;
 import ar.edu.unq.misCursosUNQ.Services.CourseService;
 import ar.edu.unq.misCursosUNQ.Services.SubjectService;
 
@@ -22,38 +23,33 @@ public class DataBaseLoader implements CommandLineRunner  {
 	private SubjectService sbService;
 	
 	@Autowired
-	public DataBaseLoader(StudentRepo aStRepo, CourseRepo aCsRepo, LessonRepo aLnRepo) {
+	public DataBaseLoader(StudentRepo aStRepo, CourseRepo aCsRepo, LessonRepo aLnRepo, UserRepo aUsRepo) {
 	}
 
 	@Override
 	public void run(String... strings) throws Exception {
 		
-		Subject lea = new Subject("Lectura y Escritura Académica", "80000CyT1y2", "LEA");
-		Subject epyl = new Subject("Elementos de Programación y Lógica", "80005CyT2", "EPYL");
-		Subject icfq = new Subject("Introducción al Conocimiento de la Física y la Química", "80004CyT1", "ICFYQ");
+		Subject lea = new Subject("Lectura y Escritura Académica", "80000-CyT1y2", "LEA");
+		Subject epyl = new Subject("Elementos de Programación y Lógica", "80005-CyT2", "EPYL");
+		Subject icfq = new Subject("Introducción al Conocimiento de la Física y la Química", "80004-CyT1", "ICFYQ");
 		
 		this.sbService.createOrUpdateSubject(lea);
 		this.sbService.createOrUpdateSubject(epyl);
 		this.sbService.createOrUpdateSubject(icfq);
 		
-		
-		Course aCourse = new Course("LEA-C17");
-		aCourse.setCourseCode("80000-C17-CyT1y2");
+		Course aCourse = new Course("C17", lea);
 		aCourse.setCourseIsOpen(false);
 		aCourse.setCourseShift("Noche");
-//		aCourse.setSubject(lea);
 		
-		Course otherCourse = new Course("EPYL-C3");
-		otherCourse.setCourseCode("80005-C3-CyT2");
+		Course otherCourse = new Course("C3", epyl);
 		otherCourse.setCourseIsOpen(true);
 		otherCourse.setCourseShift("Mañana");
-//		otherCourse.setSubject(epyl);
 		
-		Course anotherCourse = new Course("ICFYQ-C12");
-		anotherCourse.setCourseCode("80004-C12-CyT1");
+		Course anotherCourse = new Course("C12", icfq);
 		anotherCourse.setCourseIsOpen(true);
 		anotherCourse.setCourseShift("Tarde");
-//		anotherCourse.setSubject(icfq);
+		
+		User teacher1 = new User("El Profe", "Romero", "el_profe@unq.edu.ar", 12658953);
 		
 		Student student1 = new Student("Eugenio", "Calcena", 28123123, "eugeniocalcena@gmail.com",14111);
 		Student student2 = new Student("Elias", "Filipponi", 29123456, "eliasfilipponi@gmail.com",14222);
@@ -67,9 +63,7 @@ public class DataBaseLoader implements CommandLineRunner  {
 		Lesson lesson4 = new Lesson(LocalDate.now().plusDays(10));
 		Lesson lesson5 = new Lesson(LocalDate.now().plusDays(5));
 		
-		aCourse.addLesson(lesson1);
-		aCourse.addLesson(lesson2);
-		aCourse.addLesson(lesson3);
+		aCourse.addTeacher(teacher1);
 		
 		aCourse.addStudent(student1);
 		aCourse.addStudent(student2);
@@ -77,16 +71,26 @@ public class DataBaseLoader implements CommandLineRunner  {
 //		aCourse.addStudent(student4);
 //		aCourse.addStudent(student5);
 		
+		aCourse.addLesson(lesson1);
+		aCourse.addLesson(lesson2);
+		aCourse.addLesson(lesson3);
+		
 		lesson1.setAttendance(student1);
 		lesson2.setAttendance(student2);
 		lesson3.setAttendance(student1);
 		lesson3.setAttendance(student2);
 		
-		otherCourse.addLesson(lesson4);
-		otherCourse.addLesson(lesson5);
+		
+		otherCourse.addTeacher(teacher1);
 		
 		otherCourse.addStudent(student4);
 		otherCourse.addStudent(student5);
+		
+		otherCourse.addLesson(lesson4);
+		otherCourse.addLesson(lesson5);
+		
+		
+		anotherCourse.addTeacher(teacher1);
 		
 		anotherCourse.addStudent(student4);
 		anotherCourse.addStudent(student5);

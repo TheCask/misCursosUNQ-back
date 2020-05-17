@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -45,6 +47,7 @@ public class Lesson implements Serializable{
 */
 	@ManyToMany(cascade = { CascadeType.MERGE })
 	@JsonIgnoreProperties({"takenCourses", "attendedLessons"})
+	@OrderBy("fileNumber ASC")
 	public List<Student> getAttendantStudents() { return attendantStudents; }
 
 	public void setAttendantStudents(List<Student> attendantStudents) { this.attendantStudents = attendantStudents; }

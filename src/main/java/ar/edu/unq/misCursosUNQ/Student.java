@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -17,7 +18,7 @@ public class Student implements Serializable {
 	
 	private static final long serialVersionUID = 4376258230787104838L;
 
-	private Integer fileNumber;
+	private Integer 	 fileNumber;
 	private PersonalData personalData;
 //	private List<String> careers;
 	private List<Course> takenCourses;
@@ -42,24 +43,18 @@ public class Student implements Serializable {
 	/* Protected to avoid set the primary key */
 	protected void setFileNumber(Integer fileNumber) { this.fileNumber = fileNumber; }
 	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	public PersonalData getPersonalData() { return personalData; }
 
 	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
 
 	@ManyToMany(cascade = { CascadeType.PERSIST })
 	@JsonIgnoreProperties({"students", "lessons"})
+	@OrderBy("courseName ASC")
 	public List<Course> getTakenCourses() { return takenCourses; }
 
 	// Not allowed to set courses directly because database corruption
 	public void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }
-/*
-	@Column
-    @ElementCollection
-	public List<String> getCareers() { return careers; }
-
-	public void setCareers(List<String> careers) { this.careers = careers; }
-*/
 
 	@ManyToMany(mappedBy = "attendantStudents", cascade = { CascadeType.PERSIST, CascadeType.MERGE } )
 	@JsonIgnoreProperties({"attendantStudents", "course"})
@@ -67,6 +62,14 @@ public class Student implements Serializable {
 
 	// Not allowed to set lessons directly because database corruption
 	private void setAttendedLessons(List<Lesson> attendedLessons) { this.attendedLessons = attendedLessons; }
+	
+	/*
+	@Column
+    @ElementCollection
+	public List<String> getCareers() { return careers; }
+
+	public void setCareers(List<String> careers) { this.careers = careers; }
+	 */
 
 	/* METHODS */
 	
@@ -86,6 +89,12 @@ public class Student implements Serializable {
 	
 	public void unattendLesson(Lesson aLesson) {
 		this.attendedLessons.remove(aLesson);
+	}
+	
+	// To print User basic details in logs.
+	@Override
+	public String toString() {
+		return "Student [File Number " + fileNumber + " | " + personalData.getFirstName() + " " + personalData.getLastName() + ", " + personalData.getEmail() + "]";
 	}
 
 	@Override

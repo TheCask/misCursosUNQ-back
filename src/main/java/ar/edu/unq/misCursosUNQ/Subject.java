@@ -49,7 +49,7 @@ public class Subject implements Serializable {
 
 	/* METHODS */
 	
-	// To print materia basic details in logs.
+	// To print subject basic details in logs.
 	@Override
 	public String toString() {
 		return "Subject [Code " + code + " | " + acronym + "]";
