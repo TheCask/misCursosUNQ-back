@@ -46,9 +46,8 @@ public class PersonalDataService {
 				newEntity.setEmail(entity.getEmail());
 				newEntity.setCellPhone(entity.getCellPhone());
 
-				newEntity = repository.save(newEntity);
+				return repository.save(newEntity);
 
-				return newEntity;
 			} 
 		}
 		return repository.save(entity);

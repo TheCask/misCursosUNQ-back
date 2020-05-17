@@ -1,6 +1,7 @@
 package ar.edu.unq.misCursosUNQ;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -20,7 +21,7 @@ public class Student implements Serializable {
 
 	private Integer 	 fileNumber;
 	private PersonalData personalData;
-//	private List<String> careers;
+	private List<String> careers;
 	private List<Course> takenCourses;
 	private List<Lesson> attendedLessons;
 	
@@ -30,7 +31,7 @@ public class Student implements Serializable {
 	public Student(String aFirstName, String aLastName, Integer aDNI, String anEmail, Integer aFileNumber) {
 		setPersonalData(new PersonalData(aDNI, aFirstName, aLastName, anEmail));
 		setFileNumber(aFileNumber);
-//		setCareers(new ArrayList<String>());
+		setCareers(new ArrayList<String>());
 		setTakenCourses(new ArrayList<Course>());
 		setAttendedLessons(new ArrayList<Lesson>());
 	}
@@ -48,8 +49,8 @@ public class Student implements Serializable {
 
 	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
 
-	@ManyToMany(cascade = { CascadeType.PERSIST })
-	@JsonIgnoreProperties({"students", "lessons"})
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.DETACH })
+	@JsonIgnoreProperties({"students", "lessons", "teachers"})
 	@OrderBy("courseName ASC")
 	public List<Course> getTakenCourses() { return takenCourses; }
 
@@ -63,16 +64,14 @@ public class Student implements Serializable {
 	// Not allowed to set lessons directly because database corruption
 	private void setAttendedLessons(List<Lesson> attendedLessons) { this.attendedLessons = attendedLessons; }
 	
-	/*
-	@Column
     @ElementCollection
 	public List<String> getCareers() { return careers; }
 
-	public void setCareers(List<String> careers) { this.careers = careers; }
-	 */
+    // Not allowed to set lessons directly because database corruption
+	private void setCareers(List<String> careers) { this.careers = careers; }
 
 	/* METHODS */
-	
+
 	public void signOnCurse(Course aCourse) {
 		this.takenCourses.add(aCourse);
 	}

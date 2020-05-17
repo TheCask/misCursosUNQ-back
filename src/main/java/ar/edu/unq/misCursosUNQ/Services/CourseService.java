@@ -1,6 +1,8 @@
 package ar.edu.unq.misCursosUNQ.Services;
 
 import ar.edu.unq.misCursosUNQ.Repos.CourseRepo;
+import ar.edu.unq.misCursosUNQ.Repos.SubjectRepo;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,11 +12,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unq.misCursosUNQ.Course;
+import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 
 @Service
 public class CourseService {
 
+//	@Autowired
+//	SubjectService sbService;
+	
+	@Autowired
+	SubjectRepo sbRepo;
+	
 	@Autowired
 	CourseRepo repository;
 
@@ -35,6 +44,7 @@ public class CourseService {
 	@Transactional
 	public Course createOrUpdateCourse(Course entity) throws RecordNotFoundException {
 
+		// Update an existing course
 		if (entity.getCourseId() != null) {
 
 			Optional<Course> course = repository.findById(entity.getCourseId());
@@ -49,9 +59,18 @@ public class CourseService {
 				newEntity.setSubject(entity.getSubject());
 				
 				return repository.save(newEntity);
-			} 
+			}
+			throw new RecordNotFoundException("Course record not exist for given id");
 		}
-		return repository.save(entity);
+		
+		// Create a new Course
+		if (entity.getSubject() != null) {
+			
+			Optional<Subject> courseSubject = sbRepo.findByCode(entity.getSubject().getCode());
+			
+			if(courseSubject.isPresent()) { return repository.save(entity); }
+		}
+		throw new RecordNotFoundException("Subject record not exist for given code");
 	}
 
 	@Transactional
@@ -63,7 +82,7 @@ public class CourseService {
 			Course course = optEntity.get();
 			
 			course.removeStudents();
-			repository.saveAndFlush(course);
+			course.removeTeachers();
 			repository.delete(course);
 		} 
 		else { throw new RecordNotFoundException("Course record not exist for given id"); }

@@ -39,25 +39,13 @@ public class CourseController {
         Course entity = service.getCourseById(courseId);
         return new ResponseEntity<Course>(entity, new HttpHeaders(), HttpStatus.OK);
     }
- 
-    @PostMapping("/course")
-    public @ResponseBody ResponseEntity<Course> createOrUpdateCourse(@RequestBody Course course) throws RecordNotFoundException {
-        Course updated = service.createOrUpdateCourse(course);
-        return new ResponseEntity<Course>(updated, new HttpHeaders(), HttpStatus.OK);
-    }
- 
-    @DeleteMapping("course/{courseId}")
-    public ResponseEntity<String> deleteCourseById(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
-        service.deleteCourseById(courseId);
-        return new ResponseEntity<String>("Course " + courseId + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);
-    }
     
     @GetMapping("/course/{courseId}/students")
     public ResponseEntity<List<Student>> getCourseStudents(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
         
     	Course entity = service.getCourseById(courseId);
     	
-    	//TODO Chquear si no hay que traer los estudiantes de la base de datos en vez del objeto...
+    	//TODO Chquear si no hay que traer los students de la base de datos en vez del objeto...
     	List<Student> list = entity.getStudents();
         
         return new ResponseEntity<List<Student>>(list, new HttpHeaders(), HttpStatus.OK);
@@ -68,9 +56,22 @@ public class CourseController {
         
     	Course entity = service.getCourseById(courseId);
     	
-    	//TODO Chquear si no hay que traer los estudiantes de la base de datos en vez del objeto...
+    	//TODO Chquear si no hay que traer las lessons de la base de datos en vez del objeto...
     	List<Lesson> list = entity.getLessons();
         
         return new ResponseEntity<List<Lesson>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
+ 
+    @PostMapping("/course")
+    public @ResponseBody ResponseEntity<Course> createOrUpdateCourse(@RequestBody Course course) throws RecordNotFoundException {
+        Course updated = service.createOrUpdateCourse(course);
+        return new ResponseEntity<Course>(updated, new HttpHeaders(), HttpStatus.OK);
+    }
+    
+    
+    @DeleteMapping("course/{courseId}")
+    public ResponseEntity<String> deleteCourseById(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
+        service.deleteCourseById(courseId);
+        return new ResponseEntity<String>("Course " + courseId + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);
     }
 }

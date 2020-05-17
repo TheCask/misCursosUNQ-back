@@ -46,14 +46,14 @@ public class Lesson implements Serializable{
 	public void setLessonDay(LocalDate day) { this.lessonDay = day; }
 */
 	@ManyToMany(cascade = { CascadeType.MERGE })
-	@JsonIgnoreProperties({"takenCourses", "attendedLessons"})
+	@JsonIgnoreProperties({"takenCourses", "attendedLessons", "careers"})
 	@OrderBy("fileNumber ASC")
 	public List<Student> getAttendantStudents() { return attendantStudents; }
 
 	public void setAttendantStudents(List<Student> attendantStudents) { this.attendantStudents = attendantStudents; }
 
 	@ManyToOne
-	@JsonIgnoreProperties({"lessons", "students"})
+	@JsonIgnoreProperties({"lessons", "students", "teachers"})
 	public Course getCourse() { return course; }
 
 	public void setCourse(Course course) { this.course = course; }
@@ -67,9 +67,8 @@ public class Lesson implements Serializable{
 	}
 	
 	public void removeAttendance(Student aStudent) {
-		if (this.attendantStudents.remove(aStudent)) {
-			aStudent.unattendLesson(this);
-		};
+		this.attendantStudents.remove(aStudent);
+		aStudent.unattendLesson(this);
 	}
 	
 	public void removeAllAttendance() {

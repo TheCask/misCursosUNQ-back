@@ -23,7 +23,7 @@ public class DataBaseLoader implements CommandLineRunner  {
 	private SubjectService sbService;
 	
 	@Autowired
-	public DataBaseLoader(StudentRepo aStRepo, CourseRepo aCsRepo, LessonRepo aLnRepo, UserRepo aUsRepo) {
+	public DataBaseLoader(StudentRepo aStRepo) {
 	}
 
 	@Override
@@ -68,8 +68,8 @@ public class DataBaseLoader implements CommandLineRunner  {
 		aCourse.addStudent(student1);
 		aCourse.addStudent(student2);
 		aCourse.addStudent(student3);
-//		aCourse.addStudent(student4);
-//		aCourse.addStudent(student5);
+		aCourse.addStudent(student4);
+		aCourse.addStudent(student5);
 		
 		aCourse.addLesson(lesson1);
 		aCourse.addLesson(lesson2);

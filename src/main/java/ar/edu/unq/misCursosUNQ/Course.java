@@ -10,8 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -66,7 +66,7 @@ public class Course implements Serializable {
 	protected void setCourseId(Integer courseId) { this.courseId = courseId; }
 
 	@ManyToMany(mappedBy = "takenCourses", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JsonIgnoreProperties({"takenCourses", "attendedLessons"})
+	@JsonIgnoreProperties({"takenCourses", "attendedLessons", "careers"})
 	//@Fetch(FetchMode.SELECT)
 	@OrderBy("fileNumber ASC")
 	public List<Student> getStudents() { return students; }
@@ -81,7 +81,7 @@ public class Course implements Serializable {
 	// Not allowed to set lessons directly because database corruption
 	protected void setLessons(List<Lesson> lessons) { this.lessons = lessons; }
 	
-	@OneToOne(optional = false, cascade = { CascadeType.MERGE })
+	@ManyToOne(optional = false)
 	public Subject getSubject() { return subject; }
 
 	// Generates the course code based on subject code and name

@@ -47,7 +47,6 @@ public class SubjectService {
 	    		newEntity.setProgramURL(entity.getProgramURL());
 	    
 	    		return repository.save(newEntity);
-	
 	    	}
     	}
     	return repository.save(entity);

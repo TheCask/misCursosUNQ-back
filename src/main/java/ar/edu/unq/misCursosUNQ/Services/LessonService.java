@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
@@ -36,7 +37,8 @@ public class LessonService {
         if(optional.isPresent()) { return optional.get(); } 
         else { throw new RecordNotFoundException("Lesson record does not exist for given id"); }
     }
-     
+    
+    @Transactional
     public Lesson createOrUpdateLesson(Lesson entity) throws RecordNotFoundException {
         
     	if (entity.getLessonId() != null) {
@@ -47,7 +49,6 @@ public class LessonService {
 	    		
 	    		Lesson newEntity = optEntity.get();
 	
-	    		newEntity.setAttendantStudents(entity.getAttendantStudents());
 	    		newEntity.setCourse(entity.getCourse());
 	
 	    		newEntity = repository.save(newEntity);
@@ -58,7 +59,8 @@ public class LessonService {
 	    return repository.save(entity);
     } 
     	
-     
+    
+    @Transactional
     public void deleteLessonById(Long id) throws RecordNotFoundException {
         
     	Optional<Lesson> optEntity = repository.findById(id);
