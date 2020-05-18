@@ -11,7 +11,6 @@ import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.User;
 import ar.edu.unq.misCursosUNQ.Services.CourseService;
-import ar.edu.unq.misCursosUNQ.Services.StudentService;
 import ar.edu.unq.misCursosUNQ.Services.SubjectService;
 
 @Component
@@ -23,8 +22,8 @@ public class DataBaseLoader implements CommandLineRunner  {
 	@Autowired
 	private SubjectService sbService;
 	
-	@Autowired
-	private StudentService stService;
+//	@Autowired
+//	private StudentService stService;
 	
 	@Autowired
 	public DataBaseLoader(StudentRepo aStRepo) {

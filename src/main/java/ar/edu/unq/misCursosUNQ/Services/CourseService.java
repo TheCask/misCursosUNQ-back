@@ -58,9 +58,7 @@ public class CourseService {
 				
 				if(courseSubject.isPresent()) { 
 					
-					// TODO Check what happens with teachers, students and lessons
-					// this lists updates automagically when saving course entity by cascade anotations?
-					// or has to be manually updated here in this service (more probably)?
+					// TODO Update teachers and lessons if needed
 					newEntity.setSubject(courseSubject.get());
 					newEntity.setCourseName(entity.getCourseName());
 					newEntity.setCourseIsOpen(entity.getCourseIsOpen());
@@ -110,7 +108,7 @@ public class CourseService {
 				Student dbStudent = stService.getStudentByFileNumber(st.getFileNumber());
 				dbCourse.addStudent(dbStudent);
 			} 
-			catch (RecordNotFoundException e1) { e1.printStackTrace(); }
+			catch (RecordNotFoundException e) { e.printStackTrace(); }
 		});
 	}
 }

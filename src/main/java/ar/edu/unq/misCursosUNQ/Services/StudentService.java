@@ -45,9 +45,7 @@ public class StudentService {
 
 				Student newEntity = optEntity.get();
 
-				// TODO Check what happens with careers, takenCourses and attendedLessons
-				// this lists updates automagically when saving student entity by cascade anotations?
-				// or has to be manually updated here in this service (more probably)?
+				// TODO Update careers, takenCourses and attendedLessons if needed
 				newEntity.setPersonalData(entity.getPersonalData());
 
 				return stRepo.save(newEntity);

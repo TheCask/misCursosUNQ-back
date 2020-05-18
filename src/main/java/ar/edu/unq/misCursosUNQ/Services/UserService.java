@@ -43,9 +43,7 @@ public class UserService {
 	    		
 	    		User newEntity = user.get();
 	
-	    		// TODO Check what happens with coordinatedSubjects, taughtCourses
-				// this lists updates automagically when saving user entity by cascade anotations?
-				// or has to be manually updated here in this service (more probably)?
+	    		// TODO Update coordinatedSubjects, taughtCourses if needed
 	    		newEntity.setPersonalData(entity.getPersonalData());
 	    		newEntity.setJobDetail(entity.getJobDetail());
 	

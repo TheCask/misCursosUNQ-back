@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unq.misCursosUNQ.Course;
 import ar.edu.unq.misCursosUNQ.Lesson;
+import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
-import ar.edu.unq.misCursosUNQ.Repos.CourseRepo;
 import ar.edu.unq.misCursosUNQ.Repos.LessonRepo;
  
 @Service
@@ -20,10 +20,10 @@ public class LessonService {
 	LessonRepo lnRepo;
     
     @Autowired
-	CourseRepo csRepo;
+	CourseService csService;
     
     @Autowired
-	CourseService csService;
+	StudentService stService;
      
     public List<Lesson> getLessons() {
         List<Lesson> aList = lnRepo.findAll();
@@ -42,17 +42,16 @@ public class LessonService {
     @Transactional
     public Lesson createOrUpdateLesson(Lesson entity) throws RecordNotFoundException {
         
-    	// Update lesson (Note: lesson course is not meant to be updated)
+    	// Update lesson (note that lesson course is not meant to be updated)
     	if (entity.getLessonId() != null) {
     		
 	    	Optional<Lesson> optEntity = lnRepo.findById(entity.getLessonId());
 	
 	    	if(optEntity.isPresent()) { // Lesson exists in db
 	    		
-	    		// TODO Check what happens with attendantStudents
-				// this lists updates automagically when saving lesson entity by cascade anotations?
-				// or has to be manually updated here in this service (more probably)?
 	    		Lesson newEntity = optEntity.get();
+	    		
+	    		this.updateAttendance(newEntity, entity);
 	    			
 	    		return lnRepo.save(newEntity);
 	    	}
@@ -78,5 +77,16 @@ public class LessonService {
         	csService.createOrUpdateCourse(lessonCourse);
         } 
         else { throw new RecordNotFoundException("Lesson record does not exist for given id"); }
-    } 
+    }
+    
+    protected void updateAttendance(Lesson dbLesson, Lesson newDataLesson) {
+    	dbLesson.removeAllAttendance();
+		newDataLesson.getAttendantStudents().forEach(st -> {
+			try {
+				Student dbStudent = stService.getStudentByFileNumber(st.getFileNumber());
+				dbLesson.setAttendance(dbStudent);
+			} 
+			catch (RecordNotFoundException e) { e.printStackTrace(); }
+		});
+	}
 }

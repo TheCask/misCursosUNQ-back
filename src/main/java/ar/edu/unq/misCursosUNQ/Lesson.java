@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -45,7 +44,7 @@ public class Lesson implements Serializable{
 
 	public void setLessonDay(LocalDate day) { this.lessonDay = day; }
 */
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToMany
 	@JsonIgnoreProperties({"takenCourses", "attendedLessons", "careers"})
 	@OrderBy("fileNumber ASC")
 	public List<Student> getAttendantStudents() { return attendantStudents; }
@@ -72,7 +71,7 @@ public class Lesson implements Serializable{
 	}
 	
 	public void removeAllAttendance() {
-		this.attendantStudents.forEach(aST -> aST.unattendLesson(this));
+		this.attendantStudents.forEach(st -> st.unattendLesson(this));
 		this.attendantStudents.clear();
 	}
 	
