@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
+import ar.edu.unq.misCursosUNQ.Exceptions.SubjectException;
 import ar.edu.unq.misCursosUNQ.Services.SubjectService;
  
 @RestController
@@ -24,30 +25,30 @@ import ar.edu.unq.misCursosUNQ.Services.SubjectService;
 public class SubjectController {
     
 	@Autowired
-    SubjectService service;
+    SubjectService sbService;
  
     @GetMapping("/subjects")
     public ResponseEntity<List<Subject>> getAllSubjects() {
-        List<Subject> list = service.getSubjects();
+        List<Subject> list = sbService.getSubjects();
         return new ResponseEntity<List<Subject>>(list, new HttpHeaders(), HttpStatus.OK);
     }
  
     @GetMapping("/subject/{code}")
     public ResponseEntity<Subject> getSubjectByCode(@PathVariable("code") String code) throws RecordNotFoundException {
-        Subject entity = service.getSubjectByCode(code);
+        Subject entity = sbService.getSubjectByCode(code);
         return new ResponseEntity<Subject>(entity, new HttpHeaders(), HttpStatus.OK);
     }
  
     @PostMapping("/subject")
-    public  @ResponseBody ResponseEntity<Subject> createOrUpdateSubject(@RequestBody Subject subject) throws RecordNotFoundException {
-        Subject updated = service.createOrUpdateSubject(subject);
+    public  @ResponseBody ResponseEntity<Subject> createOrUpdateSubject(@RequestBody Subject subject) throws SubjectException {
+        Subject updated = sbService.createOrUpdateSubject(subject);
         return new ResponseEntity<Subject>(updated, new HttpHeaders(), HttpStatus.OK);
     }
  
     @DeleteMapping("/subject/{code}")
-    public HttpStatus deleteSubjectById(@PathVariable("code") String code) throws RecordNotFoundException {
-        service.deleteSubjectByCode(code);
-        return HttpStatus.FORBIDDEN;
+    public ResponseEntity<String> deleteSubjectByCode(@PathVariable("code") String code) throws RecordNotFoundException {
+        sbService.deleteSubjectByCode(code);
+        return new ResponseEntity<String>("Subject " + code + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);
     }
  
 }

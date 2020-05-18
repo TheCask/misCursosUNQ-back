@@ -141,11 +141,13 @@ public class Course implements Serializable {
 	
 	/* METHODS */
 	
-	public void addStudent(Student aStudent) {	
-		if (!this.students.contains(aStudent)) {
+	public Boolean addStudent(Student aStudent) {
+		Boolean addSt = !this.students.contains(aStudent);
+		if (addSt) {
 			this.students.add(aStudent);
 			aStudent.signOnCurse(this);
 		}
+		return addSt;
 	}
 	
 	public void removeStudent(Student aStudent) {	
@@ -153,7 +155,7 @@ public class Course implements Serializable {
 		aStudent.signOffCurse(this);
 	}
 	
-	public void removeStudents() {
+	public void removeAllStudents() {
 		for(Student st : new ArrayList<>(students)) {
 			removeStudent(st);
 		}
@@ -171,7 +173,7 @@ public class Course implements Serializable {
 		aTeacher.unAssignCourse(this);
 	}
 	
-	public void removeTeachers() {
+	public void removeAllTeachers() {
 		for(User tc : new ArrayList<>(teachers)) {
 			removeTeacher(tc);
 		}

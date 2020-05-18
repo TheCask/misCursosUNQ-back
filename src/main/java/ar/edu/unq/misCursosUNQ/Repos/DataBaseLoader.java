@@ -11,6 +11,7 @@ import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.User;
 import ar.edu.unq.misCursosUNQ.Services.CourseService;
+import ar.edu.unq.misCursosUNQ.Services.StudentService;
 import ar.edu.unq.misCursosUNQ.Services.SubjectService;
 
 @Component
@@ -21,6 +22,9 @@ public class DataBaseLoader implements CommandLineRunner  {
 	
 	@Autowired
 	private SubjectService sbService;
+	
+	@Autowired
+	private StudentService stService;
 	
 	@Autowired
 	public DataBaseLoader(StudentRepo aStRepo) {
@@ -56,6 +60,12 @@ public class DataBaseLoader implements CommandLineRunner  {
 		Student student3 = new Student("Regina", "Falange",  33333333, "regina@gmail.com",14333);
 		Student student4 = new Student("Aurelio", "Gomez",   44444444, "aurelio_gomez@gmail.com",14444);
 		Student student5 = new Student("Nahuel", "Huapi",    55555555, "huapi.n@gmail.com",14555);
+		
+//		this.stService.createOrUpdateStudent(student1);
+//		this.stService.createOrUpdateStudent(student2);
+//		this.stService.createOrUpdateStudent(student3);
+//		this.stService.createOrUpdateStudent(student4);
+//		this.stService.createOrUpdateStudent(student5);
 		
 		Lesson lesson1 = new Lesson(LocalDate.now());
 		Lesson lesson2 = new Lesson(LocalDate.now().plusDays(1));

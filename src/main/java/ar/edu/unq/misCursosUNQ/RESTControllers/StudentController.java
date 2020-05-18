@@ -24,29 +24,29 @@ import ar.edu.unq.misCursosUNQ.Services.StudentService;
 public class StudentController {
     
 	@Autowired
-    StudentService service;
+    StudentService stService;
  
     @GetMapping("/students")
     public ResponseEntity<List<Student>> getAllStudents() {
-        List<Student> list = service.getStudents();
+        List<Student> list = stService.getStudents();
         return new ResponseEntity<List<Student>>(list, new HttpHeaders(), HttpStatus.OK);
     }
  
     @GetMapping("student/{fileNumber}")
-    public ResponseEntity<Student> getStudentById(@PathVariable("fileNumber") Integer fileNumber) throws RecordNotFoundException {
-        Student entity = service.getStudentById(fileNumber);
+    public ResponseEntity<Student> getStudentByFileNumber(@PathVariable("fileNumber") Integer fileNumber) throws RecordNotFoundException {
+        Student entity = stService.getStudentByFileNumber(fileNumber);
         return new ResponseEntity<Student>(entity, new HttpHeaders(), HttpStatus.OK);
     }
  
     @PostMapping("/student")
     public @ResponseBody ResponseEntity<Student> createOrUpdateStudent(@RequestBody Student student) throws RecordNotFoundException {
-    	Student updated = service.createOrUpdateStudent(student);
+    	Student updated = stService.createOrUpdateStudent(student);
         return new ResponseEntity<Student>(updated, new HttpHeaders(), HttpStatus.OK);
     }
  
     @DeleteMapping("student/{fileNumber}")
-    public ResponseEntity<String> deleteStudentById(@PathVariable("fileNumber") Integer fileNumber) throws RecordNotFoundException {
-        service.deleteStudentById(fileNumber);
+    public ResponseEntity<String> deleteStudentByFileNumber(@PathVariable("fileNumber") Integer fileNumber) throws RecordNotFoundException {
+        stService.deleteStudentByFileNumber(fileNumber);
         return new ResponseEntity<String>("Student " + fileNumber + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);
     }
 }

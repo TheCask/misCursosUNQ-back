@@ -10,35 +10,37 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
+import ar.edu.unq.misCursosUNQ.Exceptions.SubjectException;
 import ar.edu.unq.misCursosUNQ.Repos.SubjectRepo;
  
 @Service
 public class SubjectService {
      
     @Autowired
-    SubjectRepo repository;
+    SubjectRepo sbRepo;
      
     public List<Subject> getSubjects() {
-        List<Subject> subjectList = repository.findAll();
+        List<Subject> subjectList = sbRepo.findAll();
          
         if(subjectList.size() > 0) { return subjectList; } 
         else { return new ArrayList<Subject>(); }
     }
      
     public Subject getSubjectByCode(String code) throws RecordNotFoundException {
-        Optional<Subject> subject = repository.findByCode(code);
+        Optional<Subject> subject = sbRepo.findByCode(code);
          
         if(subject.isPresent()) { return subject.get(); } 
         else { throw new RecordNotFoundException("Subject record not exist for given code"); }
     }
     
     @Transactional
-    public Subject createOrUpdateSubject(Subject entity) throws RecordNotFoundException {
+    public Subject createOrUpdateSubject(Subject entity) throws SubjectException {
         
     	if (entity.getCode() != null) {
     	
-	    	Optional<Subject> subject = repository.findByCode(entity.getCode());
+	    	Optional<Subject> subject = sbRepo.findByCode(entity.getCode());
 	
+	    	// Update subject
 	    	if(subject.isPresent()) {
 	    		Subject newEntity = subject.get();
 	
@@ -46,17 +48,22 @@ public class SubjectService {
 	    		newEntity.setAcronym(entity.getAcronym());
 	    		newEntity.setProgramURL(entity.getProgramURL());
 	    
-	    		return repository.save(newEntity);
+	    		return sbRepo.save(newEntity);
 	    	}
+	    	// Create subject
+	    	return sbRepo.save(entity);
     	}
-    	return repository.save(entity);
+    	// Subject code null
+    	throw new SubjectException("Subject code (PK) is null");
     } 
     
     @Transactional
     public void deleteSubjectByCode(String code) throws RecordNotFoundException {
-        Optional<Subject> subject = repository.findByCode(code);
-         
-        if(subject.isPresent()) { repository.deleteByCode(code); } 
+        Optional<Subject> subject = sbRepo.findByCode(code);
+        
+        // TODO Make sure that none course references this subject before deleting
+        // Subject can not cascade delete operation to courses
+        if(subject.isPresent()) { sbRepo.deleteByCode(code); } 
         else { throw new RecordNotFoundException("Subject record not exist for given code"); }
     } 
 }

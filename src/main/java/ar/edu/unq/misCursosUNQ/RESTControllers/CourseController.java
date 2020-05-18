@@ -26,26 +26,27 @@ import ar.edu.unq.misCursosUNQ.Services.CourseService;
 public class CourseController {
     
 	@Autowired
-    CourseService service;
+    CourseService csService;
  
     @GetMapping("/courses")
     public ResponseEntity<List<Course>> getAllCourses() {
-        List<Course> list = service.getCourses();
+        List<Course> list = csService.getCourses();
         return new ResponseEntity<List<Course>>(list, new HttpHeaders(), HttpStatus.OK);
     }
  
     @GetMapping("/course/{courseId}")
     public ResponseEntity<Course> getCourseById(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
-        Course entity = service.getCourseById(courseId);
+        Course entity = csService.getCourseById(courseId);
         return new ResponseEntity<Course>(entity, new HttpHeaders(), HttpStatus.OK);
     }
     
     @GetMapping("/course/{courseId}/students")
     public ResponseEntity<List<Student>> getCourseStudents(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
         
-    	Course entity = service.getCourseById(courseId);
+    	Course entity = csService.getCourseById(courseId);
     	
-    	//TODO Chquear si no hay que traer los students de la base de datos en vez del objeto...
+    	//TODO Check if its ok to return students of the entity 
+    	// or if its necessary to use stedent repo to bring student from db?
     	List<Student> list = entity.getStudents();
         
         return new ResponseEntity<List<Student>>(list, new HttpHeaders(), HttpStatus.OK);
@@ -54,9 +55,10 @@ public class CourseController {
     @GetMapping("/course/{courseId}/lessons")
     public ResponseEntity<List<Lesson>> getCourseLessons(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
         
-    	Course entity = service.getCourseById(courseId);
+    	Course entity = csService.getCourseById(courseId);
     	
-    	//TODO Chquear si no hay que traer las lessons de la base de datos en vez del objeto...
+    	//TODO Check if its ok to return lessons of the entity 
+    	// or if its necessary to use lesson repo to bring lessons from db?
     	List<Lesson> list = entity.getLessons();
         
         return new ResponseEntity<List<Lesson>>(list, new HttpHeaders(), HttpStatus.OK);
@@ -64,14 +66,14 @@ public class CourseController {
  
     @PostMapping("/course")
     public @ResponseBody ResponseEntity<Course> createOrUpdateCourse(@RequestBody Course course) throws RecordNotFoundException {
-        Course updated = service.createOrUpdateCourse(course);
+        Course updated = csService.createOrUpdateCourse(course);
         return new ResponseEntity<Course>(updated, new HttpHeaders(), HttpStatus.OK);
     }
     
     
     @DeleteMapping("course/{courseId}")
     public ResponseEntity<String> deleteCourseById(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
-        service.deleteCourseById(courseId);
+        csService.deleteCourseById(courseId);
         return new ResponseEntity<String>("Course " + courseId + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);
     }
 }

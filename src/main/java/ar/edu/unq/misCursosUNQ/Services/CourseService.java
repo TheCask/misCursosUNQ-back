@@ -12,30 +12,31 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unq.misCursosUNQ.Course;
+import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 
 @Service
 public class CourseService {
-
-//	@Autowired
-//	SubjectService sbService;
 	
 	@Autowired
 	SubjectRepo sbRepo;
 	
 	@Autowired
-	CourseRepo repository;
+	CourseRepo csRepo;
+	
+	@Autowired
+	StudentService stService;
 
 	public List<Course> getCourses() {
-		List<Course> courseList = repository.findAll();
+		List<Course> courseList = csRepo.findAll();
 
 		if(courseList.size() > 0) { return courseList; } 
 		else { return new ArrayList<Course>(); }
 	}
 
 	public Course getCourseById(Integer id) throws RecordNotFoundException {
-		Optional<Course> course = repository.findById(id);
+		Optional<Course> course = csRepo.findById(id);
 
 		if(course.isPresent()) { return course.get(); } 
 		else { throw new RecordNotFoundException("Course record not exist for given id"); }
@@ -44,47 +45,72 @@ public class CourseService {
 	@Transactional
 	public Course createOrUpdateCourse(Course entity) throws RecordNotFoundException {
 
+		Optional<Subject> courseSubject = sbRepo.findByCode(entity.getSubject().getCode());
+		
 		// Update an existing course
 		if (entity.getCourseId() != null) {
 
-			Optional<Course> course = repository.findById(entity.getCourseId());
+			Optional<Course> course = csRepo.findById(entity.getCourseId());
 
 			if(course.isPresent()) {
 
 				Course newEntity = course.get();
-
-				newEntity.setCourseName(entity.getCourseName());
-				newEntity.setCourseIsOpen(entity.getCourseIsOpen());
-				newEntity.setCourseShift(entity.getCourseShift());
-				newEntity.setSubject(entity.getSubject());
 				
-				return repository.save(newEntity);
+				if(courseSubject.isPresent()) { 
+					
+					// TODO Check what happens with teachers, students and lessons
+					// this lists updates automagically when saving course entity by cascade anotations?
+					// or has to be manually updated here in this service (more probably)?
+					newEntity.setSubject(courseSubject.get());
+					newEntity.setCourseName(entity.getCourseName());
+					newEntity.setCourseIsOpen(entity.getCourseIsOpen());
+					newEntity.setCourseShift(entity.getCourseShift());
+					
+					this.updateStudents(newEntity, entity);
+							
+					return csRepo.save(newEntity);
+				}
+				// Subject code not found in database
+				throw new RecordNotFoundException("Subject record not exist for given code");
 			}
+			// Course id not found
 			throw new RecordNotFoundException("Course record not exist for given id");
 		}
 		
 		// Create a new Course
-		if (entity.getSubject() != null) {
+		if (entity.getSubject() != null && courseSubject.isPresent()) {
 			
-			Optional<Subject> courseSubject = sbRepo.findByCode(entity.getSubject().getCode());
-			
-			if(courseSubject.isPresent()) { return repository.save(entity); }
+			return csRepo.save(entity);
 		}
 		throw new RecordNotFoundException("Subject record not exist for given code");
 	}
 
 	@Transactional
 	public void deleteCourseById(Integer id) throws RecordNotFoundException {
-		Optional<Course> optEntity = repository.findById(id);
+		Optional<Course> optEntity = csRepo.findById(id);
 
 		if(optEntity.isPresent()) { 
 			
 			Course course = optEntity.get();
 			
-			course.removeStudents();
-			course.removeTeachers();
-			repository.delete(course);
+			// Before delete course, all students and teachers has to be dissociated
+			// if not, foreign key constraints errors appear
+			course.removeAllStudents();
+			course.removeAllTeachers();
+			//course.removeAllLessons(); // the lessons are completely removed by cascade anotation
+			
+			csRepo.deleteById(course.getCourseId());
 		} 
 		else { throw new RecordNotFoundException("Course record not exist for given id"); }
+	}
+	
+	protected void updateStudents(Course dbCourse, Course newDataCourse) {
+		newDataCourse.getStudents().forEach(st -> {
+			try {
+				Student dbStudent = stService.getStudentByFileNumber(st.getFileNumber());
+				dbCourse.addStudent(dbStudent);
+			} 
+			catch (RecordNotFoundException e1) { e1.printStackTrace(); }
+		});
 	}
 }

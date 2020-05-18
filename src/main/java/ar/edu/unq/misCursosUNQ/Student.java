@@ -44,12 +44,12 @@ public class Student implements Serializable {
 	/* Protected to avoid set the primary key */
 	protected void setFileNumber(Integer fileNumber) { this.fileNumber = fileNumber; }
 	
-	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	public PersonalData getPersonalData() { return personalData; }
 
 	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
 
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.DETACH })
+	@ManyToMany//(cascade = { CascadeType.PERSIST, CascadeType.DETACH })
 	@JsonIgnoreProperties({"students", "lessons", "teachers"})
 	@OrderBy("courseName ASC")
 	public List<Course> getTakenCourses() { return takenCourses; }
