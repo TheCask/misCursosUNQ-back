@@ -25,19 +25,19 @@ public class UserService {
         else { return new ArrayList<User>(); }
     }
      
-    public User getUserByDni(Integer dni) throws RecordNotFoundException {
-        Optional<User> user = usRepo.findByDni(dni);
+    public User getUserById(Integer id) throws RecordNotFoundException {
+        Optional<User> user = usRepo.findById(id);
          
         if(user.isPresent()) { return user.get(); } 
-        else { throw new RecordNotFoundException("User record not exist for given DNI"); }
+        else { throw new RecordNotFoundException("User record not exist for given id"); }
     }
      
     @Transactional
     public User createOrUpdateUser(User entity) throws RecordNotFoundException {
     	
-    	if (entity.getDni() != null) {
+    	if (entity.getUserId() != null) {
     	
-	    	Optional<User> user = usRepo.findByDni(entity.getDni());
+	    	Optional<User> user = usRepo.findById(entity.getUserId());
 	
 	    	if(user.isPresent()) {
 	    		
@@ -49,16 +49,16 @@ public class UserService {
 	
 	    		return usRepo.save(newEntity);
 	    	}
-	    	throw new RecordNotFoundException("User record not exist for given DNI");
+	    	throw new RecordNotFoundException("User record not exist for given id");
     	}
     	return usRepo.save(entity);
     } 
      
     @Transactional
-    public void deleteUserByDni(Integer dni) throws RecordNotFoundException {
-        Optional<User> user = usRepo.findByDni(dni);
+    public void deleteUserById(Integer id) throws RecordNotFoundException {
+        Optional<User> user = usRepo.findById(id);
          
-        if(user.isPresent()) { usRepo.deleteByDni(dni); } 
-        else { throw new RecordNotFoundException("User record not exist for given DNI"); }
+        if(user.isPresent()) { usRepo.deleteById(id); } 
+        else { throw new RecordNotFoundException("User record not exist for given id"); }
     } 
 }

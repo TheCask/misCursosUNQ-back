@@ -46,7 +46,7 @@ public class SubjectController {
     }
  
     @DeleteMapping("/subject/{code}")
-    public ResponseEntity<String> deleteSubjectByCode(@PathVariable("code") String code) throws RecordNotFoundException {
+    public ResponseEntity<String> deleteSubjectByCode(@PathVariable("code") String code) throws RecordNotFoundException, SubjectException {
         sbService.deleteSubjectByCode(code);
         return new ResponseEntity<String>("Subject " + code + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);
     }

@@ -18,6 +18,9 @@ public class SubjectService {
      
     @Autowired
     SubjectRepo sbRepo;
+    
+    @Autowired
+    CourseService csService;
      
     public List<Subject> getSubjects() {
         List<Subject> subjectList = sbRepo.findAll();
@@ -58,12 +61,17 @@ public class SubjectService {
     } 
     
     @Transactional
-    public void deleteSubjectByCode(String code) throws RecordNotFoundException {
+    public void deleteSubjectByCode(String code) throws RecordNotFoundException, SubjectException {
         Optional<Subject> subject = sbRepo.findByCode(code);
         
         // TODO Make sure that none course references this subject before deleting
         // Subject can not cascade delete operation to courses
-        if(subject.isPresent()) { sbRepo.deleteByCode(code); } 
+        if(subject.isPresent()) {
+        	if (!csService.getCourses().stream().anyMatch(cs -> cs.getSubject().equals(subject.get()))) {
+        		sbRepo.deleteByCode(code);
+        	}
+        	else { throw new SubjectException("Forbidden subject delete, there are courses associated to this subject");}
+        } 
         else { throw new RecordNotFoundException("Subject record not exist for given code"); }
     } 
 }

@@ -21,8 +21,13 @@ public class Lesson implements Serializable{
 	private static final long serialVersionUID = 2252838844078076670L;
 	
 	private Long lessonId;
+	
+	@JsonIgnoreProperties({"lessons", "students", "teachers"})
 	private Course course;
+	
 //	private LocalDate lessonDay;
+	
+	@JsonIgnoreProperties({"takenCourses", "attendedLessons", "careers"})
 	private List<Student> attendantStudents;
 	
 	// Default constructor for Hibernate
@@ -45,14 +50,12 @@ public class Lesson implements Serializable{
 	public void setLessonDay(LocalDate day) { this.lessonDay = day; }
 */
 	@ManyToMany
-	@JsonIgnoreProperties({"takenCourses", "attendedLessons", "careers"})
 	@OrderBy("fileNumber ASC")
 	public List<Student> getAttendantStudents() { return attendantStudents; }
 
 	public void setAttendantStudents(List<Student> attendantStudents) { this.attendantStudents = attendantStudents; }
 
 	@ManyToOne
-	@JsonIgnoreProperties({"lessons", "students", "teachers"})
 	public Course getCourse() { return course; }
 
 	public void setCourse(Course course) { this.course = course; }

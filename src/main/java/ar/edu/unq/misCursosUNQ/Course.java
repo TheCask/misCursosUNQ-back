@@ -34,9 +34,15 @@ public class Course implements Serializable {
 //	private LocalDate courseEndDay;
 //	private CourseWeekSchedule courseWeekSchedule = new CourseWeekSchedule();
 	
+	@JsonIgnoreProperties({"taughtCourses", "coordinatedSubjects", "jobDetail"})
 	private List<User> teachers;
+	
+	@JsonIgnoreProperties({"takenCourses", "attendedLessons", "careers"})
 	private List<Student> students;
+	
+	@JsonIgnoreProperties({"course", "attendantStudents"})
 	private List<Lesson>  lessons;
+
 //	private List<Evaluation> evaluations;
 //	private List<CourseDaySchedule> weekSchedule;
 
@@ -66,8 +72,6 @@ public class Course implements Serializable {
 	protected void setCourseId(Integer courseId) { this.courseId = courseId; }
 
 	@ManyToMany(mappedBy = "takenCourses", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JsonIgnoreProperties({"takenCourses", "attendedLessons", "careers"})
-	//@Fetch(FetchMode.SELECT)
 	@OrderBy("fileNumber ASC")
 	public List<Student> getStudents() { return students; }
 
@@ -75,7 +79,6 @@ public class Course implements Serializable {
 	protected void setStudents(List<Student> students) { this.students = students; }
 
 	@OneToMany(mappedBy = "course", cascade = { CascadeType.ALL })//, orphanRemoval = true)
-	@JsonIgnoreProperties({"course", "attendantStudents"})
 	public List<Lesson> getLessons() { return lessons; }
 
 	// Not allowed to set lessons directly because database corruption
@@ -92,7 +95,6 @@ public class Course implements Serializable {
 	}
 	
 	@ManyToMany(mappedBy = "taughtCourses",  cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JsonIgnoreProperties({"taughtCourses", "coordinatedSubjects"})
 	public List<User> getTeachers() { return teachers; }
 
 	// Not allowed to set teachers directly because database corruption

@@ -22,7 +22,11 @@ public class Student implements Serializable {
 	private Integer 	 fileNumber;
 	private PersonalData personalData;
 	private List<String> careers;
+	
+	@JsonIgnoreProperties({"students", "lessons", "teachers"})
 	private List<Course> takenCourses;
+	
+	@JsonIgnoreProperties({"attendantStudents", "course"})
 	private List<Lesson> attendedLessons;
 	
 	// Default constructor for Hibernate
@@ -50,15 +54,13 @@ public class Student implements Serializable {
 	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
 
 	@ManyToMany//(cascade = { CascadeType.PERSIST, CascadeType.DETACH })
-	@JsonIgnoreProperties({"students", "lessons", "teachers"})
 	@OrderBy("courseName ASC")
 	public List<Course> getTakenCourses() { return takenCourses; }
 
 	// Not allowed to set courses directly because database corruption
 	public void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }
 
-	@ManyToMany(mappedBy = "attendantStudents", cascade = { CascadeType.PERSIST, CascadeType.MERGE } )
-	@JsonIgnoreProperties({"attendantStudents", "course"})
+	@ManyToMany(mappedBy = "attendantStudents", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	public List<Lesson> getAttendedLessons() { return attendedLessons; }
 
 	// Not allowed to set lessons directly because database corruption
@@ -72,9 +74,7 @@ public class Student implements Serializable {
 
 	/* METHODS */
 
-	public void signOnCurse(Course aCourse) {
-		this.takenCourses.add(aCourse);
-	}
+	public void signOnCurse(Course aCourse) { this.takenCourses.add(aCourse); }
 
 	public void signOffCurse(Course course) {
 		// Note that this method is not removing the student attended lessons of this course
@@ -82,13 +82,9 @@ public class Student implements Serializable {
 		this.takenCourses.remove(course);
 	}
 
-	public void attendLesson(Lesson aLesson) {
-		this.attendedLessons.add(aLesson);
-	}
+	public void attendLesson(Lesson aLesson) { this.attendedLessons.add(aLesson); }
 	
-	public void unattendLesson(Lesson aLesson) {
-		this.attendedLessons.remove(aLesson);
-	}
+	public void unattendLesson(Lesson aLesson) { this.attendedLessons.remove(aLesson); }
 	
 	// To print User basic details in logs.
 	@Override
