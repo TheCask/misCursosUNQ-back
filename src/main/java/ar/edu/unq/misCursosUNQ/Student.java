@@ -23,7 +23,7 @@ public class Student implements Serializable {
 	private PersonalData personalData;
 	private List<String> careers;
 	
-	@JsonIgnoreProperties({"students", "lessons", "teachers"})
+	@JsonIgnoreProperties({"students", "lessons", "teachers", "subject"})
 	private List<Course> takenCourses;
 	
 	@JsonIgnoreProperties({"attendantStudents", "course"})

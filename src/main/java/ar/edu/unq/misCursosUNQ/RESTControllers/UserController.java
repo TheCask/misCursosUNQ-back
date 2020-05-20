@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.unq.misCursosUNQ.User;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
+import ar.edu.unq.misCursosUNQ.Exceptions.UserException;
 import ar.edu.unq.misCursosUNQ.Services.UserService;
  
 @RestController
@@ -45,7 +46,7 @@ public class UserController {
     }
  
     @DeleteMapping("user/{id}")
-    public ResponseEntity<String> deleteUserById(@PathVariable("id") Integer id) throws RecordNotFoundException {
+    public ResponseEntity<String> deleteUserById(@PathVariable("id") Integer id) throws RecordNotFoundException, UserException {
         usService.deleteUserById(id);
         return new ResponseEntity<String>("User " + id + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);
     }

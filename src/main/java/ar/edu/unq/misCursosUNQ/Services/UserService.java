@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unq.misCursosUNQ.User;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
+import ar.edu.unq.misCursosUNQ.Exceptions.UserException;
 import ar.edu.unq.misCursosUNQ.Repos.UserRepo;
  
 @Service
@@ -55,10 +56,16 @@ public class UserService {
     } 
      
     @Transactional
-    public void deleteUserById(Integer id) throws RecordNotFoundException {
-        Optional<User> user = usRepo.findById(id);
-         
-        if(user.isPresent()) { usRepo.deleteById(id); } 
+    public void deleteUserById(Integer id) throws RecordNotFoundException, UserException {
+        Optional<User> optUser = usRepo.findById(id);
+        User user;
+        if(optUser.isPresent()) {
+        	user = optUser.get();
+        	if (user.getCoordinatedSubjects().isEmpty() && 
+        			user.getTaughtCourses().isEmpty()) { usRepo.deleteById(id); }
+        	else { throw new UserException("User coordinates/teaches at least one subject/course and cannot be deleted");}
+        	 
+        } 
         else { throw new RecordNotFoundException("User record not exist for given id"); }
     } 
 }

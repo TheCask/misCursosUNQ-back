@@ -41,7 +41,7 @@ public class Course implements Serializable {
 	private List<Student> students;
 	
 	@JsonIgnoreProperties({"course", "attendantStudents"})
-	private List<Lesson>  lessons;
+	private List<Lesson> lessons;
 
 //	private List<Evaluation> evaluations;
 //	private List<CourseDaySchedule> weekSchedule;

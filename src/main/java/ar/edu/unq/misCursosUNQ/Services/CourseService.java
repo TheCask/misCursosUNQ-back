@@ -111,4 +111,26 @@ public class CourseService {
 			catch (RecordNotFoundException e) { e.printStackTrace(); }
 		});
 	}
+
+	public void deleteCourseStudentById(Integer courseId, Integer studentId) throws RecordNotFoundException {
+		
+		Optional<Course> optEntity = csRepo.findById(courseId);
+		
+		Student student;
+		try { student = stService.getStudentByFileNumber(studentId); } 
+		catch (RecordNotFoundException e) { 
+			e.printStackTrace();
+			throw new RecordNotFoundException("Student record not found for given id");
+		}
+
+		if(optEntity.isPresent()) { 
+			
+			Course course = optEntity.get();
+			
+			course.removeStudent(student);
+			
+			csRepo.save(course);
+		} 
+		else { throw new RecordNotFoundException("Course record not exist for given id"); }
+	}
 }

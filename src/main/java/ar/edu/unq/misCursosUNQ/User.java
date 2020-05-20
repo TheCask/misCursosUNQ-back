@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -49,7 +48,7 @@ public class User implements Serializable {
 	protected void setUserId(Integer userId) { this.userId = userId; }
 
 	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	@MapsId
+	//@MapsId
 	public PersonalData getPersonalData() { return personalData; }
 
 	public void setPersonalData(PersonalData aPersonalData) { this.personalData = aPersonalData; }
