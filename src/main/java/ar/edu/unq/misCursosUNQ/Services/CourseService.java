@@ -45,7 +45,7 @@ public class CourseService {
 	@Transactional
 	public Course createOrUpdateCourse(Course entity) throws RecordNotFoundException {
 
-		Optional<Subject> courseSubject = sbRepo.findByCode(entity.getSubject().getCode());
+		Optional<Subject> courseSubject;
 		
 		// Update an existing course
 		if (entity.getCourseId() != null) {
@@ -55,6 +55,8 @@ public class CourseService {
 			if(course.isPresent()) {
 
 				Course newEntity = course.get();
+				
+				courseSubject = sbRepo.findByCode(newEntity.getSubject().getCode());
 				
 				if(courseSubject.isPresent()) { 
 					
@@ -76,9 +78,11 @@ public class CourseService {
 		}
 		
 		// Create a new Course
-		if (entity.getSubject() != null && courseSubject.isPresent()) {
+		if (entity.getSubject() != null && entity.getSubject().getCode() != null) {
 			
-			return csRepo.save(entity);
+			courseSubject = sbRepo.findByCode(entity.getSubject().getCode());
+			
+			if (courseSubject.isPresent()) { return csRepo.save(entity); }
 		}
 		throw new RecordNotFoundException("Subject record not exist for given code");
 	}
