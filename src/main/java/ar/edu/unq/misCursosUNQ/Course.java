@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -24,6 +25,7 @@ public class Course implements Serializable {
 	private static final long serialVersionUID = -1636249307802887638L;
 	
 	private Integer courseId;
+	@Size(min = 2, max = 4)
 	private String 	courseName;
 	private String 	courseCode;
 	private String 	courseShift;
@@ -69,7 +71,7 @@ public class Course implements Serializable {
 	public Integer getCourseId() { return courseId; }
 
 	/* Protected to avoid set the primary key */
-	protected void setCourseId(Integer courseId) { this.courseId = courseId; }
+	public void setCourseId(Integer courseId) { this.courseId = courseId; }
 
 	@ManyToMany(mappedBy = "takenCourses", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@OrderBy("fileNumber ASC")
@@ -216,7 +218,7 @@ public class Course implements Serializable {
 	}
 	
 	
-	// To print materia basic details in logs.
+	// To print subject basic details in logs.
 	@Override
 	public String toString() {
 		return "Course [Id " + courseId + " | " + courseName + "]";
@@ -228,4 +230,10 @@ public class Course implements Serializable {
         if (!(o instanceof Course)) return false;
         return courseId != null && courseId.equals(((Course) o).getCourseId());
     }
+	
+//	@Override
+//	public int hashCode() {
+// 		hash based on two fields
+//	    return 31 * courseName.hashCode() + courseIsOpen.hashCode();
+//	}
 }
