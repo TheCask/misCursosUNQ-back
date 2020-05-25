@@ -19,6 +19,7 @@ import ar.edu.unq.misCursosUNQ.Course;
 import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
+import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 import ar.edu.unq.misCursosUNQ.Services.CourseService;
  
 @RestController
@@ -65,7 +66,7 @@ public class CourseController {
     }
  
     @PostMapping("/course")
-    public @ResponseBody ResponseEntity<Course> createOrUpdateCourse(@RequestBody Course course) throws RecordNotFoundException {
+    public @ResponseBody ResponseEntity<Course> createOrUpdateCourse(@RequestBody Course course) throws RecordNotFoundException, SeasonException {
         Course updated = csService.createOrUpdateCourse(course);
         return new ResponseEntity<Course>(updated, new HttpHeaders(), HttpStatus.OK);
     }

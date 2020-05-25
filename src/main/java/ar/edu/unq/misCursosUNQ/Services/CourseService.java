@@ -15,6 +15,7 @@ import ar.edu.unq.misCursosUNQ.Course;
 import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
+import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 
 @Service
 public class CourseService {
@@ -43,9 +44,9 @@ public class CourseService {
 	}
 
 	@Transactional
-	public Course createOrUpdateCourse(Course entity) throws RecordNotFoundException {
+	public Course createOrUpdateCourse(Course entity) throws RecordNotFoundException, SeasonException {
 
-		Optional<Subject> courseSubject;
+		Optional<Subject> courseSubject = Optional.empty();
 		
 		// Update an existing course
 		if (entity.getCourseId() != null) {
@@ -56,22 +57,27 @@ public class CourseService {
 
 				Course newEntity = course.get();
 				
-				courseSubject = sbRepo.findByCode(newEntity.getSubject().getCode());
+				if (entity.getSubject() != null && entity.getSubject().getCode() != null) {
+					courseSubject = sbRepo.findByCode(entity.getSubject().getCode());
+				}
 				
 				if(courseSubject.isPresent()) { 
 					
 					// TODO Update teachers and lessons if needed
 					newEntity.setSubject(courseSubject.get());
-					newEntity.setCourseName(entity.getCourseName());
+					newEntity.setCourseCode(entity.getCourseCode());
 					newEntity.setCourseIsOpen(entity.getCourseIsOpen());
 					newEntity.setCourseShift(entity.getCourseShift());
+					newEntity.setCourseYear(entity.getCourseYear());
+					newEntity.setCourseSeason(entity.getCourseSeason());
+					newEntity.setCourseLocation(entity.getCourseLocation());
 					
 					this.updateStudents(newEntity, entity);
 							
 					return csRepo.save(newEntity);
 				}
 				// Subject code not found in database
-				throw new RecordNotFoundException("Subject record not exist for given code");
+				throw new RecordNotFoundException("Subject record not found for given code");
 			}
 			// Course id not found
 			throw new RecordNotFoundException("Course record not exist for given id");

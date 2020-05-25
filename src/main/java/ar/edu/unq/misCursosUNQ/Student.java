@@ -54,7 +54,7 @@ public class Student implements Serializable {
 	public void setPersonalData(PersonalData personalData) { this.personalData = personalData; }
 
 	@ManyToMany//(cascade = { CascadeType.PERSIST, CascadeType.DETACH })
-	@OrderBy("courseName ASC")
+	@OrderBy("courseCode ASC")
 	public List<Course> getTakenCourses() { return takenCourses; }
 
 	// Not allowed to set courses directly because database corruption

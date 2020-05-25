@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
+import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 import ar.edu.unq.misCursosUNQ.Services.LessonService;
  
 @RestController
@@ -45,7 +46,7 @@ public class LessonController {
     }
  
     @DeleteMapping("/lesson/{lessonId}")
-    public ResponseEntity<String> deleteLessonById(@PathVariable("lessonId") Long lessonId) throws RecordNotFoundException {
+    public ResponseEntity<String> deleteLessonById(@PathVariable("lessonId") Long lessonId) throws RecordNotFoundException, SeasonException {
         lnService.deleteLessonById(lessonId);
         return new ResponseEntity<String>("Lesson " + lessonId + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);   
     }

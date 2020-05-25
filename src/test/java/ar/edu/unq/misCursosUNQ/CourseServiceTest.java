@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
+import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 import ar.edu.unq.misCursosUNQ.Repos.CourseRepo;
 import ar.edu.unq.misCursosUNQ.Repos.SubjectRepo;
 import ar.edu.unq.misCursosUNQ.Services.CourseService;
@@ -60,7 +61,8 @@ class CourseServiceIntegrationTest {
     private SubjectRepo sjRepo;
     
     @Mock
-	Subject subjectMock;
+	Subject subjectMock; 
+
     
     @Before
     public void setUp() {
@@ -79,10 +81,10 @@ class CourseServiceIntegrationTest {
 	}
     
 	@Test
-	public void whenValidId_thenCourseShouldBeFound() throws RecordNotFoundException {
+	public void whenValidId_thenCourseShouldBeFound() throws RecordNotFoundException, SeasonException {
 		Mockito.when(subjectMock.getCode()).thenReturn("80000-CyT1y2");
 		
-		Course aCourse = new Course("C17", subjectMock);
+		Course aCourse = new Course("sf17", subjectMock, 2020, "2c");
 		
     	Optional<Course> aCourseOpt = Optional.of(aCourse);
      

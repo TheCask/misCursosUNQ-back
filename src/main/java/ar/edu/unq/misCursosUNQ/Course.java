@@ -18,19 +18,24 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import ar.edu.unq.misCursosUNQ.Exceptions.LessonException;
+import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 
 @Entity
 public class Course implements Serializable {
-	
+
 	private static final long serialVersionUID = -1636249307802887638L;
 	
 	private Integer courseId;
-	@Size(min = 2, max = 4)
-	private String 	courseName;
-	private String 	courseCode;
+	@Size(min = 1, max = 5)
+	private String courseCode;
+	private String 	courseFullCode;
 	private String 	courseShift;
 	private Boolean courseIsOpen;
 	private Subject subject;
+	private Integer courseYear;
+	@Size(min = 2, max = 2)
+	private String courseSeason;
+	private String courseLocation;
 	
 //	private LocalDate courseBeginDay; 
 //	private LocalDate courseEndDay;
@@ -51,9 +56,11 @@ public class Course implements Serializable {
 	// Default constructor for Hibernate
 	protected Course() {}
 		
-	public Course(String aName, Subject aSubject) {
-		this.setSubject(aSubject);
-		this.setCourseName(aName);
+	public Course(String aCode, Subject aSubject, Integer aYear, String aSeason) throws SeasonException {
+		this.setSubject(aSubject); // sets courseFullCode also
+		this.setCourseCode(aCode);
+		this.setCourseYear(aYear);
+		this.setCourseSeason(aSeason);
 		this.setCourseShift("");
 		this.setCourseIsOpen(true);
 //		this.setCourseBeginDay(LocalDate.ofEpochDay(0)); // First Epoch day is 1970-01-01;
@@ -71,7 +78,7 @@ public class Course implements Serializable {
 	public Integer getCourseId() { return courseId; }
 
 	/* Protected to avoid set the primary key */
-	public void setCourseId(Integer courseId) { this.courseId = courseId; }
+	protected void setCourseId(Integer courseId) { this.courseId = courseId; }
 
 	@ManyToMany(mappedBy = "takenCourses", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@OrderBy("fileNumber ASC")
@@ -86,21 +93,37 @@ public class Course implements Serializable {
 	// Not allowed to set lessons directly because database corruption
 	protected void setLessons(List<Lesson> lessons) { this.lessons = lessons; }
 	
+	@ManyToMany(mappedBy = "taughtCourses",  cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	public List<User> getTeachers() { return teachers; }
+
+	// Not allowed to set teachers directly because database corruption
+	protected void setTeachers(List<User> teachers) { this.teachers = teachers; }
+	
 	@ManyToOne(optional = false)
 	public Subject getSubject() { return subject; }
 
 	// Generates the course code based on subject code and name
 	public void setSubject(Subject subject) { 
 		this.subject = subject;
-		String courseCode = subject.getCode().replaceFirst("-", "-"+this.courseName+"-");
-		this.setCourseCode(courseCode);
+		String courseCode = subject.getCode().replaceFirst("-", "-"+this.courseCode+"-");
+		this.setCourseFullCode(courseCode);
 	}
 	
-	@ManyToMany(mappedBy = "taughtCourses",  cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	public List<User> getTeachers() { return teachers; }
+	public Integer getCourseYear() { return courseYear; }
 
-	// Not allowed to set teachers directly because database corruption
-	protected void setTeachers(List<User> teachers) { this.teachers = teachers; }
+	public void setCourseYear(Integer year) { this.courseYear = year; }
+	
+	public String getCourseSeason() { return courseSeason; }
+	
+	public void setCourseSeason(String season) throws SeasonException { 
+		if (season.matches("\\d\\w")) { this.courseSeason = season.toUpperCase(); }
+		else { throw new SeasonException("Season format is one digit followed by one character"); }
+	}
+	
+	public String getCourseLocation() { return courseLocation;
+	}
+
+	public void setCourseLocation(String location) { this.courseLocation = location; }
 
 	/*
 	@OneToMany
@@ -113,19 +136,19 @@ public class Course implements Serializable {
 
 	public void setWeekSchedule(List<CourseDaySchedule> weekSchedule) { this.weekSchedule = weekSchedule; }
 	*/
-	
-	public String getCourseCode() { return courseCode; }
+
+	public String getCourseFullCode() { return courseFullCode; }
 
 	// Sets automatic on construction, and depends on Subject
-	private void setCourseCode(String code) { this.courseCode = code; }
+	private void setCourseFullCode(String code) { this.courseFullCode = code; }
 
 	public String getCourseShift() { return courseShift; }
 
 	public void setCourseShift(String courseShift) { this.courseShift = courseShift; }
 
-	public String getCourseName() { return courseName; }
+	public String getCourseCode() { return courseCode; }
 
-	public void setCourseName(String number) { this.courseName = number; }
+	public void setCourseCode(String code) { this.courseCode = code.toUpperCase(); }
 
 	public Boolean getCourseIsOpen() { return courseIsOpen; }
 
@@ -221,7 +244,7 @@ public class Course implements Serializable {
 	// To print subject basic details in logs.
 	@Override
 	public String toString() {
-		return "Course [Id " + courseId + " | " + courseName + "]";
+		return "Course [Id " + courseId + " | " + courseCode + "]";
 	}
 	
 	@Override

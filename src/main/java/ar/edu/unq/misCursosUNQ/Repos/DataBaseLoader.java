@@ -22,9 +22,6 @@ public class DataBaseLoader implements CommandLineRunner  {
 	@Autowired
 	private SubjectService sbService;
 	
-//	@Autowired
-//	private StudentService stService;
-	
 	@Autowired
 	public DataBaseLoader(StudentRepo aStRepo) {
 	}
@@ -40,15 +37,15 @@ public class DataBaseLoader implements CommandLineRunner  {
 		this.sbService.createOrUpdateSubject(epyl);
 		this.sbService.createOrUpdateSubject(icfq);
 		
-		Course aCourse = new Course("C17", lea);
+		Course aCourse = new Course("17", lea, 2020, "1c");
 		aCourse.setCourseIsOpen(false);
 		aCourse.setCourseShift("Noche");
 		
-		Course otherCourse = new Course("C3", epyl);
+		Course otherCourse = new Course("B3", epyl, 2019, "3t");
 		otherCourse.setCourseIsOpen(true);
 		otherCourse.setCourseShift("Mañana");
 		
-		Course anotherCourse = new Course("C12", icfq);
+		Course anotherCourse = new Course("SF12", icfq, 2021, "2C");
 		anotherCourse.setCourseIsOpen(true);
 		anotherCourse.setCourseShift("Tarde");
 		
@@ -59,12 +56,6 @@ public class DataBaseLoader implements CommandLineRunner  {
 		Student student3 = new Student("Regina", "Falange",  33333333, "regina@gmail.com",14333);
 		Student student4 = new Student("Aurelio", "Gomez",   44444444, "aurelio_gomez@gmail.com",14444);
 		Student student5 = new Student("Nahuel", "Huapi",    55555555, "huapi.n@gmail.com",14555);
-		
-//		this.stService.createOrUpdateStudent(student1);
-//		this.stService.createOrUpdateStudent(student2);
-//		this.stService.createOrUpdateStudent(student3);
-//		this.stService.createOrUpdateStudent(student4);
-//		this.stService.createOrUpdateStudent(student5);
 		
 		Lesson lesson1 = new Lesson(LocalDate.now());
 		Lesson lesson2 = new Lesson(LocalDate.now().plusDays(1));
