@@ -71,12 +71,26 @@ public class User implements Serializable {
 
 	/* METHODS */
 	
+	public void assignSubject(Subject subject) {
+		if (!this.coordinatedSubjects.contains(subject)) {
+			this.coordinatedSubjects.add(subject);
+		}
+	}
+	
+	public void unAssignSubject(Subject subject) { 
+		this.coordinatedSubjects.remove(subject);
+	}
+	
 	public void assignCourse(Course aCourse) {
 		this.taughtCourses.add(aCourse);
 	}
 
 	public void unAssignCourse(Course course) { 
 		this.taughtCourses.remove(course);
+	}
+	
+	public Boolean coordinatesSubjectWithCode(String code) {
+		return this.coordinatedSubjects.stream().anyMatch(sj -> sj.getCode().equals(code));
 	}
 	
 	// To print User basic details in logs.
@@ -91,5 +105,4 @@ public class User implements Serializable {
         if (!(o instanceof User)) return false;
         return userId != null && userId.equals(((User) o).getUserId());
     }
- 
 }

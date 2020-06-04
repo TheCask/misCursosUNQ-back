@@ -68,4 +68,15 @@ public class UserService {
         else { throw new RecordNotFoundException("User record not exist for given id"); }
     }
 
+	public List<User> getCoordinatorsByCode(String code) {
+		List<User> coordinators = new ArrayList<User>();
+		
+		this.getUsers().stream().forEach(us -> { 
+			if (us.coordinatesSubjectWithCode(code)) { 
+				coordinators.add(us); 
+			}
+		});
+		
+		return coordinators;
+	}
 }

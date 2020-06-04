@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.unq.misCursosUNQ.Subject;
+import ar.edu.unq.misCursosUNQ.User;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SubjectException;
 import ar.edu.unq.misCursosUNQ.Services.SubjectService;
@@ -38,11 +39,23 @@ public class SubjectController {
         Subject entity = sbService.getSubjectByCode(code);
         return new ResponseEntity<Subject>(entity, new HttpHeaders(), HttpStatus.OK);
     }
+    
+    @GetMapping("/subject/{code}/coordinators")
+    public ResponseEntity<List<User>> getSubjectCoordinatorsByCode(@PathVariable("code") String code) throws RecordNotFoundException {
+        List<User> coordinators = sbService.getSubjectCoordinatorsByCode(code);
+        return new ResponseEntity<List<User>>(coordinators, new HttpHeaders(), HttpStatus.OK);
+    }
  
     @PostMapping("/subject")
     public  @ResponseBody ResponseEntity<Subject> createOrUpdateSubject(@RequestBody Subject subject) throws SubjectException {
         Subject updated = sbService.createOrUpdateSubject(subject);
         return new ResponseEntity<Subject>(updated, new HttpHeaders(), HttpStatus.OK);
+    }
+    
+    @PostMapping("/subject/{code}/coordinators")
+    public  @ResponseBody ResponseEntity<List<User>> createOrUpdateSubjectCoordinators(@RequestBody List<User> coordinators, @PathVariable("code") String code) throws SubjectException, RecordNotFoundException {
+        List<User> updatedCoordinators = sbService.createOrUpdateSubjectCoordinators(code, coordinators);
+        return new ResponseEntity<List<User>>(updatedCoordinators, new HttpHeaders(), HttpStatus.OK);
     }
  
     @DeleteMapping("/subject/{code}")

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unq.misCursosUNQ.Subject;
+import ar.edu.unq.misCursosUNQ.User;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SubjectException;
 import ar.edu.unq.misCursosUNQ.Repos.SubjectRepo;
@@ -21,6 +22,9 @@ public class SubjectService {
     
     @Autowired
     CourseService csService;
+    
+    @Autowired
+    UserService usService;
      
     public List<Subject> getSubjects() {
         List<Subject> subjectList = sbRepo.findAll();
@@ -35,6 +39,11 @@ public class SubjectService {
         if(subject.isPresent()) { return subject.get(); } 
         else { throw new RecordNotFoundException("Subject record not exist for given code"); }
     }
+    
+    public List<User> getSubjectCoordinatorsByCode(String code) throws RecordNotFoundException {
+    	this.getSubjectByCode(code);
+    	return usService.getCoordinatorsByCode(code);
+	}
     
     @Transactional
     public Subject createOrUpdateSubject(Subject entity) throws SubjectException {
@@ -72,5 +81,28 @@ public class SubjectService {
         	else { throw new SubjectException("Forbidden subject delete, there are courses associated to this subject");}
         } 
         else { throw new RecordNotFoundException("Subject record not exist for given code"); }
-    } 
+    }
+
+    @Transactional
+	public List<User> createOrUpdateSubjectCoordinators(String subjectCode, List<User> newCoordinators) throws RecordNotFoundException {
+		List<User> oldCoordinators = this.getSubjectCoordinatorsByCode(subjectCode);
+		Subject subject = this.getSubjectByCode(subjectCode);
+    	
+		// Delete coordinators
+		oldCoordinators.removeAll(newCoordinators); // this changes oldCoordinators leaving only users that are no longer coordinators 
+		oldCoordinators.forEach(us -> us.unAssignSubject(subject));
+		
+		// Add coordinators
+		newCoordinators.removeAll(oldCoordinators); // this changes newCoordinators leaving only users thar are new coordinators
+		for (User us : newCoordinators) {
+			try { 
+				User usToUpdate = usService.getUserById(us.getUserId());
+				usToUpdate.assignSubject(subject);;
+			}
+			catch (RecordNotFoundException e) { e.printStackTrace(); }
+		}
+  
+		
+		return this.getSubjectCoordinatorsByCode(subjectCode);
+	}
 }
