@@ -1,6 +1,9 @@
 package ar.edu.unq.misCursosUNQ;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -9,12 +12,13 @@ public class PersonalData implements Serializable {
 
 	private static final long serialVersionUID = -2414154033870368530L;
 	
+	private Integer personalDataId;
 	private Integer dni;
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String cellPhone;
-	
+
 	// Default constructor for Hibernate
 	protected PersonalData() {}
 	
@@ -29,10 +33,16 @@ public class PersonalData implements Serializable {
 	/* GETTERS & SETTERS */
 
 	@Id
-	public Integer getDni() { return dni; }
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	public Integer getPersonalDataId() { return personalDataId; }
 
 	/* Protected to avoid set the primary key */
-	protected void setDni(Integer dni) { this.dni = dni; }
+	protected void setPersonalDataId(Integer personalDataId) { this.personalDataId = personalDataId; }
+	
+	@Column(unique = true)
+	public Integer getDni() { return dni; }
+
+	public void setDni(Integer dni) { this.dni = dni; }
 	
 	public String getFirstName() { return firstName; }
 

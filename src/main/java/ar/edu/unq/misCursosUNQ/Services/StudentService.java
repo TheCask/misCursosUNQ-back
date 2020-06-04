@@ -47,7 +47,7 @@ public class StudentService {
 
 				// TODO Update careers, takenCourses and attendedLessons if needed
 				newEntity.setPersonalData(entity.getPersonalData());
-
+				
 				return stRepo.save(newEntity);
 			}
 			// Create a new student
@@ -55,8 +55,8 @@ public class StudentService {
 		}
     	throw new RecordNotFoundException("Student record does not exist for given file number");
     }
-    
-    @Transactional 
+
+	@Transactional 
     public void deleteStudentByFileNumber(Integer fileNumber) throws RecordNotFoundException {
         
     	Optional<Student> optEntity = stRepo.findById(fileNumber);
@@ -77,5 +77,5 @@ public class StudentService {
         	
         } 
         else { throw new RecordNotFoundException("Student record does not exist for given file number"); }
-    } 
+    }
 }

@@ -40,7 +40,7 @@ public class UserController {
     }
  
     @PostMapping("/user")
-    public @ResponseBody ResponseEntity<User> createOrUpdateUser(@RequestBody User user) throws RecordNotFoundException {
+    public @ResponseBody ResponseEntity<User> createOrUpdateUser(@RequestBody User user) throws RecordNotFoundException, UserException {
     	User updated = usService.createOrUpdateUser(user);
         return new ResponseEntity<User>(updated, new HttpHeaders(), HttpStatus.OK);
     }

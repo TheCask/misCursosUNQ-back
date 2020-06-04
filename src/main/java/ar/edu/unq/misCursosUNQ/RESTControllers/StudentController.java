@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.unq.misCursosUNQ.Student;
+import ar.edu.unq.misCursosUNQ.Exceptions.PersonalDataException;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Services.StudentService;
  
@@ -39,7 +40,7 @@ public class StudentController {
     }
  
     @PostMapping("/student")
-    public @ResponseBody ResponseEntity<Student> createOrUpdateStudent(@RequestBody Student student) throws RecordNotFoundException {
+    public @ResponseBody ResponseEntity<Student> createOrUpdateStudent(@RequestBody Student student) throws RecordNotFoundException, PersonalDataException {
     	Student updated = stService.createOrUpdateStudent(student);
         return new ResponseEntity<Student>(updated, new HttpHeaders(), HttpStatus.OK);
     }

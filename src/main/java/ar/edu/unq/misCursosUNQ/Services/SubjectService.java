@@ -64,8 +64,7 @@ public class SubjectService {
     public void deleteSubjectByCode(String code) throws RecordNotFoundException, SubjectException {
         Optional<Subject> subject = sbRepo.findByCode(code);
         
-        // TODO Make sure that none course references this subject before deleting
-        // Subject can not cascade delete operation to courses
+        // Subject can/should not cascade delete operation to courses
         if(subject.isPresent()) {
         	if (!csService.getCourses().stream().anyMatch(cs -> cs.getSubject().equals(subject.get()))) {
         		sbRepo.deleteByCode(code);

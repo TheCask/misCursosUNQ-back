@@ -31,18 +31,26 @@ public class PersonalDataService {
 		if(personalData.isPresent()) { return personalData.get(); } 
 		else { throw new RecordNotFoundException("PersonalData record not exist for given id"); }
 	}
+	
+	public PersonalData getPersonalDataByDni(Integer dni) throws RecordNotFoundException {
+		Optional<PersonalData> personalData = pnRepo.findByDni(dni);
+
+		if(personalData.isPresent()) { return personalData.get(); } 
+		else { throw new RecordNotFoundException("PersonalData record not exist for given dni"); }
+	}
 
 	@Transactional
 	public PersonalData createOrUpdatePersonalData(PersonalData entity) throws RecordNotFoundException {
 
-		if (entity.getDni() != null) {
+		if (entity.getPersonalDataId() != null) {
 
-			Optional<PersonalData> optEntity = pnRepo.findById(entity.getDni());
+			Optional<PersonalData> optEntity = pnRepo.findById(entity.getPersonalDataId());
 
 			if(optEntity.isPresent()) {
 
 				PersonalData newEntity = optEntity.get();
 
+				newEntity.setDni(entity.getDni());
 				newEntity.setFirstName(entity.getFirstName());
 				newEntity.setLastName(entity.getLastName());
 				newEntity.setEmail(entity.getEmail());
@@ -56,10 +64,18 @@ public class PersonalDataService {
 	}
 
 	@Transactional
+	public void deletePersonalDataByDNI(Integer dni) throws RecordNotFoundException {
+		Optional<PersonalData> personalData = pnRepo.findByDni(dni);
+
+		if(personalData.isPresent()) { pnRepo.deleteByDni(dni); } 
+		else { throw new RecordNotFoundException("PersonalData record not exist for given DNI"); }
+	}
+	
+	@Transactional
 	public void deletePersonalDataById(Integer id) throws RecordNotFoundException {
 		Optional<PersonalData> personalData = pnRepo.findById(id);
 
-		if(personalData.isPresent()) { pnRepo.deleteById(id); } 
+		if(personalData.isPresent()) { pnRepo.deleteById(id);; } 
 		else { throw new RecordNotFoundException("PersonalData record not exist for given id"); }
 	}
 }
