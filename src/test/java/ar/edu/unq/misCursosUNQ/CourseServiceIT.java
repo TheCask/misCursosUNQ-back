@@ -1,13 +1,13 @@
 package ar.edu.unq.misCursosUNQ;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.util.Optional;
 
-import org.junit.Before;
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.junit4.SpringRunner;
-
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 import ar.edu.unq.misCursosUNQ.Repos.CourseRepo;
@@ -27,10 +26,10 @@ import ar.edu.unq.misCursosUNQ.Services.CourseService;
 import ar.edu.unq.misCursosUNQ.Services.StudentService;
 import ar.edu.unq.misCursosUNQ.Services.UserService;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @DataJdbcTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-class CourseServiceIntegrationTest {
+class CourseServiceIT {
 
 	//private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -67,7 +66,7 @@ class CourseServiceIntegrationTest {
 	Subject subjectMock; 
 
     
-    @Before
+    @BeforeEach
     public void setUp() {
     	
     }
@@ -78,9 +77,8 @@ class CourseServiceIntegrationTest {
      
         Mockito.when(csRepo.findById(1)).thenReturn(emptyOpt);
 	
-		Assert.assertThrows(RecordNotFoundException.class, () -> {
-			csService.getCourseById(1);
-	        });
+        assertThatExceptionOfType(RecordNotFoundException.class)
+        	.isThrownBy(() -> csService.getCourseById(1));  
 	}
     
 	@Test

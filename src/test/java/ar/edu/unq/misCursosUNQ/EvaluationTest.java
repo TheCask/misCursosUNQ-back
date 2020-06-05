@@ -4,14 +4,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -72,12 +68,3 @@ public class EvaluationTest {
 	}
 
 }
-
-
-//assertThat(personas)
-//      .isNotEmpty()
-//      .allMatch(persona -> persona.getEdad() > 18);
-
-//assertThatIllegalArgumentException().isThrownBy(()
-//-> personaService.buscarPorEdadMayorA(null))
-//.withMessage("La edad indicada es inválida");
