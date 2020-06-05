@@ -48,7 +48,6 @@ public class User implements Serializable {
 	protected void setUserId(Integer userId) { this.userId = userId; }
 
 	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
-	//@MapsId
 	public PersonalData getPersonalData() { return personalData; }
 
 	public void setPersonalData(PersonalData aPersonalData) { this.personalData = aPersonalData; }

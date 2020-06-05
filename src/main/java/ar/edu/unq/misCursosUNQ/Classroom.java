@@ -55,7 +55,4 @@ public class Classroom implements Serializable{
 	public Boolean getIsAccessible() { return isAccessible; }
 	
 	public void setIsAccessible(Boolean isAccessible) { this.isAccessible = isAccessible; }
-	
-	
-	
 }

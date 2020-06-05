@@ -97,11 +97,10 @@ public class SubjectService {
 		for (User us : newCoordinators) {
 			try { 
 				User usToUpdate = usService.getUserById(us.getUserId());
-				usToUpdate.assignSubject(subject);;
+				usToUpdate.assignSubject(subject);
 			}
 			catch (RecordNotFoundException e) { e.printStackTrace(); }
 		}
-  
 		
 		return this.getSubjectCoordinatorsByCode(subjectCode);
 	}

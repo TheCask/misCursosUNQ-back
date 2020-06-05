@@ -25,8 +25,8 @@ import ar.edu.unq.misCursosUNQ.Repos.CourseRepo;
 import ar.edu.unq.misCursosUNQ.Repos.SubjectRepo;
 import ar.edu.unq.misCursosUNQ.Services.CourseService;
 import ar.edu.unq.misCursosUNQ.Services.StudentService;
+import ar.edu.unq.misCursosUNQ.Services.UserService;
 
-//@SpringBootTest
 @RunWith(SpringRunner.class)
 @DataJdbcTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -53,6 +53,9 @@ class CourseServiceIntegrationTest {
     
     @MockBean
     private StudentService stService;
+    
+    @MockBean
+    private UserService usService;
     
     @MockBean
     private CourseRepo csRepo;

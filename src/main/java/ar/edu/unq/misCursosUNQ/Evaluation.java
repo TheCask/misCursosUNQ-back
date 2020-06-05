@@ -4,14 +4,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-//@Entity
+@Entity
 public class Evaluation implements Serializable{
 
 	private static final long serialVersionUID = 5032810372266105358L;
@@ -22,7 +21,7 @@ public class Evaluation implements Serializable{
 	
 	public Evaluation() {}
 	
-	public Evaluation(String inStringinstanceName) {
+	public Evaluation(String instanceName) {
 		this.setInstanceName(instanceName);
 		this.setAttendantStudentCalificationMap(new HashMap<Student, Float>());
 	}
@@ -38,13 +37,36 @@ public class Evaluation implements Serializable{
 
 	public void setInstanceName(String instanceName) { this.instanceName = instanceName; }
 
-	@Column
+	//@Column
     @ElementCollection
 	public Map<Student, Float> getAttendantStudentCalificationMap() { return attendantStudentCalificationMap; }
 
-	public void setAttendantStudentCalificationMap(Map<Student, Float> attendantStudentCalificationMap) { this.attendantStudentCalificationMap = attendantStudentCalificationMap; }
-	
-	
-	
-
+    // Not allowed to set califications map directly because database corruption
+    private void setAttendantStudentCalificationMap(Map<Student, Float> attendantStudentCalificationMap) { 
+		this.attendantStudentCalificationMap = attendantStudentCalificationMap; 
+	}
+    
+    /* METHODS */
+    
+    public void setStudentCalification(Student student, Float calification) {
+		attendantStudentCalificationMap.put(student, calification);
+		
+	}
+    
+    public void replaceStudentCalification(Student student, Float calification) {
+		attendantStudentCalificationMap.replace(student, calification);
+		
+	}
+    
+    public void deleteStudentCalification(Student student) {
+		attendantStudentCalificationMap.remove(student);
+		
+	}
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Evaluation)) return false;
+        return evaluationId != null && evaluationId.equals(((Evaluation) o).getEvaluationId());
+    }	
 }

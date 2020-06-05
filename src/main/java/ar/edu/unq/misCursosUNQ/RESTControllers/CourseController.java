@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ar.edu.unq.misCursosUNQ.Course;
 import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Student;
+import ar.edu.unq.misCursosUNQ.User;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 import ar.edu.unq.misCursosUNQ.Services.CourseService;
@@ -43,26 +44,23 @@ public class CourseController {
     
     @GetMapping("/course/{courseId}/students")
     public ResponseEntity<List<Student>> getCourseStudents(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
-        
     	Course entity = csService.getCourseById(courseId);
-    	
-    	//TODO Check if its ok to return students of the entity 
-    	// or if its necessary to use stedent repo to bring student from db?
     	List<Student> list = entity.getStudents();
-        
         return new ResponseEntity<List<Student>>(list, new HttpHeaders(), HttpStatus.OK);
     }
     
     @GetMapping("/course/{courseId}/lessons")
     public ResponseEntity<List<Lesson>> getCourseLessons(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
-        
     	Course entity = csService.getCourseById(courseId);
-    	
-    	//TODO Check if its ok to return lessons of the entity 
-    	// or if its necessary to use lesson repo to bring lessons from db?
-    	List<Lesson> list = entity.getLessons();
-        
+    	List<Lesson> list = entity.getLessons();        
         return new ResponseEntity<List<Lesson>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
+    
+    @GetMapping("/course/{courseId}/teachers")
+    public ResponseEntity<List<User>> getCourseTeachers(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {
+    	Course entity = csService.getCourseById(courseId);
+    	List<User> list = entity.getTeachers();        
+        return new ResponseEntity<List<User>>(list, new HttpHeaders(), HttpStatus.OK);
     }
  
     @PostMapping("/course")

@@ -39,7 +39,6 @@ public class Course implements Serializable {
 	
 //	private LocalDate courseBeginDay; 
 //	private LocalDate courseEndDay;
-//	private CourseWeekSchedule courseWeekSchedule = new CourseWeekSchedule();
 	
 	@JsonIgnoreProperties({"taughtCourses", "coordinatedSubjects", "jobDetail"})
 	private List<User> teachers;
@@ -50,8 +49,9 @@ public class Course implements Serializable {
 	@JsonIgnoreProperties({"course", "attendantStudents"})
 	private List<Lesson> lessons;
 
-//	private List<Evaluation> evaluations;
-//	private List<CourseDaySchedule> weekSchedule;
+	private List<Evaluation> evaluations;
+
+	//	private List<CourseDaySchedule> weekSchedule;
 
 	// Default constructor for Hibernate
 	protected Course() {}
@@ -99,9 +99,22 @@ public class Course implements Serializable {
 	// Not allowed to set teachers directly because database corruption
 	protected void setTeachers(List<User> teachers) { this.teachers = teachers; }
 	
+	@OneToMany
+	public List<Evaluation> getEvaluations() { return evaluations; }
+
+	// Not allowed to set evaluations directly because database corruption
+	protected void setEvaluations(List<Evaluation> evaluations) { this.evaluations = evaluations; }
+	
+	/*
+	@OneToMany
+	public List<CourseDaySchedule> getWeekSchedule() { return weekSchedule; }
+
+	public void setWeekSchedule(List<CourseDaySchedule> weekSchedule) { this.weekSchedule = weekSchedule; }
+	*/
+	
 	@ManyToOne(optional = false)
 	public Subject getSubject() { return subject; }
-
+	
 	// Generates the course code based on subject code and name
 	public void setSubject(Subject subject) { 
 		this.subject = subject;
@@ -120,22 +133,9 @@ public class Course implements Serializable {
 		else { throw new SeasonException("Season format is one digit followed by one character"); }
 	}
 	
-	public String getCourseLocation() { return courseLocation;
-	}
+	public String getCourseLocation() { return courseLocation; }
 
 	public void setCourseLocation(String location) { this.courseLocation = location; }
-
-	/*
-	@OneToMany
-	public List<Evaluation> getEvaluations() { return evaluations; }
-
-	public void setEvaluations(List<Evaluation> evaluations) { this.evaluations = evaluations; }
-
-	@OneToMany
-	public List<CourseDaySchedule> getWeekSchedule() { return weekSchedule; }
-
-	public void setWeekSchedule(List<CourseDaySchedule> weekSchedule) { this.weekSchedule = weekSchedule; }
-	*/
 
 	public String getCourseFullCode() { return courseFullCode; }
 
@@ -153,7 +153,8 @@ public class Course implements Serializable {
 	public Boolean getCourseIsOpen() { return courseIsOpen; }
 
 	public void setCourseIsOpen(Boolean courseIsOpen) { this.courseIsOpen = courseIsOpen; }
-/*
+
+	/*
 	public LocalDate getCourseBeginDay() { return courseBeginDay; }
 
 	public void setCourseBeginDay(LocalDate courseBeginDay) { this.courseBeginDay = courseBeginDay; }
@@ -161,10 +162,7 @@ public class Course implements Serializable {
 	public LocalDate getCourseEndDay() { return courseEndDay; }
 
 	public void setCourseEndDay(LocalDate courseEndDay) { this.courseEndDay = courseEndDay; }
-*/
-	//public CourseWeekSchedule getCourseWeekSchedule() { return courseWeekSchedule; }
-
-	//public void setCourseWeekSchedule(CourseWeekSchedule courseWeekSchedule) { this.courseWeekSchedule = courseWeekSchedule; }
+	 */
 	
 	/* METHODS */
 	
@@ -240,7 +238,6 @@ public class Course implements Serializable {
 		this.lessons.clear();
 	}
 	
-	
 	// To print subject basic details in logs.
 	@Override
 	public String toString() {
@@ -253,10 +250,4 @@ public class Course implements Serializable {
         if (!(o instanceof Course)) return false;
         return courseId != null && courseId.equals(((Course) o).getCourseId());
     }
-	
-//	@Override
-//	public int hashCode() {
-// 		hash based on two fields
-//	    return 31 * courseName.hashCode() + courseIsOpen.hashCode();
-//	}
 }

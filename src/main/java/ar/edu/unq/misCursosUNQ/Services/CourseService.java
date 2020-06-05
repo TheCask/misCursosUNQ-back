@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.edu.unq.misCursosUNQ.Course;
 import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Subject;
+import ar.edu.unq.misCursosUNQ.User;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 
@@ -28,6 +29,9 @@ public class CourseService {
 	
 	@Autowired
 	StudentService stService;
+	
+	@Autowired
+	UserService usService;
 
 	public List<Course> getCourses() {
 		List<Course> courseList = csRepo.findAll();
@@ -63,7 +67,7 @@ public class CourseService {
 				
 				if(courseSubject.isPresent()) { 
 					
-					// TODO Update teachers and lessons if needed
+					// TODO Update lessons if needed
 					newEntity.setSubject(courseSubject.get());
 					newEntity.setCourseCode(entity.getCourseCode());
 					newEntity.setCourseIsOpen(entity.getCourseIsOpen());
@@ -73,6 +77,7 @@ public class CourseService {
 					newEntity.setCourseLocation(entity.getCourseLocation());
 					
 					this.updateStudents(newEntity, entity);
+					this.updateTeachers(newEntity, entity);
 							
 					return csRepo.save(newEntity);
 				}
@@ -121,7 +126,19 @@ public class CourseService {
 			catch (RecordNotFoundException e) { e.printStackTrace(); }
 		});
 	}
+	
+	private void updateTeachers(Course dbCourse, Course newDataCourse) {
+		newDataCourse.getTeachers().forEach(tc -> {
+			try {
+				User dbTeacher = usService.getUserById(tc.getUserId());
+				dbCourse.addTeacher(dbTeacher);
+			} 
+			catch (RecordNotFoundException e) { e.printStackTrace(); }
+		});
+		
+	}
 
+	@Transactional
 	public void deleteCourseStudentById(Integer courseId, Integer studentId) throws RecordNotFoundException {
 		
 		Optional<Course> optEntity = csRepo.findById(courseId);
