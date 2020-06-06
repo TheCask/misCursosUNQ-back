@@ -59,7 +59,7 @@ public class StudentService {
 	@Transactional 
     public void deleteStudentByFileNumber(Integer fileNumber) throws RecordNotFoundException {
         
-    	Optional<Student> optEntity = stRepo.findById(fileNumber);
+    	Optional<Student> optEntity = stRepo.findByFileNumber(fileNumber);
          
         if(optEntity.isPresent()) {
         	

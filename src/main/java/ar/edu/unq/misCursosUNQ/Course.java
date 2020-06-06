@@ -49,6 +49,7 @@ public class Course implements Serializable {
 	@JsonIgnoreProperties({"course", "attendantStudents"})
 	private List<Lesson> lessons;
 
+	@JsonIgnoreProperties({"attendantStudentCalificationMap"})
 	private List<Evaluation> evaluations;
 
 	//	private List<CourseDaySchedule> weekSchedule;
@@ -68,6 +69,7 @@ public class Course implements Serializable {
 		this.teachers = new ArrayList<User>();
 		this.students = new ArrayList<Student>();
 		this.lessons = new ArrayList<Lesson>();
+		this.evaluations = new ArrayList<Evaluation>();
 	}
 	
 	/* GETTERS & SETTERS */
