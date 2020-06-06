@@ -2,4 +2,6 @@ language: java
 services:
   - mysql
 before_install:
-  - mysql -e 'CREATE DATABASE miscursosUNQ;'
+  - mysql -e 'CREATE DATABASE misCursosUNQ;'
+install:
+  - mvn clean install -Dmaven.compiler.target=1.8 -Dmaven.compiler.source=1.8
