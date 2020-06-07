@@ -1,8 +1,6 @@
 package ar.edu.unq.misCursosUNQ.Services;
 
 import ar.edu.unq.misCursosUNQ.Repos.CourseRepo;
-import ar.edu.unq.misCursosUNQ.Repos.SubjectRepo;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,15 +15,16 @@ import ar.edu.unq.misCursosUNQ.Subject;
 import ar.edu.unq.misCursosUNQ.User;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
+import ar.edu.unq.misCursosUNQ.Exceptions.SubjectException;
 
 @Service
 public class CourseService {
 	
 	@Autowired
-	SubjectRepo sbRepo;
+	CourseRepo csRepo;
 	
 	@Autowired
-	CourseRepo csRepo;
+	SubjectService sbService;
 	
 	@Autowired
 	StudentService stService;
@@ -48,27 +47,24 @@ public class CourseService {
 	}
 
 	@Transactional
-	public Course createOrUpdateCourse(Course entity) throws RecordNotFoundException, SeasonException {
-
-		Optional<Subject> courseSubject = Optional.empty();
+	public Course createOrUpdateCourse(Course entity) throws RecordNotFoundException, SeasonException, SubjectException {
+	
+		if (entity.getSubject() != null && entity.getSubject().getCode() != null) {
 		
-		// Update an existing course
-		if (entity.getCourseId() != null) {
-
-			Optional<Course> course = csRepo.findById(entity.getCourseId());
-
-			if(course.isPresent()) {
-
-				Course newEntity = course.get();
-				
-				if (entity.getSubject() != null && entity.getSubject().getCode() != null) {
-					courseSubject = sbRepo.findByCode(entity.getSubject().getCode());
-				}
-				
-				if(courseSubject.isPresent()) { 
+			Subject courseSubject = null;
+			courseSubject = sbService.getSubjectByCode(entity.getSubject().getCode());
+			
+			// Update an existing course
+			if (entity.getCourseId() != null) {
+	
+				Optional<Course> course = csRepo.findById(entity.getCourseId());
+	
+				if(course.isPresent()) {
+	
+					Course newEntity = course.get();
 					
 					// TODO Update lessons if needed
-					newEntity.setSubject(courseSubject.get());
+					newEntity.setSubject(courseSubject);
 					newEntity.setCourseCode(entity.getCourseCode());
 					newEntity.setCourseIsOpen(entity.getCourseIsOpen());
 					newEntity.setCourseShift(entity.getCourseShift());
@@ -81,21 +77,13 @@ public class CourseService {
 							
 					return csRepo.save(newEntity);
 				}
-				// Subject code not found in database
-				throw new RecordNotFoundException("Subject record not found for given code");
+				// Course id not found
+				throw new RecordNotFoundException("Course record not exist for given id");
 			}
-			// Course id not found
-			throw new RecordNotFoundException("Course record not exist for given id");
+			// Create a new Course		
+			return csRepo.save(entity);
 		}
-		
-		// Create a new Course
-		if (entity.getSubject() != null && entity.getSubject().getCode() != null) {
-			
-			courseSubject = sbRepo.findByCode(entity.getSubject().getCode());
-			
-			if (courseSubject.isPresent()) { return csRepo.save(entity); }
-		}
-		throw new RecordNotFoundException("Subject record not exist for given code");
+		else { throw new SubjectException("Subject code not found"); }
 	}
 
 	@Transactional

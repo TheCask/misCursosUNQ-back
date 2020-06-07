@@ -12,6 +12,7 @@ import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Student;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
+import ar.edu.unq.misCursosUNQ.Exceptions.SubjectException;
 import ar.edu.unq.misCursosUNQ.Repos.LessonRepo;
  
 @Service
@@ -63,7 +64,7 @@ public class LessonService {
     }	
     
     @Transactional
-    public void deleteLessonById(Long id) throws RecordNotFoundException, SeasonException {
+    public void deleteLessonById(Long id) throws RecordNotFoundException, SeasonException, SubjectException {
         
     	Optional<Lesson> optEntity = lnRepo.findById(id);
          
