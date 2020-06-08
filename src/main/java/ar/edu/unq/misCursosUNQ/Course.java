@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,17 +29,28 @@ public class Course implements Serializable {
 	private static final long serialVersionUID = -1636249307802887638L;
 	
 	private Integer courseId;
+	
 	@Size(min = 1, max = 5)
 	private String courseCode;
-	@JsonIgnore // fullCode has to be decoupled between back and front
+	
+	@JsonIgnore // fullCode is decoupled between back and front
 	private String 	courseFullCode;
+	
+	@Size(min = 1, max = 10)
 	private String 	courseShift;
+	
 	private Boolean courseIsOpen;
-	private Subject subject;
+	
+	@Min(2000) @Max(2100)
 	private Integer courseYear;
+	
 	@Size(min = 2, max = 2)
 	private String courseSeason;
+	
+	@Size(min = 1, max = 20)
 	private String courseLocation;
+	
+	private Subject subject;
 	
 //	private LocalDate courseBeginDay; 
 //	private LocalDate courseEndDay;

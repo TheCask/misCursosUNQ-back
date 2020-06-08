@@ -5,6 +5,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import java.io.Serializable;
 
 @Entity
@@ -13,10 +16,20 @@ public class PersonalData implements Serializable {
 	private static final long serialVersionUID = -2414154033870368530L;
 	
 	private Integer personalDataId;
+	
 	private Integer dni;
+	
+	@Size(max = 50)
 	private String firstName;
+	
+	@Size(max = 50)
 	private String lastName;
+	
+	@Size(max = 50)
+	@Pattern(regexp = "^$|^.*@.*\\..*$")
 	private String email;
+	
+	@Pattern(regexp = "^$|\\d{2,4}-\\d{6,8}")
 	private String cellPhone;
 
 	// Default constructor for Hibernate

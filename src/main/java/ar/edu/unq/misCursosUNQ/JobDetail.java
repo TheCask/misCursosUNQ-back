@@ -2,14 +2,14 @@ package ar.edu.unq.misCursosUNQ;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 public class JobDetail implements Serializable {
@@ -17,28 +17,46 @@ public class JobDetail implements Serializable {
 	private static final long serialVersionUID = -8986445721969296677L;
 	
 	private Integer jobDetailId;
-	private Long cuitNumber;
+	
+	@Pattern(regexp = "^$|\\d{2}-\\d{8}-\\d")
+	private String cuitNumber;
+	
+	@Size(max = 15)
 	private String category;
+	
+	@Size(max = 2)
 	private String grade; 
+	
+	@Size(max = 20)
 	private String dedication; 
+	
+	@Size(max = 20)
 	private String contractRelation; 
+	
+	@Min(0) @Max(50)
 	private Integer aditionalHours;
-	private String cvURL; 
+	
+	private String cvURL;
+	
 	private LocalDate lastUpdate;
-	private List<String> gradeTitles;
-	private List<String> posGradeTitles;
+	
+	@Size(max = 200)
+	private String gradeTitles;
+	
+	@Size(max = 200)
+	private String posGradeTitles;
 	
 	public JobDetail() {
-		this.setCuitNumber(0L);
+		this.setCuitNumber("");
 		this.setCategory("");
 		this.setGrade("");
 		this.setDedication("");
 		this.setContractRelation("");
 		this.setAditionalHours(0);
 		this.setCvURL("");
-		this.setLastUpdate(LocalDate.ofEpochDay(0));
-		this.setGradeTitles(new ArrayList<String>());
-		this.setPosGradeTitles(new ArrayList<String>());
+		this.setLastUpdate(LocalDate.now());
+		this.setGradeTitles("");
+		this.setPosGradeTitles("");
 	}
 	
 	/* GETTERS & SETTERS */
@@ -50,9 +68,9 @@ public class JobDetail implements Serializable {
 	/* Protected to avoid set the primary key */
 	protected void setJobDetailId(Integer id) { this.jobDetailId = id; }
 	
-	public Long getCuitNumber() { return cuitNumber; }
+	public String getCuitNumber() { return cuitNumber; }
 	
-	public void setCuitNumber(Long cuitNumber) { this.cuitNumber = cuitNumber; }
+	public void setCuitNumber(String cuitNumber) { this.cuitNumber = cuitNumber; }
 	
 	public String getCategory() { return category; }
 	
@@ -60,7 +78,7 @@ public class JobDetail implements Serializable {
 	
 	public String getGrade() { return grade; }
 	
-	public void setGrade(String grade) { this.grade = grade; }
+	public void setGrade(String grade) { this.grade = grade.toUpperCase(); }
 	
 	public String getDedication() { return dedication; }
 	
@@ -82,26 +100,15 @@ public class JobDetail implements Serializable {
 	
 	public void setLastUpdate(LocalDate lastUpdate) { this.lastUpdate = lastUpdate; }
 	
-    @ElementCollection
-	public List<String> getGradeTitles() { return gradeTitles; }
+	public String getGradeTitles() { return gradeTitles; }
 	
-	public void setGradeTitles(List<String> gradeTitles) { this.gradeTitles = gradeTitles; }
+	public void setGradeTitles(String gradeTitles) { this.gradeTitles = gradeTitles; }
 	
-    @ElementCollection
-	public List<String> getPosGradeTitles() { return posGradeTitles; }
+	public String getPosGradeTitles() { return posGradeTitles; }
 	
-	public void setPosGradeTitles(List<String> posGradeTitles) { this.posGradeTitles = posGradeTitles; }
+	public void setPosGradeTitles(String posGradeTitles) { this.posGradeTitles = posGradeTitles; }
 
-	
 	/* METHODS */
-	
-	public void addGradeTitle(String aTitle) { this.getGradeTitles().add(aTitle); }
-	
-	public void removeGradeTitle(String aTitle) { this.getGradeTitles().remove(aTitle);	}
-	
-	public void addPosGradeTitle(String aTitle) { this.getPosGradeTitles().add(aTitle); }
-	
-	public void removePosGradeTitle(String aTitle) { this.getPosGradeTitles().remove(aTitle);	}
 	
 	@Override
     public boolean equals(Object o) {
