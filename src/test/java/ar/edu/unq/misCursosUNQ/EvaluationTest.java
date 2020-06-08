@@ -18,8 +18,8 @@ public class EvaluationTest {
 	Evaluation otherEvaluation;
 	String anInstanceName;
 	String otherInstanceName;
-	Float calification;
-	Float otherCalification;
+	Float note;
+	Float otherNote;
 	
 	@Mock
 	Student studentMock;
@@ -30,29 +30,33 @@ public class EvaluationTest {
 		otherInstanceName = "Segundo Parcial";
 		anEvaluation = new Evaluation(anInstanceName);
 		otherEvaluation = new Evaluation(otherInstanceName);
-		calification = 7f;
-		otherCalification = 3f; 
+		note = 7f;
+		otherNote= 3f; 
 		
-		anEvaluation.setStudentCalification(studentMock, calification);
+		anEvaluation.setStudentNote(studentMock, note);
 		
 	}
 	
 	@Test
     public void getCalificationOfStudent() {
 		
-		assertThat(anEvaluation.getAttendantStudentCalificationMap())
+		assertThat(anEvaluation.getCalifications())
 			.isNotEmpty()
-			.containsEntry(studentMock, calification);	
+			.anyMatch(cl ->
+				cl.getStudent().equals(studentMock) &&
+				cl.getNote().equals(note));
 	}
 	
 	@Test
     public void updateCalificationOfStudent() {
 		
-		anEvaluation.replaceStudentCalification(studentMock, otherCalification);
+		anEvaluation.replaceStudentCalification(studentMock, otherNote);
 		
-		assertThat(anEvaluation.getAttendantStudentCalificationMap())
+		assertThat(anEvaluation.getCalifications())
 			.isNotEmpty()
-			.containsEntry(studentMock, otherCalification);	
+			.anyMatch(cl ->
+				cl.getStudent().equals(studentMock) &&
+				cl.getNote().equals(otherNote));	
 	}
 	
 	@Test
@@ -60,11 +64,7 @@ public class EvaluationTest {
 		
 		anEvaluation.deleteStudentCalification(studentMock);
 		
-		assertThat(anEvaluation.getAttendantStudentCalificationMap()
-			.isEmpty());
-		
-		assertFalse(anEvaluation.getAttendantStudentCalificationMap()
-				.containsKey(studentMock));
+		assertThat(anEvaluation.getCalifications().isEmpty());
 	}
 
 }

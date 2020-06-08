@@ -1,14 +1,15 @@
 package ar.edu.unq.misCursosUNQ;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.persistence.ElementCollection;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Evaluation implements Serializable{
@@ -17,15 +18,19 @@ public class Evaluation implements Serializable{
 	
 	private Long evaluationId;
 	private String instanceName;
-	private Map<Student, Float> attendantStudentCalificationMap;
+	
+	@JsonIgnoreProperties({"takenCourses", "attendedLessons", "careers", "personalData"})
+	private List<Calification> califications;
 	
 	public Evaluation() {}
 	
 	public Evaluation(String instanceName) {
 		this.setInstanceName(instanceName);
-		this.setAttendantStudentCalificationMap(new HashMap<Student, Float>());
+		this.setCalifications(new ArrayList<Calification>());
 	}
 
+	/* GETTERS & SETTERS */
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getEvaluationId() { return evaluationId; }
@@ -37,30 +42,30 @@ public class Evaluation implements Serializable{
 
 	public void setInstanceName(String instanceName) { this.instanceName = instanceName; }
 
-	//@Column
-    @ElementCollection
-	public Map<Student, Float> getAttendantStudentCalificationMap() { return attendantStudentCalificationMap; }
+	@OneToMany
+	public List<Calification> getCalifications() { return califications; }
 
     // Not allowed to set califications map directly because database corruption
-    private void setAttendantStudentCalificationMap(Map<Student, Float> attendantStudentCalificationMap) { 
-		this.attendantStudentCalificationMap = attendantStudentCalificationMap; 
+    private void setCalifications(List<Calification> califications) { 
+		this.califications = califications; 
 	}
     
     /* METHODS */
     
-    public void setStudentCalification(Student student, Float calification) {
-		attendantStudentCalificationMap.put(student, calification);
-		
+    public void setStudentNote(Student student, Float note) {
+		Calification calification = new Calification(student, note);
+    	this.getCalifications().add(calification);
+  	
 	}
     
-    public void replaceStudentCalification(Student student, Float calification) {
-		attendantStudentCalificationMap.replace(student, calification);
-		
+    public void replaceStudentCalification(Student student, Float note) {
+		if (this.deleteStudentCalification(student)) {
+			this.setStudentNote(student, note);
+		}
 	}
     
-    public void deleteStudentCalification(Student student) {
-		attendantStudentCalificationMap.remove(student);
-		
+    public Boolean deleteStudentCalification(Student student) {
+    	return this.getCalifications().removeIf(cl -> cl.getStudent().equals(student));
 	}
     
     @Override

@@ -17,8 +17,6 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import ar.edu.unq.misCursosUNQ.Exceptions.LessonException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 
@@ -53,8 +51,8 @@ public class Course implements Serializable {
 	@JsonIgnoreProperties({"course", "attendantStudents"})
 	private List<Lesson> lessons;
 
-//	@JsonIgnoreProperties({"attendantStudentCalificationMap"})	
-//	private List<Evaluation> evaluations;
+	@JsonIgnoreProperties({"attendantStudentCalificationMap"})	
+	private List<Evaluation> evaluations;
 
 	//	private List<CourseDaySchedule> weekSchedule;
 
@@ -73,7 +71,8 @@ public class Course implements Serializable {
 		this.teachers = new ArrayList<User>();
 		this.students = new ArrayList<Student>();
 		this.lessons = new ArrayList<Lesson>();
-//		this.evaluations = new ArrayList<Evaluation>();
+		this.evaluations = new ArrayList<Evaluation>();
+//		this.weekSchedule = new ArrayList<CourseDaySchedule>();
 	}
 	
 	/* GETTERS & SETTERS */
@@ -105,11 +104,11 @@ public class Course implements Serializable {
 	// Not allowed to set teachers directly because database corruption
 	protected void setTeachers(List<User> teachers) { this.teachers = teachers; }
 	
-//	@OneToMany
-//	public List<Evaluation> getEvaluations() { return evaluations; }
-//
-//	// Not allowed to set evaluations directly because database corruption
-//	protected void setEvaluations(List<Evaluation> evaluations) { this.evaluations = evaluations; }
+	@OneToMany
+	public List<Evaluation> getEvaluations() { return evaluations; }
+
+	// Not allowed to set evaluations directly because database corruption
+	protected void setEvaluations(List<Evaluation> evaluations) { this.evaluations = evaluations; }
 	
 	/*
 	@OneToMany

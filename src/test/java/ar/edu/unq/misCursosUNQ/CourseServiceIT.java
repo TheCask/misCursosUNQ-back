@@ -21,9 +21,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 import ar.edu.unq.misCursosUNQ.Repos.CourseRepo;
-import ar.edu.unq.misCursosUNQ.Repos.SubjectRepo;
 import ar.edu.unq.misCursosUNQ.Services.CourseService;
 import ar.edu.unq.misCursosUNQ.Services.StudentService;
+import ar.edu.unq.misCursosUNQ.Services.SubjectService;
 import ar.edu.unq.misCursosUNQ.Services.UserService;
 
 @ExtendWith(SpringExtension.class)
@@ -38,13 +38,13 @@ class CourseServiceIT {
 	logger.info("Users: -> {}", userService.getUsers().toString());
 	*/
 	
-	 @TestConfiguration
-	 static class CourseServiceTestContextConfiguration {
+	@TestConfiguration
+	static class CourseServiceTestContextConfiguration {
 
-		 @Bean
-		 public CourseService csService() {
-			 return new CourseService();
-		 }
+		@Bean
+		public CourseService csService() {
+			return new CourseService();
+		}
     }
  
     @Autowired
@@ -57,10 +57,10 @@ class CourseServiceIT {
     private UserService usService;
     
     @MockBean
-    private CourseRepo csRepo;
+    private SubjectService sjService;
     
     @MockBean
-    private SubjectRepo sjRepo;
+    private CourseRepo csRepo;
     
     @Mock
 	Subject subjectMock; 
