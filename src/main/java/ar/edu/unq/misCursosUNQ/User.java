@@ -60,36 +60,51 @@ public class User implements Serializable {
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	public List<Subject> getCoordinatedSubjects() { return coordinatedSubjects; }
 	
-	public void setCoordinatedSubjects(List<Subject> coordinatedSubjects) { this.coordinatedSubjects= coordinatedSubjects; }
+	// Not allowed to set subjects directly because database corruption
+	protected void setCoordinatedSubjects(List<Subject> coordinatedSubjects) { this.coordinatedSubjects= coordinatedSubjects; }
 	
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	public List<Course> getTaughtCourses() { return taughtCourses; }
 
-	// Not allowed to set lessons directly because database corruption
-	private void setTaughtCourses(List<Course> courses) { this.taughtCourses = courses; }
+	// Not allowed to set courses directly because database corruption
+	protected void setTaughtCourses(List<Course> courses) { this.taughtCourses = courses; }
 
 	/* METHODS */
 	
 	public void assignSubject(Subject subject) {
-		if (!this.coordinatedSubjects.contains(subject)) {
+		if (!this.isCoordinatedSubject(subject)) {
 			this.coordinatedSubjects.add(subject);
 		}
 	}
 	
 	public void unAssignSubject(Subject subject) { 
-		this.coordinatedSubjects.remove(subject);
+		if (this.isCoordinatedSubject(subject)) {
+			this.coordinatedSubjects.remove(subject);
+		}
 	}
 	
-	public void assignCourse(Course aCourse) {
-		this.taughtCourses.add(aCourse);
+	public void assignCourse(Course course) {
+		if (!this.isTaughtCourse(course)) {
+			this.taughtCourses.add(course);
+		}
 	}
 
 	public void unAssignCourse(Course course) { 
-		this.taughtCourses.remove(course);
+		if (this.isTaughtCourse(course)) {
+			this.taughtCourses.remove(course);
+		}
 	}
 	
 	public Boolean coordinatesSubjectWithCode(String code) {
 		return this.coordinatedSubjects.stream().anyMatch(sj -> sj.getCode().equals(code));
+	}
+	
+	public Boolean isCoordinatedSubject(Subject subject) {
+		return this.coordinatedSubjects.contains(subject);
+	}
+	
+	public Boolean isTaughtCourse(Course course) {
+		return this.taughtCourses.contains(course);
 	}
 	
 	// To print User basic details in logs.
