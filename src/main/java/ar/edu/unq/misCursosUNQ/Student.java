@@ -81,6 +81,10 @@ public class Student implements Serializable {
 		// Even if the student sing off this course, it will continue to have knowledge of assisted lessons 
 		this.takenCourses.remove(course);
 	}
+	
+	public Boolean isInscriptedInCourse(Course aCourse) {
+		return this.getTakenCourses().contains(aCourse);
+	}
 
 	public void attendLesson(Lesson aLesson) { this.attendedLessons.add(aLesson); }
 	
@@ -98,5 +102,5 @@ public class Student implements Serializable {
         if (!(o instanceof Student)) return false;
         return fileNumber != null && fileNumber.equals(((Student) o).getFileNumber());
     }
- 
+
 }

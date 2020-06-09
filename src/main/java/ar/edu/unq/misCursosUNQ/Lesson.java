@@ -15,6 +15,8 @@ import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import ar.edu.unq.misCursosUNQ.Exceptions.LessonException;
+
 @Entity
 public class Lesson implements Serializable{
 
@@ -25,7 +27,7 @@ public class Lesson implements Serializable{
 	@JsonIgnoreProperties({"lessons", "students", "teachers", "subject"})
 	private Course course;
 	
-//	private LocalDate lessonDay;
+	private LocalDate lessonDay;
 	
 	@JsonIgnoreProperties({"takenCourses", "attendedLessons", "careers"})
 	private List<Student> attendantStudents;
@@ -34,9 +36,11 @@ public class Lesson implements Serializable{
 	public Lesson() {}
 	
 	public Lesson(LocalDate aDay) {
-//		this.setLessonDay(aDay);
+		this.setLessonDay(aDay);
 		this.setAttendantStudents(new ArrayList<Student>());
 	}
+	
+	/* GETTERS & SETTERS */
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -44,11 +48,11 @@ public class Lesson implements Serializable{
 
 	/* Protected to avoid set the primary key */
 	protected void setLessonId(Long lessonId) { this.lessonId = lessonId; }
-/*
+
 	public LocalDate getLessonDay() { return lessonDay; }
 
 	public void setLessonDay(LocalDate day) { this.lessonDay = day; }
-*/
+
 	@ManyToMany
 	@OrderBy("fileNumber ASC")
 	public List<Student> getAttendantStudents() { return attendantStudents; }
@@ -60,22 +64,32 @@ public class Lesson implements Serializable{
 
 	public void setCourse(Course course) { this.course = course; }
 	
-	public void setAttendance(Student aStudent) {
+	/* METHODS */
+	
+	public void setAttendance(Student aStudent) throws LessonException {
 		// Check if the lesson course is among the taken courses of the student
-		if (aStudent.getTakenCourses().contains(this.getCourse())) {
-			this.attendantStudents.add(aStudent);
-			aStudent.attendLesson(this);
+		if (aStudent.isInscriptedInCourse(this.getCourse())) {
+			if (!this.studentAttended(aStudent)) {
+				this.attendantStudents.add(aStudent);
+				aStudent.attendLesson(this);
+			}
 		}
+		else { throw new LessonException("Student is not inscribed in lesson course"); }
 	}
 	
 	public void removeAttendance(Student aStudent) {
-		this.attendantStudents.remove(aStudent);
-		aStudent.unattendLesson(this);
+		if (this.attendantStudents.remove(aStudent)) {
+			aStudent.unattendLesson(this);
+		};
 	}
 	
 	public void removeAllAttendance() {
 		this.attendantStudents.forEach(st -> st.unattendLesson(this));
 		this.attendantStudents.clear();
+	}
+	
+	public Boolean studentAttended(Student student) {
+		return this.getAttendantStudents().contains(student);
 	}
 	
 	@Override

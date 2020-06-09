@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.edu.unq.misCursosUNQ.Course;
 import ar.edu.unq.misCursosUNQ.Lesson;
 import ar.edu.unq.misCursosUNQ.Student;
+import ar.edu.unq.misCursosUNQ.Exceptions.LessonException;
 import ar.edu.unq.misCursosUNQ.Exceptions.RecordNotFoundException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SubjectException;
@@ -88,7 +89,7 @@ public class LessonService {
 				Student dbStudent = stService.getStudentByFileNumber(st.getFileNumber());
 				dbLesson.setAttendance(dbStudent);
 			} 
-			catch (RecordNotFoundException e) { e.printStackTrace(); }
+			catch (RecordNotFoundException | LessonException e) { e.printStackTrace(); }
 		});
 	}
 }
