@@ -58,13 +58,13 @@ public class Student implements Serializable {
 	public List<Course> getTakenCourses() { return takenCourses; }
 
 	// Not allowed to set courses directly because database corruption
-	public void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }
+	protected void setTakenCourses(List<Course> courses) { this.takenCourses = courses; }
 
 	@ManyToMany(mappedBy = "attendantStudents", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	public List<Lesson> getAttendedLessons() { return attendedLessons; }
 
 	// Not allowed to set lessons directly because database corruption
-	private void setAttendedLessons(List<Lesson> attendedLessons) { this.attendedLessons = attendedLessons; }
+	protected void setAttendedLessons(List<Lesson> attendedLessons) { this.attendedLessons = attendedLessons; }
 	
     @ElementCollection
 	public List<String> getCareers() { return careers; }
@@ -74,21 +74,40 @@ public class Student implements Serializable {
 
 	/* METHODS */
 
-	public void signOnCurse(Course aCourse) { this.takenCourses.add(aCourse); }
+	public void signOnCurse(Course aCourse) { 
+		if (!this.isInscriptedInCourse(aCourse)) {
+			this.takenCourses.add(aCourse); 
+		}
+	}
+		
 
-	public void signOffCurse(Course course) {
+	public void signOffCurse(Course aCourse) {
 		// Note that this method is not removing the student attended lessons of this course
-		// Even if the student sing off this course, it will continue to have knowledge of assisted lessons 
-		this.takenCourses.remove(course);
+				// Even if the student sing off this course, it will continue to have knowledge of assisted lessons
+		if (this.isInscriptedInCourse(aCourse)) {
+			this.takenCourses.remove(aCourse);
+		}
 	}
 	
 	public Boolean isInscriptedInCourse(Course aCourse) {
 		return this.getTakenCourses().contains(aCourse);
 	}
 
-	public void attendLesson(Lesson aLesson) { this.attendedLessons.add(aLesson); }
+	public void attendLesson(Lesson aLesson) { 
+		if (!this.isAttendedLesson(aLesson)) {
+			this.attendedLessons.add(aLesson); 
+		}
+	}
+		
+	public void unattendLesson(Lesson aLesson) { 
+		if (this.isAttendedLesson(aLesson)) {
+			this.attendedLessons.remove(aLesson);
+		}
+	}
 	
-	public void unattendLesson(Lesson aLesson) { this.attendedLessons.remove(aLesson); }
+	public Boolean isAttendedLesson(Lesson aLesson) {
+		return this.getAttendedLessons().contains(aLesson);
+	}
 	
 	// To print User basic details in logs.
 	@Override

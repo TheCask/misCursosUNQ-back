@@ -26,12 +26,6 @@ public class UserTest {
 	Integer dNI = 12345678;
 	
 	@Mock
-	PersonalData personalDataMock;
-	
-	@Mock
-	JobDetail jobDetailMock;
-	
-	@Mock
 	Subject assignedSubjectMock;
 	
 	@Mock
@@ -51,16 +45,9 @@ public class UserTest {
 
 	@BeforeEach
 	public void setup() {
-		aUser = new User();
-		aUser.setJobDetail(jobDetailMock);
-		aUser.setPersonalData(personalDataMock);
+		aUser = new User(firstName, lastName, email, dNI);
 		aUser.setCoordinatedSubjects(subjectListMock);
 		aUser.setTaughtCourses(courseListMock);
-		
-		Mockito.when(personalDataMock.getDni()).thenReturn(dNI);
-		Mockito.when(personalDataMock.getFirstName()).thenReturn(firstName);
-		Mockito.when(personalDataMock.getLastName()).thenReturn(lastName);
-		Mockito.when(personalDataMock.getEmail()).thenReturn(email);
 		
 		Mockito.when(subjectListMock.contains(assignedSubjectMock)).thenReturn(true);
 		Mockito.when(subjectListMock.contains(notAssignedSubjectMock)).thenReturn(false);
