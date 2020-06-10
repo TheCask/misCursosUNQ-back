@@ -13,4 +13,4 @@ install:
 #  - pip install codecov
 after_success:
 #  - codecov
-  - bash <(curl -s https://codecov.io/bash) -f build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml
+  - bash <(curl -s https://codecov.io/bash) -f target/site/jacoco/jacoco.xml
