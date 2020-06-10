@@ -1,12 +1,12 @@
 language: java
-dist: trusty
+#dist: trusty
 sudo: false
-script: "mvn clean cobertura:cobertura"
+#script: "mvn clean cobertura:cobertura"
 services:
   - mysql
 before_install:
   - mysql -e 'CREATE DATABASE misCursosUNQ;'
 install:
   - mvn clean install -Dmaven.compiler.target=1.8 -Dmaven.compiler.source=1.8
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+#after_success:
+#  - bash <(curl -s https://codecov.io/bash)
