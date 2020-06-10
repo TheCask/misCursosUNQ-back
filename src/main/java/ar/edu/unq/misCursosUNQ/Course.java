@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,7 +45,7 @@ public class Course implements Serializable {
 	@Min(2000) @Max(2100)
 	private Integer courseYear;
 	
-	@Size(min = 2, max = 2)
+	@Pattern(regexp = "^$|\\d\\w")
 	private String courseSeason;
 	
 	@Size(min = 1, max = 20)
@@ -146,10 +147,7 @@ public class Course implements Serializable {
 	
 	public String getCourseSeason() { return courseSeason; }
 	
-	public void setCourseSeason(String season) throws SeasonException { 
-		if (season.matches("\\d\\w")) { this.courseSeason = season.toUpperCase(); }
-		else { throw new SeasonException("Season format is one digit followed by one character"); }
-	}
+	public void setCourseSeason(String season) { this.courseSeason = season.toUpperCase(); }
 	
 	public String getCourseLocation() { return courseLocation; }
 

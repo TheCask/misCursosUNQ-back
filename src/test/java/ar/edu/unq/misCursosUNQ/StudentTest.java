@@ -153,7 +153,4 @@ public class StudentTest {
 		
 		Mockito.verify(lessonListMock, atMost(0)).remove(unAttendedLessonMock);
 	}
-	
-	
-	
 }
