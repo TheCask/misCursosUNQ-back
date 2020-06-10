@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/TheCask/misCursosUNQ-back.svg?branch=master)](https://travis-ci.org/TheCask/misCursosUNQ-back)
+[![codecov](https://codecov.io/gh/TheCask/misCursosUNQ-back/branch/master/graph/badge.svg)](https://codecov.io/gh/TheCask/misCursosUNQ-back)
 
 ---
 
