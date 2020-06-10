@@ -1,6 +1,7 @@
 language: java
 dist: trusty
-script: "mvn cobertura:cobertura"
+sudo: false
+script: "mvn clean cobertura:cobertura"
 services:
   - mysql
 before_install:
