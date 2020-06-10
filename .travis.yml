@@ -10,7 +10,7 @@ before_install:
   - mysql -e 'CREATE DATABASE misCursosUNQ;'
 install:
   - mvn clean install -Dmaven.compiler.target=1.8 -Dmaven.compiler.source=1.8
-  - pip install coveragepy
+  - pip install codecov
 after_success:
-#  - codecov
-   - bash <(curl -s https://codecov.io/bash)
+  - codecov
+#   - bash <(curl -s https://codecov.io/bash)
