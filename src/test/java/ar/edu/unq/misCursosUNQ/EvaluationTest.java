@@ -63,7 +63,7 @@ public class EvaluationTest {
 		
 		anEvaluation.deleteStudentCalification(studentMock);
 		
-		assertThat(anEvaluation.getCalifications().isEmpty());
+		assertThat(anEvaluation.getCalifications()).isEmpty();
 	}
 
 }

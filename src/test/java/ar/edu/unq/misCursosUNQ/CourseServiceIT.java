@@ -2,6 +2,7 @@ package ar.edu.unq.misCursosUNQ;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.jdbc.DataJdbcTest;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -64,7 +64,6 @@ class CourseServiceIT {
     
     @Mock
 	Subject subjectMock; 
-
     
     @BeforeEach
     public void setUp() {
@@ -75,7 +74,7 @@ class CourseServiceIT {
 	public void whenInvalidId_thenRaiseRecordNotFoundException() throws RecordNotFoundException {
     	Optional<Course> emptyOpt = Optional.empty();
      
-        Mockito.when(csRepo.findById(1)).thenReturn(emptyOpt);
+        when(csRepo.findById(1)).thenReturn(emptyOpt);
 	
         assertThatExceptionOfType(RecordNotFoundException.class)
         	.isThrownBy(() -> csService.getCourseById(1));  
@@ -83,14 +82,13 @@ class CourseServiceIT {
     
 	@Test
 	public void whenValidId_thenCourseShouldBeFound() throws RecordNotFoundException, SeasonException {
-		Mockito.when(subjectMock.getCode()).thenReturn("80000-CyT1y2");
+		when(subjectMock.getCode()).thenReturn("80000-CyT1y2");
 		
 		Course aCourse = new Course("sf17", subjectMock, 2020, "2c");
 		
     	Optional<Course> aCourseOpt = Optional.of(aCourse);
      
-        Mockito.when(csRepo.findById(aCourse.getCourseId()))
-          .thenReturn(aCourseOpt);
+        when(csRepo.findById(aCourse.getCourseId())).thenReturn(aCourseOpt);
 		
 		Course foundCourse = csService.getCourseById(aCourse.getCourseId());
 		

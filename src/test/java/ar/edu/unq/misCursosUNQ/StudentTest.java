@@ -4,6 +4,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
@@ -11,8 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -50,11 +50,11 @@ public class StudentTest {
 		aStudent.setTakenCourses(courseListMock);
 		aStudent.setAttendedLessons(lessonListMock);
 		
-		Mockito.when(lessonListMock.contains(attendedLessonMock)).thenReturn(true);
-		Mockito.when(lessonListMock.contains(unAttendedLessonMock)).thenReturn(false);
+		when(lessonListMock.contains(attendedLessonMock)).thenReturn(true);
+		when(lessonListMock.contains(unAttendedLessonMock)).thenReturn(false);
 		
-		Mockito.when(courseListMock.contains(takenCourseMock)).thenReturn(true);
-		Mockito.when(courseListMock.contains(notTakenCourseMock)).thenReturn(false);
+		when(courseListMock.contains(takenCourseMock)).thenReturn(true);
+		when(courseListMock.contains(notTakenCourseMock)).thenReturn(false);
 	}
 	
 	@Test
@@ -62,47 +62,47 @@ public class StudentTest {
 		aStudent.signOnCurse(takenCourseMock);
 		aStudent.signOnCurse(notTakenCourseMock);
 		
-		Mockito.verify(courseListMock).contains(takenCourseMock);
-		Mockito.verify(courseListMock).contains(notTakenCourseMock);
+		verify(courseListMock).contains(takenCourseMock);
+		verify(courseListMock).contains(notTakenCourseMock);
 	}
 	
 	@Test
     public void signOnCourseNotPreviouslyInscriptedAddsCourseToStudent() {
 		aStudent.signOnCurse(notTakenCourseMock);
 		
-		Mockito.verify(courseListMock).add(notTakenCourseMock);
+		verify(courseListMock).add(notTakenCourseMock);
 	}
 	
 	@Test
     public void signOnCoursePreviouslyAssignedDoesNothing() {
 		aStudent.signOnCurse(takenCourseMock);
 		
-		Mockito.verify(courseListMock, atMost(0)).add(takenCourseMock);
+		verify(courseListMock, atMost(0)).add(takenCourseMock);
 	}
 	
 	@Test
 	public void inscriptedCourseIsInscriptedCourse() {
 		
-		assertThat(aStudent.isInscriptedInCourse(takenCourseMock));
+		assertThat(aStudent.isInscriptedInCourse(takenCourseMock)).isTrue();
 	}
 	
 	@Test
 	public void notInscriptedCourseIsNotInscriptedCourse() {
-		assertThat(!aStudent.isInscriptedInCourse(notTakenCourseMock));
+		assertThat(aStudent.isInscriptedInCourse(notTakenCourseMock)).isFalse();
 	}
 	
 	@Test
     public void signOffCoursePreviouslyInscriptedRemovesCourseFromUser() {
 		aStudent.signOffCurse(takenCourseMock);
 		
-		Mockito.verify(courseListMock).remove(takenCourseMock);
+		verify(courseListMock).remove(takenCourseMock);
 	}
 	
 	@Test
     public void signOffCourseNotPreviouslyInscriptedDoesNothing() {
 		aStudent.signOffCurse(notTakenCourseMock);
 		
-		Mockito.verify(courseListMock, atMost(0)).remove(notTakenCourseMock);
+		verify(courseListMock, atMost(0)).remove(notTakenCourseMock);
 	}
 	
 	@Test
@@ -110,47 +110,47 @@ public class StudentTest {
 		aStudent.signOnCurse(takenCourseMock);
 		aStudent.signOnCurse(notTakenCourseMock);
 		
-		Mockito.verify(courseListMock).contains(takenCourseMock);
-		Mockito.verify(courseListMock).contains(notTakenCourseMock);
+		verify(courseListMock).contains(takenCourseMock);
+		verify(courseListMock).contains(notTakenCourseMock);
 	}
 	
 	@Test
     public void attendLessonNotPreviouslyAttendedAddsLessonToStudent() {
 		aStudent.attendLesson(unAttendedLessonMock);
 		
-		Mockito.verify(lessonListMock).add(unAttendedLessonMock);
+		verify(lessonListMock).add(unAttendedLessonMock);
 	}
 	
 	@Test
     public void attendLessonPreviouslyAttendedDoesNothing() {
 		aStudent.attendLesson(attendedLessonMock);
 		
-		Mockito.verify(lessonListMock, atMost(0)).add(attendedLessonMock);
+		verify(lessonListMock, atMost(0)).add(attendedLessonMock);
 	}
 	
 	@Test
 	public void attendLessonIsAttendedLesson() {
 		
-		assertThat(aStudent.isAttendedLesson(attendedLessonMock));
+		assertThat(aStudent.isAttendedLesson(attendedLessonMock)).isTrue();
 	}
 	
 	@Test
 	public void unAttendLessonIsNotAttendedLesson() {
 		
-		assertThat(!aStudent.isAttendedLesson(unAttendedLessonMock));
+		assertThat(aStudent.isAttendedLesson(unAttendedLessonMock)).isFalse();
 	}
 	
 	@Test
     public void unAssignCoursePreviouslyAssignedRemovesCourseFromUser() {
 		aStudent.unattendLesson(attendedLessonMock);
 		
-		Mockito.verify(lessonListMock).remove(attendedLessonMock);
+		verify(lessonListMock).remove(attendedLessonMock);
 	}
 	
 	@Test
     public void unAssignCourseNotPreviouslyAssignedDoesNothing() {
 		aStudent.unattendLesson(unAttendedLessonMock);
 		
-		Mockito.verify(lessonListMock, atMost(0)).remove(unAttendedLessonMock);
+		verify(lessonListMock, atMost(0)).remove(unAttendedLessonMock);
 	}
 }

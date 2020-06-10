@@ -80,7 +80,7 @@ public class Lesson implements Serializable{
 	public void removeAttendance(Student aStudent) {
 		if (this.attendantStudents.remove(aStudent)) {
 			aStudent.unattendLesson(this);
-		};
+		}
 	}
 	
 	public void removeAllAttendance() {
@@ -98,5 +98,11 @@ public class Lesson implements Serializable{
         if (!(o instanceof Lesson)) return false;
         return lessonId != null && lessonId.equals(((Lesson) o).lessonId);
     }
+
+	// TODO TEST
+	public Boolean checkAttendedStudentsAreInscriptedInCourse(Course course) {
+		return this.getAttendantStudents().stream()
+				.allMatch(st -> st.isInscriptedInCourse(course));
+	}
 
 }

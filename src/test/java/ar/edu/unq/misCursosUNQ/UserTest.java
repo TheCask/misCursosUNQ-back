@@ -4,6 +4,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
@@ -11,8 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -49,11 +49,11 @@ public class UserTest {
 		aUser.setCoordinatedSubjects(subjectListMock);
 		aUser.setTaughtCourses(courseListMock);
 		
-		Mockito.when(subjectListMock.contains(assignedSubjectMock)).thenReturn(true);
-		Mockito.when(subjectListMock.contains(notAssignedSubjectMock)).thenReturn(false);
+		when(subjectListMock.contains(assignedSubjectMock)).thenReturn(true);
+		when(subjectListMock.contains(notAssignedSubjectMock)).thenReturn(false);
 		
-		Mockito.when(courseListMock.contains(assignedCourseMock)).thenReturn(true);
-		Mockito.when(courseListMock.contains(notAssignedCourseMock)).thenReturn(false);
+		when(courseListMock.contains(assignedCourseMock)).thenReturn(true);
+		when(courseListMock.contains(notAssignedCourseMock)).thenReturn(false);
 	}
 	
 	@Test
@@ -61,48 +61,48 @@ public class UserTest {
 		aUser.assignSubject(assignedSubjectMock);
 		aUser.assignSubject(notAssignedSubjectMock);
 		
-		Mockito.verify(subjectListMock).contains(assignedSubjectMock);
-		Mockito.verify(subjectListMock).contains(notAssignedSubjectMock);
+		verify(subjectListMock).contains(assignedSubjectMock);
+		verify(subjectListMock).contains(notAssignedSubjectMock);
 	}
 	
 	@Test
     public void assignSubjectNotPreviouslyAssignedAddsSubjectToUser() {
 		aUser.assignSubject(notAssignedSubjectMock);
 		
-		Mockito.verify(subjectListMock).add(notAssignedSubjectMock);
+		verify(subjectListMock).add(notAssignedSubjectMock);
 	}
 	
 	@Test
     public void assignSubjectPreviouslyAssignedDoesNothing() {
 		aUser.assignSubject(assignedSubjectMock);
 		
-		Mockito.verify(subjectListMock, atMost(0)).add(assignedSubjectMock);
+		verify(subjectListMock, atMost(0)).add(assignedSubjectMock);
 	}
 	
 	@Test
 	public void assignedSubjectIsCoordinatedSubject() {
 		
-		assertThat(aUser.isCoordinatedSubject(assignedSubjectMock));
+		assertThat(aUser.isCoordinatedSubject(assignedSubjectMock)).isTrue();
 	}
 	
 	@Test
 	public void unAssignedSubjectIsNotCoordinatedSubject() {
 		
-		assertThat(!aUser.isCoordinatedSubject(notAssignedSubjectMock));
+		assertThat(aUser.isCoordinatedSubject(notAssignedSubjectMock)).isFalse();
 	}
 	
 	@Test
     public void unAssignSubjectPreviouslyAssignedRemovesSubjectFromUser() {
 		aUser.unAssignSubject(assignedSubjectMock);
 		
-		Mockito.verify(subjectListMock).remove(assignedSubjectMock);
+		verify(subjectListMock).remove(assignedSubjectMock);
 	}
 	
 	@Test
     public void unAssignSubjectNotPreviouslyAssignedDoesNothing() {
 		aUser.unAssignSubject(notAssignedSubjectMock);
 		
-		Mockito.verify(subjectListMock, atMost(0)).remove(notAssignedSubjectMock);
+		verify(subjectListMock, atMost(0)).remove(notAssignedSubjectMock);
 	}
 	
 	@Test
@@ -110,48 +110,48 @@ public class UserTest {
 		aUser.assignCourse(assignedCourseMock);
 		aUser.assignCourse(notAssignedCourseMock);
 		
-		Mockito.verify(courseListMock).contains(assignedCourseMock);
-		Mockito.verify(courseListMock).contains(notAssignedCourseMock);
+		verify(courseListMock).contains(assignedCourseMock);
+		verify(courseListMock).contains(notAssignedCourseMock);
 	}
 	
 	@Test
     public void assignCourseNotPreviouslyAssignedAddsCourseToUser() {
 		aUser.assignCourse(notAssignedCourseMock);
 		
-		Mockito.verify(courseListMock).add(notAssignedCourseMock);
+		verify(courseListMock).add(notAssignedCourseMock);
 	}
 	
 	@Test
     public void assignCoursePreviouslyAssignedDoesNothing() {
 		aUser.assignCourse(assignedCourseMock);
 		
-		Mockito.verify(courseListMock, atMost(0)).add(assignedCourseMock);
+		verify(courseListMock, atMost(0)).add(assignedCourseMock);
 	}
 	
 	@Test
 	public void assignedCourseIsCoordinatedCourse() {
 		
-		assertThat(aUser.isTaughtCourse(assignedCourseMock));
+		assertThat(aUser.isTaughtCourse(assignedCourseMock)).isTrue();
 	}
 	
 	@Test
 	public void unAssignedCourseIsNotCoordinatedCourse() {
 		
-		assertThat(!aUser.isTaughtCourse(notAssignedCourseMock));
+		assertThat(aUser.isTaughtCourse(notAssignedCourseMock)).isFalse();
 	}
 	
 	@Test
     public void unAssignCoursePreviouslyAssignedRemovesCourseFromUser() {
 		aUser.unAssignCourse(assignedCourseMock);
 		
-		Mockito.verify(courseListMock).remove(assignedCourseMock);
+		verify(courseListMock).remove(assignedCourseMock);
 	}
 	
 	@Test
     public void unAssignCourseNotPreviouslyAssignedDoesNothing() {
 		aUser.unAssignCourse(notAssignedCourseMock);
 		
-		Mockito.verify(courseListMock, atMost(0)).remove(notAssignedCourseMock);
+		verify(courseListMock, atMost(0)).remove(notAssignedCourseMock);
 	}
 	
 }

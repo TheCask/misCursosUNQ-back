@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import ar.edu.unq.misCursosUNQ.Exceptions.LessonException;
 import ar.edu.unq.misCursosUNQ.Exceptions.SeasonException;
 
@@ -74,12 +75,12 @@ public class Course implements Serializable {
 	protected Course() {}
 		
 	public Course(String aCode, Subject aSubject, Integer aYear, String aSeason) throws SeasonException {
-		this.setSubject(aSubject); // sets courseFullCode also
 		this.setCourseCode(aCode);
 		this.setCourseYear(aYear);
 		this.setCourseSeason(aSeason);
 		this.setCourseShift("");
 		this.setCourseIsOpen(true);
+		this.setSubject(aSubject); // sets courseFullCode also
 //		this.setCourseBeginDay(LocalDate.ofEpochDay(0)); // First Epoch day is 1970-01-01;
 //		this.setCourseEndDay(LocalDate.ofEpochDay(0));
 		this.teachers = new ArrayList<User>();
@@ -182,18 +183,17 @@ public class Course implements Serializable {
 	
 	/* METHODS */
 	
-	public Boolean addStudent(Student aStudent) {
-		Boolean addSt = !this.students.contains(aStudent);
-		if (addSt) {
+	public void addStudent(Student aStudent) {
+		if (!aStudent.isInscriptedInCourse(this)) {
 			this.students.add(aStudent);
 			aStudent.signOnCurse(this);
 		}
-		return addSt;
 	}
 	
 	public void removeStudent(Student aStudent) {	
-		this.students.remove(aStudent);
-		aStudent.signOffCurse(this);
+		if (this.students.remove(aStudent)) {
+			aStudent.signOffCurse(this);
+		}
 	}
 	
 	public void removeAllStudents() {
@@ -223,15 +223,11 @@ public class Course implements Serializable {
 	public void addLesson(Lesson aLesson) throws LessonException {	
 		// Evaluates if all students in lesson to add, are taken the present course. 
 		// Only in this case adds the lesson to the course.
-		if (aLesson.getAttendantStudents().stream()
-				.allMatch(st -> st.getTakenCourses()
-						.contains(this))) {
+		if (aLesson.checkAttendedStudentsAreInscriptedInCourse(this)) {
 			this.lessons.add(aLesson);
 			aLesson.setCourse(this);
 		}
-		else {
-			throw new LessonException("There are at least one attendant student not taken this course");
-		}
+		else { throw new LessonException("There are at least one attendant student not taken this course"); }
 	}
 	
 	public void removeLesson(Lesson aLesson) {
@@ -253,6 +249,10 @@ public class Course implements Serializable {
 		});
 		this.lessons.clear();
 	}
+	
+//	public Boolean isStudentInscripted(Student student) {
+//		return this.getStudents().contains(student);
+//	}
 	
 	// To print subject basic details in logs.
 	@Override
