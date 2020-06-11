@@ -14,3 +14,4 @@ install:
 after_success:
 #  - codecov
   - bash <(curl -s https://codecov.io/bash) -f target/site/jacoco/jacoco.xml
+  - bash <(curl -Ls https://coverage.codacy.com/get.sh)
