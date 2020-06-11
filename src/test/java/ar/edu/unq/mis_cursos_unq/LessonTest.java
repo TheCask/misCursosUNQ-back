@@ -5,19 +5,21 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ar.edu.unq.mis_cursos_unq.exceptions.LessonException;
 
-import static org.mockito.Mockito.atMost;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.Mock;
+
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -67,7 +69,7 @@ public class LessonTest {
 	@Test
 	public void setAttendanceOfNonIncriptedStudentThrowsException() {
 	    
-		Exception exception = Assertions.assertThrows(LessonException.class, () -> {
+		Exception exception = assertThrows(LessonException.class, () -> {
 			aLesson.setAttendance(nonInscriptedStudentMock);
 		});
 		
@@ -136,6 +138,6 @@ public class LessonTest {
 		stList.add(otherInscriptedStudentMock);
 		when(courseMock.getStudents()).thenReturn(stList);
 		
-		aLesson.attendedStudentsAreInscriptedInCourse(courseMock);
+		assertThat(aLesson.attendedStudentsAreInscriptedInCourse(courseMock)).isTrue();
 	}
 }

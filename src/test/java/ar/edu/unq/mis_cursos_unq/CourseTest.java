@@ -8,12 +8,14 @@ import ar.edu.unq.mis_cursos_unq.exceptions.SeasonException;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import static org.assertj.core.api.Assertions.*;
+
+import org.mockito.Mock;
 import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -54,8 +56,8 @@ public class CourseTest {
 	@Mock
 	private User teachingTeacherMock;
 	
-	@Mock
-	private List<Student> attendedlessonStudentListMock;
+//	@Mock
+//	private List<Student> attendedlessonStudentListMock;
 	
 	@Mock
 	private List<Student> courseStudentListMock;
@@ -379,7 +381,7 @@ public class CourseTest {
 	public void addLessonWithAttendStudentNotInCourseThrowsException() {
 		when(lessonMock.attendedStudentsAreInscriptedInCourse(aCourse)).thenReturn(false);
 		
-		Exception exception = Assertions.assertThrows(LessonException.class, () -> {
+		Exception exception =  assertThrows(LessonException.class, () -> {
 			aCourse.addLesson(lessonMock);
 		});
 		

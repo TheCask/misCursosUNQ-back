@@ -39,40 +39,38 @@ class CourseServiceIT {
 	logger.info("Users: -> {}", userService.getUsers().toString());
 	*/
 	
-	@TestConfiguration
-	static class CourseServiceTestContextConfiguration {
-
-		@Bean
-		public CourseService csService() {
-			return new CourseService();
-		}
-    }
- 
-    @Autowired
+	@Autowired
     private CourseService csService;
-    
-    @MockBean
-    private StudentService stService;
-    
-    @MockBean
-    private UserService usService;
-    
-    @MockBean
-    private SubjectService sjService;
-    
+	
     @MockBean
     private CourseRepo csRepo;
     
     @Mock
-    private Subject subjectMock; 
-    
-    @BeforeEach
-    public void setUp() {
-    	
+    private Subject subjectMock;
+	
+	@TestConfiguration
+	static class CourseServiceTestContextConfiguration {
+
+		@Bean
+		public CourseService csService() { return new CourseService(); }
+		
+		@MockBean
+	    private StudentService stService;
+	    
+	    @MockBean
+	    private UserService usService;
+	    
+	    @MockBean
+	    private SubjectService sjService;
     }
+	
+	@BeforeEach
+	public void setUp() {
+	    // Empty Body
+	}
     
     @Test
-	public void whenInvalidId_thenRaiseRecordNotFoundException() throws RecordNotFoundException {
+	public void whenInvalidIdThenRaiseRecordNotFoundException() throws RecordNotFoundException {
     	Optional<Course> emptyOpt = Optional.empty();
      
         when(csRepo.findById(1)).thenReturn(emptyOpt);
@@ -82,7 +80,7 @@ class CourseServiceIT {
 	}
     
 	@Test
-	public void whenValidId_thenCourseShouldBeFound() throws RecordNotFoundException, SeasonException {
+	public void whenValidIdThenCourseShouldBeFound() throws RecordNotFoundException, SeasonException {
 		when(subjectMock.getCode()).thenReturn("80000-CyT1y2");
 		
 		Course aCourse = new Course("sf17", subjectMock, 2020, "2c");

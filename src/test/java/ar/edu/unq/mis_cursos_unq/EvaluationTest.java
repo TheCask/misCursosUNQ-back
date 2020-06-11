@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.*;
 public class EvaluationTest {
     
 	private Evaluation anEvaluation;
-	private String anInstanceName;
 	private Float note;
 	private Float otherNote;
 	
@@ -23,8 +22,7 @@ public class EvaluationTest {
 
 	@BeforeEach
 	public void setUp() {
-		anInstanceName = "Primer Parcial";
-		anEvaluation = new Evaluation(anInstanceName);
+		anEvaluation = new Evaluation("Primer Parcial");
 		note = 7f;
 		otherNote= 3f; 
 		

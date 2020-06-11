@@ -23,7 +23,8 @@ public class DataBaseLoader implements CommandLineRunner  {
 	private SubjectService sbService;
 	
 	@Autowired
-	public DataBaseLoader(StudentRepo aStRepo) {
+	public DataBaseLoader() {
+		// Empty Body
 	}
 
 	@Override
