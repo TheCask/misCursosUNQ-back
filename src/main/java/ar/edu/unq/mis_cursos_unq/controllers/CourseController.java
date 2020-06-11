@@ -83,4 +83,10 @@ public class CourseController {
         return new ResponseEntity<String>("Student " + studentId + " has been successfully deleted from course " + courseId, new HttpHeaders(), HttpStatus.OK);
     }
     
+    @DeleteMapping("course/{courseId}/{teacherId}")
+    public ResponseEntity<String> deleteCourseTeacherById(@PathVariable("courseId") Integer courseId, @PathVariable("teacherId") Integer teacherId ) throws RecordNotFoundException {
+        csService.deleteCourseTeacherById(courseId, teacherId);
+        return new ResponseEntity<String>("Teacher " + teacherId + " has been successfully deleted from course " + courseId, new HttpHeaders(), HttpStatus.OK);
+    }
+    
 }
