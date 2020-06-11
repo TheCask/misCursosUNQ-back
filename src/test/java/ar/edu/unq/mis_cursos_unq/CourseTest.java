@@ -5,7 +5,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ar.edu.unq.mis_cursos_unq.exceptions.LessonException;
 import ar.edu.unq.mis_cursos_unq.exceptions.SeasonException;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,9 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.mockito.Mock;
 import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -33,6 +35,9 @@ public class CourseTest {
 //	private String courseLocation = "San Fernando";
 	
 	private Course aCourse;
+	
+	@Mock
+	private Course courseMock;
 	
 	@Mock
 	private Subject subjectMock;
@@ -393,5 +398,119 @@ public class CourseTest {
 	    assertThat(actualMessage).isEqualTo(expectedMessage);
 	}
 	
+	@Test
+	public void removeLessonPreviouslyAddedRemovesLessonFromCourse() throws LessonException {
+		aCourse.addLesson(lessonMock);
+		aCourse.removeLesson(lessonMock);
+		
+		assertThat(aCourse.getLessons()).isEmpty();
+	}
 	
+	@Test
+	public void removeLessonPreviouslyAddedSetCourseFromLessonNull() throws LessonException {
+		aCourse.addLesson(lessonMock);
+		aCourse.removeLesson(lessonMock);
+		
+		verify(lessonMock).setCourse(null);
+	}
+	
+	@Test
+	public void removeLessonPreviouslyAddedRemovesAllAttendanceFromLesson() throws LessonException {
+		aCourse.addLesson(lessonMock);
+		aCourse.removeLesson(lessonMock);
+		
+		verify(lessonMock).removeAllAttendance();
+	}
+	
+	@Test
+	public void removeLessonNotInCourseDoesNothing() {
+		aCourse.removeLesson(lessonMock);
+		
+		verifyNoInteractions(lessonMock);
+		
+		// Replaces lesson list in course by a Mock list
+		aCourse.setLessons(lessonListMock);
+		
+		aCourse.removeLesson(lessonMock);
+		
+		verify(lessonListMock).remove(lessonMock);
+	}
+	
+	@Test
+	public void removeAllLessonsClearsLessonsFromCourse() {
+		List<Lesson> lessonList = new ArrayList<Lesson>();
+		Lesson otherLessonMock = mock(Lesson.class);
+		Lesson anotherLessonMock = mock(Lesson.class);
+		
+		// Lesson list has three lessons
+		lessonList.add(lessonMock);
+		lessonList.add(otherLessonMock);
+		lessonList.add(anotherLessonMock);
+		
+		aCourse.setLessons(lessonList);
+		
+		assertThat(aCourse.getLessons()).hasSize(3);
+		
+		aCourse.removeAllLessons();
+		
+		assertThat(aCourse.getLessons()).hasSize(0);
+	}
+
+	@Test
+	public void removeAllLessonsSetsAllCourseLessonsNull() {
+		List<Lesson> lessonList = new ArrayList<Lesson>();
+		
+		Lesson otherLessonMock = mock(Lesson.class);
+		Lesson anotherLessonMock = mock(Lesson.class);
+		
+		// Lesson list has three lessons
+		lessonList.add(lessonMock);
+		lessonList.add(otherLessonMock);
+		lessonList.add(anotherLessonMock);
+		
+		aCourse.setLessons(lessonList);
+		
+		assertThat(aCourse.getLessons()).hasSize(3);
+		
+		aCourse.removeAllLessons();
+		
+		verify(lessonMock).setCourse(null);
+		verify(otherLessonMock).setCourse(null);
+		verify(anotherLessonMock).setCourse(null);
+	}
+	
+	@Test
+	public void removeAllLessonsRemovesAllAttendnceForAllLessons() {
+		List<Lesson> lessonList = new ArrayList<Lesson>();
+		Lesson otherLessonMock = mock(Lesson.class);
+		Lesson anotherLessonMock = mock(Lesson.class);
+		
+		// Lesson list has three lessons
+		lessonList.add(lessonMock);
+		lessonList.add(otherLessonMock);
+		lessonList.add(anotherLessonMock);
+		
+		aCourse.setLessons(lessonList);
+		
+		assertThat(aCourse.getLessons()).hasSize(3);
+		
+		aCourse.removeAllLessons();
+		
+		verify(lessonMock).removeAllAttendance();
+		verify(otherLessonMock).removeAllAttendance();
+		verify(anotherLessonMock).removeAllAttendance();
+	}
+	
+	@Test
+	public void courseWithLessonReturnsTrueToContainsLesson() throws LessonException {
+		aCourse.addLesson(lessonMock);
+		
+		assertThat(aCourse.containsLesson(lessonMock)).isTrue();
+	}
+	
+	@Test
+	public void courseWithoutLessonReturnsFalseToContainsLesson() throws LessonException {
+		assertThat(aCourse.containsLesson(lessonMock)).isFalse();
+	}
+
 }

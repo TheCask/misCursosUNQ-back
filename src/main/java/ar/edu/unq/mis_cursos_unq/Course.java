@@ -244,19 +244,15 @@ public class Course implements Serializable {
 		}
 	}
 	
-	public void removeLessons(List<Lesson> lessonList) {
-		lessonList.forEach(ln -> this.removeLesson(ln));
-	}
-	
 	public void removeAllLessons() {
-		this.lessons.forEach(ln -> {
-			ln.setCourse(null); 
+		for(Lesson ln : this.getLessons()) {
+			ln.setCourse(null);
 			ln.removeAllAttendance();
-		});
-		this.lessons.clear();
+		}
+		this.getLessons().clear();
 	}
 	
-	private Boolean containsLesson(Lesson aLesson) {
+	protected Boolean containsLesson(Lesson aLesson) {
 		return this.getLessons().contains(aLesson);
 	}
 
