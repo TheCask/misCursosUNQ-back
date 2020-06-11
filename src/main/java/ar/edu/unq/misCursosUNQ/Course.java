@@ -186,50 +186,56 @@ public class Course implements Serializable {
 	public void addStudent(Student aStudent) {
 		if (!aStudent.isInscriptedInCourse(this)) {
 			this.students.add(aStudent);
-			aStudent.signOnCurse(this);
+			aStudent.signOnCourse(this);
 		}
 	}
 	
 	public void removeStudent(Student aStudent) {	
 		if (this.students.remove(aStudent)) {
-			aStudent.signOffCurse(this);
+			aStudent.signOffCourse(this);
 		}
 	}
 	
 	public void removeAllStudents() {
-		for(Student st : new ArrayList<>(students)) {
-			removeStudent(st);
+		for(Student st : this.getStudents()) {
+			st.signOffCourse(this);
 		}
+		this.getStudents().clear();
 	}
 	
 	public void addTeacher(User aTeacher) {	
-		if (!this.teachers.contains(aTeacher)) {
+		if (!aTeacher.isTaughtCourse(this)) {
 			this.teachers.add(aTeacher);
 			aTeacher.assignCourse(this);
 		}
 	}
 	
 	public void removeTeacher(User aTeacher) {	
-		this.teachers.remove(aTeacher);
-		aTeacher.unAssignCourse(this);
+		if (this.teachers.remove(aTeacher)) {
+			aTeacher.unAssignCourse(this);
+		}
 	}
 	
 	public void removeAllTeachers() {
-		for(User tc : new ArrayList<>(teachers)) {
-			removeTeacher(tc);
+		for(User tc : this.getTeachers()) {
+			tc.unAssignCourse(this);
 		}
+		this.getTeachers().clear();
 	}
 	
 	public void addLesson(Lesson aLesson) throws LessonException {	
 		// Evaluates if all students in lesson to add, are taken the present course. 
 		// Only in this case adds the lesson to the course.
-		if (aLesson.checkAttendedStudentsAreInscriptedInCourse(this)) {
-			this.lessons.add(aLesson);
-			aLesson.setCourse(this);
+		if (!this.containsLesson(aLesson)) {
+			if (aLesson.attendedStudentsAreInscriptedInCourse(this)) {
+				this.lessons.add(aLesson);
+				aLesson.setCourse(this);
+			}
+			else { throw new LessonException
+				("There are at least one attendant student not taken this course"); }
 		}
-		else { throw new LessonException("There are at least one attendant student not taken this course"); }
 	}
-	
+
 	public void removeLesson(Lesson aLesson) {
 		if (this.lessons.remove(aLesson)) { 
 			aLesson.setCourse(null);
@@ -250,10 +256,10 @@ public class Course implements Serializable {
 		this.lessons.clear();
 	}
 	
-//	public Boolean isStudentInscripted(Student student) {
-//		return this.getStudents().contains(student);
-//	}
-	
+	private Boolean containsLesson(Lesson aLesson) {
+		return this.getLessons().contains(aLesson);
+	}
+
 	// To print subject basic details in logs.
 	@Override
 	public String toString() {

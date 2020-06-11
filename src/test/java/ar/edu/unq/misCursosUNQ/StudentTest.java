@@ -59,8 +59,8 @@ public class StudentTest {
 	
 	@Test
     public void signOnCourseChecksForCoursesInStudent() {
-		aStudent.signOnCurse(takenCourseMock);
-		aStudent.signOnCurse(notTakenCourseMock);
+		aStudent.signOnCourse(takenCourseMock);
+		aStudent.signOnCourse(notTakenCourseMock);
 		
 		verify(courseListMock).contains(takenCourseMock);
 		verify(courseListMock).contains(notTakenCourseMock);
@@ -68,14 +68,14 @@ public class StudentTest {
 	
 	@Test
     public void signOnCourseNotPreviouslyInscriptedAddsCourseToStudent() {
-		aStudent.signOnCurse(notTakenCourseMock);
+		aStudent.signOnCourse(notTakenCourseMock);
 		
 		verify(courseListMock).add(notTakenCourseMock);
 	}
 	
 	@Test
     public void signOnCoursePreviouslyAssignedDoesNothing() {
-		aStudent.signOnCurse(takenCourseMock);
+		aStudent.signOnCourse(takenCourseMock);
 		
 		verify(courseListMock, atMost(0)).add(takenCourseMock);
 	}
@@ -93,22 +93,22 @@ public class StudentTest {
 	
 	@Test
     public void signOffCoursePreviouslyInscriptedRemovesCourseFromUser() {
-		aStudent.signOffCurse(takenCourseMock);
+		aStudent.signOffCourse(takenCourseMock);
 		
 		verify(courseListMock).remove(takenCourseMock);
 	}
 	
 	@Test
     public void signOffCourseNotPreviouslyInscriptedDoesNothing() {
-		aStudent.signOffCurse(notTakenCourseMock);
+		aStudent.signOffCourse(notTakenCourseMock);
 		
 		verify(courseListMock, atMost(0)).remove(notTakenCourseMock);
 	}
 	
 	@Test
     public void assignCourseChecksForCorseInUser() {
-		aStudent.signOnCurse(takenCourseMock);
-		aStudent.signOnCurse(notTakenCourseMock);
+		aStudent.signOnCourse(takenCourseMock);
+		aStudent.signOnCourse(notTakenCourseMock);
 		
 		verify(courseListMock).contains(takenCourseMock);
 		verify(courseListMock).contains(notTakenCourseMock);

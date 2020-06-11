@@ -92,17 +92,14 @@ public class Lesson implements Serializable{
 		return this.getAttendantStudents().contains(student);
 	}
 	
+	public Boolean attendedStudentsAreInscriptedInCourse(Course course) {
+		return course.getStudents().containsAll(this.getAttendantStudents());
+	}
+	
 	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Lesson)) return false;
         return lessonId != null && lessonId.equals(((Lesson) o).lessonId);
-    }
-
-	// TODO TEST
-	public Boolean checkAttendedStudentsAreInscriptedInCourse(Course course) {
-		return this.getAttendantStudents().stream()
-				.allMatch(st -> st.isInscriptedInCourse(course));
-	}
-
+    }	
 }

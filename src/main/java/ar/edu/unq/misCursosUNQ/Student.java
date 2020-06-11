@@ -75,14 +75,14 @@ public class Student implements Serializable {
 	/* METHODS */
 
 	// Not use directly to prevent data corruption
-	protected void signOnCurse(Course aCourse) { 
+	protected void signOnCourse(Course aCourse) { 
 		if (!this.isInscriptedInCourse(aCourse)) {
 			this.takenCourses.add(aCourse); 
 		}
 	}
 
 	// Not use directly to prevent data corruption
-	protected void signOffCurse(Course aCourse) {
+	protected void signOffCourse(Course aCourse) {
 		// Note that this method is not removing the student attended lessons of this course
 		// Even if the student sing off this course, it will continue to have knowledge of assisted lessons
 		if (this.isInscriptedInCourse(aCourse)) {

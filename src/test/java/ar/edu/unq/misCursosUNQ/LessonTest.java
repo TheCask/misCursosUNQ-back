@@ -10,6 +10,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -123,6 +126,16 @@ public class LessonTest {
 		verify(otherInscriptedStudentMock).unattendLesson(aLesson);
 	}
 	
-	
-   
+	@Test
+	public void attendedStudentsAreInscriptedInCourseReturnsTrueWithValidLesson() throws LessonException {
+		aLesson.setAttendance(inscriptedStudentMock);
+		aLesson.setAttendance(otherInscriptedStudentMock);
+		
+		List<Student> stList = new ArrayList<Student>();
+		stList.add(inscriptedStudentMock); 
+		stList.add(otherInscriptedStudentMock);
+		when(courseMock.getStudents()).thenReturn(stList);
+		
+		aLesson.attendedStudentsAreInscriptedInCourse(courseMock);
+	}
 }
