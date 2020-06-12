@@ -12,13 +12,17 @@ import ar.edu.unq.mis_cursos_unq.Course;
 import ar.edu.unq.mis_cursos_unq.Lesson;
 import ar.edu.unq.mis_cursos_unq.Student;
 import ar.edu.unq.mis_cursos_unq.exceptions.RecordNotFoundException;
+import ar.edu.unq.mis_cursos_unq.repos.StudentDAO;
 import ar.edu.unq.mis_cursos_unq.repos.StudentRepo;
  
 @Service
 public class StudentService {
-     
+	
     @Autowired
     private StudentRepo stRepo;
+    
+    @Autowired
+    private StudentDAO stDAO;
      
     public List<Student> getStudents() {
         List<Student> aList = stRepo.findAll();
@@ -78,4 +82,20 @@ public class StudentService {
         } 
         else { throw new RecordNotFoundException("Student record does not exist for given file number"); }
     }
+	
+	@Transactional
+	public Integer searchStudentsResultsCount(String searchText) {
+		return stDAO.searchStudentsTotalCount(searchText);
+	}
+
+	public Integer searchStudentsPagesCount(String searchText, int studentPerPage) {
+		Integer studentCount = this.searchStudentsResultsCount(searchText);
+		
+		return (Integer) Math.floorDiv(studentCount, studentPerPage) + 1;
+	}
+	
+	@Transactional
+	public List<Student> searchStudents(String searchText, Integer pageNo, int studentPerPage) {
+		return stDAO.searchStudents(searchText, pageNo, studentPerPage);
+	}
 }

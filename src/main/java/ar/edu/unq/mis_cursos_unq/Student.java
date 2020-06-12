@@ -1,12 +1,8 @@
 package ar.edu.unq.mis_cursos_unq;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
+import javax.persistence.*;
+
+import org.hibernate.search.annotations.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,13 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Indexed
 public class Student implements Serializable {
 	
 	private static final long serialVersionUID = 4376258230787104838L;
-
+	
 	private Integer 	 fileNumber;
+	
+	@IndexedEmbedded(depth=1)
 	private PersonalData personalData;
-	private List<String> careers;
+	
+	@Field
+	private String careers;
 	
 	@JsonIgnoreProperties({"students", "lessons", "teachers", "subject", "evaluations"})
 	private List<Course> takenCourses;
@@ -35,7 +36,7 @@ public class Student implements Serializable {
 	public Student(String aFirstName, String aLastName, Integer aDNI, String anEmail, Integer aFileNumber) {
 		setPersonalData(new PersonalData(aDNI, aFirstName, aLastName, anEmail));
 		setFileNumber(aFileNumber);
-		setCareers(new ArrayList<String>());
+		setCareers("");
 		setTakenCourses(new ArrayList<Course>());
 		setAttendedLessons(new ArrayList<Lesson>());
 	}
@@ -66,11 +67,10 @@ public class Student implements Serializable {
 	// Not allowed to set lessons directly because database corruption
 	protected void setAttendedLessons(List<Lesson> attendedLessons) { this.attendedLessons = attendedLessons; }
 	
-    @ElementCollection
-	public List<String> getCareers() { return careers; }
+	public String getCareers() { return careers; }
 
     // Not allowed to set lessons directly because database corruption
-	private void setCareers(List<String> careers) { this.careers = careers; }
+	private void setCareers(String careers) { this.careers = careers; }
 
 	/* METHODS */
 

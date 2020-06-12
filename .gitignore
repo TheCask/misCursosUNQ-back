@@ -30,3 +30,9 @@ build/
 ### VS Code ###
 .vscode/
 /bin/
+/indexes/
+/Dockerfile
+/.DS_Store
+/mvnw
+/mvnw.cmd
+/package-lock.json

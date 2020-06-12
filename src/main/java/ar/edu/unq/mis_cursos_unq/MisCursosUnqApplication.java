@@ -13,6 +13,6 @@ public class MisCursosUnqApplication implements CommandLineRunner {
 	
 	@Override
     public void run(String... args) throws Exception {
-		// Intentional empty body
+		// Empty body
 	}
 }

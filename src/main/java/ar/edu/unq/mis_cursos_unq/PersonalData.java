@@ -1,10 +1,7 @@
 package ar.edu.unq.mis_cursos_unq;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -14,6 +11,9 @@ import java.io.Serializable;
 public class PersonalData implements Serializable {
 
 	private static final long serialVersionUID = -2414154033870368530L;
+	
+//	@ContainedIn
+//	private User user;
 	
 	private Integer personalDataId;
 	

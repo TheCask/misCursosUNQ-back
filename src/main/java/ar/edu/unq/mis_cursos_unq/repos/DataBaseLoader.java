@@ -1,6 +1,12 @@
 package ar.edu.unq.mis_cursos_unq.repos;
 
 import java.time.LocalDate;
+
+import javax.persistence.*;
+import javax.transaction.Transactional;
+
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.Search;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -16,6 +22,9 @@ import ar.edu.unq.mis_cursos_unq.services.SubjectService;
 @Component
 public class DataBaseLoader implements CommandLineRunner  {
 
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 	@Autowired
 	private CourseService csService;
 	
@@ -28,7 +37,15 @@ public class DataBaseLoader implements CommandLineRunner  {
 	}
 
 	@Override
+	@Transactional
 	public void run(String... strings) throws Exception {
+		
+		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+		
+		try { fullTextEntityManager.createIndexer().startAndWait(); } 
+		catch (InterruptedException e) {
+			System.out.println("Error occured trying to build Hibernate Search indexes " + e.toString());
+		}
 		
 		Subject lea = new Subject("Lectura y Escritura Académica", "80000-CyT1y2", "LEA");
 		Subject epyl = new Subject("Elementos de Programación y Lógica", "80005-CyT2", "EPYL");
