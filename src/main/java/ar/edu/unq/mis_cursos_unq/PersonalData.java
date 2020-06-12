@@ -5,30 +5,63 @@ import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.apache.lucene.analysis.charfilter.HTMLStripCharFilterFactory;
+//import org.apache.lucene.analysis.charfilter.MappingCharFilterFactory;
+import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
+import org.apache.lucene.analysis.standard.StandardFilterFactory;
+import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilterFactory;
+import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
+
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Parameter;
+import org.hibernate.search.bridge.builtin.IntegerBridge;
 import java.io.Serializable;
 
+/* ANALIZERS */
+
+@AnalyzerDef(name = "personalAnalizer",
+charFilters = {
+//		@CharFilterDef(factory = MappingCharFilterFactory.class, params = {
+//				@Parameter(name = "mapping",
+//						value = ""org/hibernate/search/test/analyzer/mapping-chars.properties"")
+//		}),
+		@CharFilterDef(factory = HTMLStripCharFilterFactory.class)
+},
+tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class), //ClassicTokenizerFactory is better for hotnames and email
+filters = {
+		@TokenFilterDef(factory = StandardFilterFactory.class), // removes dots and 's
+		@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class), // removes accents
+		@TokenFilterDef(factory = LowerCaseFilterFactory.class), //lowecase all words
+		@TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = { // reduces words to root
+				@Parameter(name = "language", value = "Spanish")
+		})
+})
+
 @Entity
+@Analyzer(definition = "personalAnalizer")
 public class PersonalData implements Serializable {
 
 	private static final long serialVersionUID = -2414154033870368530L;
 	
-//	@ContainedIn
-//	private User user;
-	
 	private Integer personalDataId;
 	
+	@Field @FieldBridge(impl = IntegerBridge.class)
 	private Integer dni;
 	
+	@Field 
 	@Size(max = 50)
 	private String firstName;
 	
+	@Field
 	@Size(max = 50)
 	private String lastName;
 	
-	@Size(max = 50)
-	@Pattern(regexp = "^$|^.*@.*\\..*$")
+	@Field
+	@Size(max = 50) @Pattern(regexp = "^$|^.*@.*\\..*$")
 	private String email;
 	
+	@Field
 	@Pattern(regexp = "^$|\\d{2,4}-\\d{6,8}")
 	private String cellPhone;
 
@@ -45,8 +78,8 @@ public class PersonalData implements Serializable {
 
 	/* GETTERS & SETTERS */
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	
+	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
 	public Integer getPersonalDataId() { return personalDataId; }
 
 	/* Protected to avoid set the primary key */

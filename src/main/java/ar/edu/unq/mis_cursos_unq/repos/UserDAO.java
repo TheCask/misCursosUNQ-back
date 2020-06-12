@@ -8,42 +8,42 @@ import org.hibernate.search.jpa.*;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
-import ar.edu.unq.mis_cursos_unq.Student;
+import ar.edu.unq.mis_cursos_unq.User;
 
 @Repository
-public class StudentDAO {
+public class UserDAO {
 		   
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public List<Student> searchStudents(String searchText, Integer pageNo, int studentPerPage) {
+	public List<User> searchUsers(String searchText, Integer pageNo, int userPerPage) {
 		
-		FullTextQuery jpaQuery = this.searchStudentsQuery(searchText);
+		FullTextQuery jpaQuery = this.searchUsersQuery(searchText);
 		
-		jpaQuery.setMaxResults(studentPerPage);
-		jpaQuery.setFirstResult((pageNo-1) * studentPerPage);
+		jpaQuery.setMaxResults(userPerPage);
+		jpaQuery.setFirstResult((pageNo-1) * userPerPage);
 		
 		@SuppressWarnings("unchecked")
-		List<Student> studentList = jpaQuery.getResultList();
+		List<User> userList = jpaQuery.getResultList();
 		
-		return studentList;
+		return userList;
 	}
 
-	public Integer searchStudentsTotalCount(String searchText) {
-		FullTextQuery jpaQuery = this.searchStudentsQuery(searchText);
+	public Integer searchUsersTotalCount(String searchText) {
+		FullTextQuery jpaQuery = this.searchUsersQuery(searchText);
 
 		return (Integer) jpaQuery.getResultSize();
 	}
 	
-	private FullTextQuery searchStudentsQuery(String searchText) {
+	private FullTextQuery searchUsersQuery(String searchText) {
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
-				.buildQueryBuilder().forEntity(Student.class).get();
+				.buildQueryBuilder().forEntity(User.class).get();
 				
 		Query fileNumberQuery = queryBuilder
 				.keyword()
 				.wildcard() //it is necessary if we want to make use of wildcards
-				.onFields("careers", "personalData.firstName", "personalData.lastName", "personalData.email", "personalData.cellPhone") //for personal data fields: "personalData.lastName" | separates fields with , whe serch in more than one field
+				.onFields("personalData.firstName", "personalData.lastName", "personalData.email", "personalData.cellPhone") //for personal data fields: "personalData.lastName" | separates fields with , whe serch in more than one field
 					.boostedTo(5f) // change relevancy 5X fileNumber vs 1X careers
 				.andField("personalData.dni")
 				.matching( "*" + searchText + "*")
@@ -55,6 +55,6 @@ public class StudentDAO {
 //					.andByField("title").desc()
 //				.createSort();
 		
-		return fullTextEntityManager.createFullTextQuery(fileNumberQuery, Student.class);
+		return fullTextEntityManager.createFullTextQuery(fileNumberQuery, User.class);
 	}
 }

@@ -3,7 +3,6 @@ package ar.edu.unq.mis_cursos_unq;
 import javax.persistence.*;
 
 import org.hibernate.search.annotations.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;

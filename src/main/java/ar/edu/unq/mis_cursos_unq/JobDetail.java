@@ -11,25 +11,33 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.Field;
+
 @Entity
+@Analyzer(definition = "personalAnalizer")
 public class JobDetail implements Serializable {
 
 	private static final long serialVersionUID = -8986445721969296677L;
 	
 	private Integer jobDetailId;
 	
+	@Field
 	@Pattern(regexp = "^$|\\d{2}-\\d{8}-\\d")
 	private String cuitNumber;
 	
+	@Field
 	@Size(max = 15)
 	private String category;
 	
 	@Size(max = 2)
 	private String grade; 
 	
+	@Field
 	@Size(max = 20)
 	private String dedication; 
 	
+	@Field
 	@Size(max = 20)
 	private String contractRelation; 
 	
@@ -40,9 +48,11 @@ public class JobDetail implements Serializable {
 	
 	private LocalDate lastUpdate;
 	
+	@Field
 	@Size(max = 200)
 	private String gradeTitles;
 	
+	@Field
 	@Size(max = 200)
 	private String posGradeTitles;
 	

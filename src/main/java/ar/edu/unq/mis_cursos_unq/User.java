@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
@@ -15,12 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Indexed
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 6671561417676772045L;
 	
 	private Integer userId;
+	
+	@IndexedEmbedded(depth=1)
 	private PersonalData personalData;
+	
+	@IndexedEmbedded(depth=1)
 	private JobDetail jobDetail;
 	
 	private List<Subject> coordinatedSubjects;

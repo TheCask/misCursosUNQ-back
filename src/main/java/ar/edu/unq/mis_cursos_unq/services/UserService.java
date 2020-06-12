@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.edu.unq.mis_cursos_unq.User;
 import ar.edu.unq.mis_cursos_unq.exceptions.RecordNotFoundException;
 import ar.edu.unq.mis_cursos_unq.exceptions.UserException;
+import ar.edu.unq.mis_cursos_unq.repos.UserDAO;
 import ar.edu.unq.mis_cursos_unq.repos.UserRepo;
  
 @Service
@@ -17,6 +18,9 @@ public class UserService {
      
     @Autowired
     private UserRepo usRepo;
+    
+    @Autowired
+    private UserDAO usDAO;
      
     public List<User> getUsers() {
         List<User> userList = usRepo.findAll();
@@ -78,5 +82,21 @@ public class UserService {
 		});
 		
 		return coordinators;
+	}
+	
+	@Transactional
+	public Integer searchUsersResultsCount(String searchText) {
+		return usDAO.searchUsersTotalCount(searchText);
+	}
+
+	public Integer searchUsersPagesCount(String searchText, int userPerPage) {
+		Integer userCount = this.searchUsersResultsCount(searchText);
+		
+		return (Integer) Math.floorDiv(userCount, userPerPage) + 1;
+	}
+	
+	@Transactional
+	public List<User> searchUsers(String searchText, Integer pageNo, int userPerPage) {
+		return usDAO.searchUsers(searchText, pageNo, userPerPage);
 	}
 }
