@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.unq.mis_cursos_unq.Course;
 import ar.edu.unq.mis_cursos_unq.Evaluation;
+import ar.edu.unq.mis_cursos_unq.Student;
 import ar.edu.unq.mis_cursos_unq.exceptions.RecordNotFoundException;
 import ar.edu.unq.mis_cursos_unq.exceptions.SeasonException;
 import ar.edu.unq.mis_cursos_unq.exceptions.SubjectException;
@@ -24,6 +25,9 @@ public class EvaluationService {
 	
 	@Autowired
 	CourseService csService;
+	
+	@Autowired
+	StudentService stService;
 	
 	public List<Evaluation> getEvaluations() {
 		List<Evaluation> aList = evRepo.findAll();
@@ -65,7 +69,11 @@ public class EvaluationService {
 	protected void updateCalifications(Evaluation dbEvaluation, Evaluation newDataEvaluation) {
     	dbEvaluation.removeAllCalifications();
 		newDataEvaluation.getCalifications().forEach(cl -> {
-			dbEvaluation.setStudentNote(cl.getStudent(), cl.getNote());
+			try { 
+				Student student = stService.getStudentByFileNumber(cl.getStudent().getFileNumber());
+				dbEvaluation.setStudentNote(student, cl.getNote());
+			} 
+			catch (RecordNotFoundException e) { e.printStackTrace(); }
 		});
 	}
 

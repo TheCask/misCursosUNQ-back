@@ -32,6 +32,9 @@ public class CourseService {
 	
 	@Autowired
 	private UserService usService;
+	
+	@Autowired
+	private EvaluationService evService;
 
 	public List<Course> getCourses() {
 		List<Course> courseList = csRepo.findAll();
@@ -185,15 +188,30 @@ public class CourseService {
 		return optCourse;
 	}
 
-	public Course addNewEvaluation(Integer courseId, Evaluation evaluation) throws RecordNotFoundException {
+	@Transactional
+	public Course createOrUpdateEvaluation(Integer courseId, Evaluation evaluation) throws RecordNotFoundException {
 		
 		Optional<Course> optCourse = csRepo.findById(courseId);
 		
-		if (optCourse.isPresent() && evaluation.getEvaluationId() == null) {
-			Course course = optCourse.get();
+		Course course;
+		
+		// Update Evaluation
+    	if (optCourse.isPresent() && evaluation.getEvaluationId() != null) {
+    		
+	    	Evaluation dbEvaluation = evService.getEvaluationById(evaluation.getEvaluationId());
+			    		
+    		dbEvaluation.setInstanceName(evaluation.getInstanceName());
+	    	evService.updateCalifications(dbEvaluation, evaluation);
+	    	
+	    	course = optCourse.get();
+    	}
+    	else if (optCourse.isPresent()) {
+			course = optCourse.get();
+			
 			course.addEvaluation(evaluation);
-			return csRepo.save(course);
 		}
-		else { throw new RecordNotFoundException("Course record not exist for given id"); }
+    	else { throw new RecordNotFoundException("Course record not exist for given id"); }
+    	
+    	return csRepo.save(course);
 	}
 }

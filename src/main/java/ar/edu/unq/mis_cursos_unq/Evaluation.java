@@ -48,7 +48,7 @@ public class Evaluation implements Serializable{
 	public List<Calification> getCalifications() { return califications; }
 
     // Not allowed to set califications map directly because database corruption
-    private void setCalifications(List<Calification> califications) { 
+    public void setCalifications(List<Calification> califications) { 
 		this.califications = califications; 
 	}
     
