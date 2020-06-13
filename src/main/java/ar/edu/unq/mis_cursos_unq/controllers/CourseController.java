@@ -71,6 +71,11 @@ public class CourseController {
         return new ResponseEntity<Course>(updated, new HttpHeaders(), HttpStatus.OK);
     }
     
+    @PostMapping("/course/{courseId}/newEvaluation")
+    public @ResponseBody ResponseEntity<Course> addEvaluationToCourse(@PathVariable("courseId") Integer courseId, @RequestBody Evaluation evaluation) throws RecordNotFoundException {
+    	Course updated = csService.addNewEvaluation(courseId, evaluation);
+        return new ResponseEntity<Course>(updated, new HttpHeaders(), HttpStatus.OK);
+    }
     
     @DeleteMapping("course/{courseId}")
     public ResponseEntity<String> deleteCourseById(@PathVariable("courseId") Integer courseId) throws RecordNotFoundException {

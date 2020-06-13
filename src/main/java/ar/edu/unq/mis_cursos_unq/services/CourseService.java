@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unq.mis_cursos_unq.Course;
+import ar.edu.unq.mis_cursos_unq.Evaluation;
 import ar.edu.unq.mis_cursos_unq.Student;
 import ar.edu.unq.mis_cursos_unq.Subject;
 import ar.edu.unq.mis_cursos_unq.User;
@@ -182,5 +183,17 @@ public class CourseService {
 					(ev -> ev.getEvaluationId() == evaluationId)).findFirst();
 		
 		return optCourse;
+	}
+
+	public Course addNewEvaluation(Integer courseId, Evaluation evaluation) throws RecordNotFoundException {
+		
+		Optional<Course> optCourse = csRepo.findById(courseId);
+		
+		if (optCourse.isPresent() && evaluation.getEvaluationId() == null) {
+			Course course = optCourse.get();
+			course.addEvaluation(evaluation);
+			return csRepo.save(course);
+		}
+		else { throw new RecordNotFoundException("Course record not exist for given id"); }
 	}
 }
