@@ -3,6 +3,8 @@ package ar.edu.unq.mis_cursos_unq;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,7 +44,7 @@ public class Evaluation implements Serializable{
 
 	public void setInstanceName(String instanceName) { this.instanceName = instanceName; }
 
-	@OneToMany
+	@OneToMany(cascade = { CascadeType.ALL })
 	public List<Calification> getCalifications() { return califications; }
 
     // Not allowed to set califications map directly because database corruption
@@ -68,10 +70,15 @@ public class Evaluation implements Serializable{
     	return this.getCalifications().removeIf(cl -> cl.getStudent().equals(student));
 	}
     
+    // TODO Test
+    public void removeAllCalifications() {
+		this.getCalifications().clear();
+	}	
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Evaluation)) return false;
         return evaluationId != null && evaluationId.equals(((Evaluation) o).getEvaluationId());
-    }	
+    }
 }

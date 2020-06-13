@@ -43,9 +43,12 @@ public class UserDAO {
 		Query fileNumberQuery = queryBuilder
 				.keyword()
 				.wildcard() //it is necessary if we want to make use of wildcards
-				.onFields("personalData.firstName", "personalData.lastName", "personalData.email", "personalData.cellPhone") //for personal data fields: "personalData.lastName" | separates fields with , whe serch in more than one field
-					.boostedTo(5f) // change relevancy 5X fileNumber vs 1X careers
-				.andField("personalData.dni")
+				.onFields("personalData.firstName", "personalData.lastName", "personalData.email", 
+						"personalData.cellPhone", "personalData.dni", "jobDetail.cuitNumber", 
+						"jobDetail.category", "jobDetail.dedication", "jobDetail.contractRelation", 
+						"jobDetail.gradeTitles", "jobDetail.posGradeTitles")
+					//.boostedTo(5f) // change relevancy 5X fileNumber vs 1X careers
+				//.andField("personalData.dni")
 				.matching( "*" + searchText + "*")
 				.createQuery();
 //		

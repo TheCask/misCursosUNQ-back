@@ -74,6 +74,7 @@ public class CourseService {
 					
 					this.updateStudents(newEntity, entity);
 					this.updateTeachers(newEntity, entity);
+					//this.updateEvaluations(newEntity, entity);
 							
 					return csRepo.save(newEntity);
 				}
@@ -170,5 +171,16 @@ public class CourseService {
 			csRepo.save(course);
 		} 
 		else { throw new RecordNotFoundException("Course record not exist for given id"); }
+	}
+
+	public Optional<Course> getCourseByEvaluationId(Long evaluationId) {
+		
+		List<Course> courses = csRepo.findAll();
+		
+		Optional<Course> optCourse = courses.stream().filter
+			(cs -> cs.getEvaluations().stream().anyMatch
+					(ev -> ev.getEvaluationId() == evaluationId)).findFirst();
+		
+		return optCourse;
 	}
 }

@@ -2,10 +2,12 @@ package ar.edu.unq.mis_cursos_unq;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -16,7 +18,7 @@ public class Calification implements Serializable {
 
 	private Long calificationId;
 	
-	@JsonIgnoreProperties({"takenCourses", "attendedLessons", "careers"})
+	@JsonIgnoreProperties({"takenCourses", "attendedLessons", "careers", "personalData"})
 	private Student student;
 	private Float note;
 	
@@ -37,6 +39,7 @@ public class Calification implements Serializable {
 	/* Protected to avoid set the primary key */
 	protected void setCalificationId(Long calificationId) { this.calificationId = calificationId; }
 	
+	@OneToOne(cascade = { CascadeType.PERSIST,  CascadeType.MERGE })
 	public Student getStudent() { return student; }
 	
 	public void setStudent(Student student) { this.student = student; }
@@ -44,7 +47,4 @@ public class Calification implements Serializable {
 	public Float getNote() { return note; }
 	
 	public void setNote(Float note) { this.note = note; }
-	
-	
-
 }

@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import ar.edu.unq.mis_cursos_unq.Course;
+import ar.edu.unq.mis_cursos_unq.Evaluation;
 import ar.edu.unq.mis_cursos_unq.Lesson;
 import ar.edu.unq.mis_cursos_unq.Student;
 import ar.edu.unq.mis_cursos_unq.Subject;
@@ -55,6 +56,8 @@ public class DataBaseLoader implements CommandLineRunner  {
 		this.sbService.createOrUpdateSubject(epyl);
 		this.sbService.createOrUpdateSubject(icfq);
 		
+		
+		
 		Course aCourse = new Course("17", lea, 2020, "1c");
 		aCourse.setCourseIsOpen(false);
 		aCourse.setCourseShift("Noche");
@@ -75,6 +78,9 @@ public class DataBaseLoader implements CommandLineRunner  {
 		Student student4 = new Student("Aurelio", "Gómez",   44444444, "aurelio_gomez@gmail.com",14444);
 		Student student5 = new Student("Nahuel", "Huapi",    55555555, "huapi.n@gmail.com",14555);
 		
+		Evaluation anEvaluation = new Evaluation("Primer Parcial");
+		anEvaluation.setStudentNote(student1, 7f);
+		
 		Lesson lesson1 = new Lesson(LocalDate.now());
 		Lesson lesson2 = new Lesson(LocalDate.now().plusDays(1));
 		Lesson lesson3 = new Lesson(LocalDate.now().plusDays(2));
@@ -92,6 +98,8 @@ public class DataBaseLoader implements CommandLineRunner  {
 		aCourse.addLesson(lesson1);
 		aCourse.addLesson(lesson2);
 		aCourse.addLesson(lesson3);
+		
+		aCourse.addEvaluation(anEvaluation);
 		
 		lesson1.setAttendance(student1);
 		lesson2.setAttendance(student2);

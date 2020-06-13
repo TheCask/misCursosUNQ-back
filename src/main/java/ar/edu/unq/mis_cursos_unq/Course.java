@@ -107,7 +107,7 @@ public class Course implements Serializable {
 	// Not allowed to set students directly because database corruption
 	protected void setStudents(List<Student> students) { this.students = students; }
 
-	@OneToMany(mappedBy = "course", cascade = { CascadeType.ALL })//, orphanRemoval = true)
+	@OneToMany(mappedBy = "course", cascade = { CascadeType.ALL })// orphanRemoval = true
 	public List<Lesson> getLessons() { return lessons; }
 
 	// Not allowed to set lessons directly because database corruption
@@ -119,7 +119,7 @@ public class Course implements Serializable {
 	// Not allowed to set teachers directly because database corruption
 	protected void setTeachers(List<User> teachers) { this.teachers = teachers; }
 	
-	@OneToMany
+	@OneToMany(cascade = { CascadeType.ALL })
 	public List<Evaluation> getEvaluations() { return evaluations; }
 
 	// Not allowed to set evaluations directly because database corruption
@@ -221,6 +221,18 @@ public class Course implements Serializable {
 			tc.unAssignCourse(this);
 		}
 		this.getTeachers().clear();
+	}
+	
+	// TODO test
+	public void addEvaluation(Evaluation aEvaluation) {
+		if (!this.getEvaluations().contains(aEvaluation)) {
+			this.evaluations.add(aEvaluation);
+		}
+	}
+	
+	// TODO test
+	public void removeEvaluation(Evaluation aEvaluation) {	
+		this.getEvaluations().remove(aEvaluation);
 	}
 	
 	public void addLesson(Lesson aLesson) throws LessonException {	
