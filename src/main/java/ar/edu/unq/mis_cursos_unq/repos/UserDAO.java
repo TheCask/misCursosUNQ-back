@@ -40,16 +40,16 @@ public class UserDAO {
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(User.class).get();
 				
-		Query fileNumberQuery = queryBuilder
+		Query usersQuery = queryBuilder
 				.keyword()
-				.wildcard() //it is necessary if we want to make use of wildcards
+				.wildcard() //it is necessary if use wildcards
 				.onFields("personalData.firstName", "personalData.lastName", "personalData.email", 
 						"personalData.cellPhone", "personalData.dni", "jobDetail.cuitNumber", 
-						"jobDetail.category", "jobDetail.dedication", "jobDetail.contractRelation", 
-						"jobDetail.gradeTitles", "jobDetail.posGradeTitles")
-					//.boostedTo(5f) // change relevancy 5X fileNumber vs 1X careers
-				//.andField("personalData.dni")
-				.matching( "*" + searchText + "*")
+						"jobDetail.category", "jobDetail.dedication", "jobDetail.contractRelation")
+					.boostedTo(5f) // change relevancy 5X fileNumber vs 1X careers
+				.andField("jobDetail.gradeTitles")
+				.andField("jobDetail.posGradeTitles")
+				.matching("*" + searchText + "*")
 				.createQuery();
 //		
 //		Sort sort = queryBuilder
@@ -58,6 +58,6 @@ public class UserDAO {
 //					.andByField("title").desc()
 //				.createSort();
 		
-		return fullTextEntityManager.createFullTextQuery(fileNumberQuery, User.class);
+		return fullTextEntityManager.createFullTextQuery(usersQuery, User.class);
 	}
 }

@@ -10,11 +10,11 @@ import org.apache.lucene.analysis.charfilter.HTMLStripCharFilterFactory;
 import org.apache.lucene.analysis.core.LowerCaseFilterFactory;
 import org.apache.lucene.analysis.standard.StandardFilterFactory;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilterFactory;
-import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
+//import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory;
 import org.apache.lucene.analysis.standard.StandardTokenizerFactory;
 
 import org.hibernate.search.annotations.*;
-import org.hibernate.search.annotations.Parameter;
+//import org.hibernate.search.annotations.Parameter;
 import org.hibernate.search.bridge.builtin.IntegerBridge;
 import java.io.Serializable;
 
@@ -33,9 +33,9 @@ filters = {
 		@TokenFilterDef(factory = StandardFilterFactory.class), // removes dots and 's
 		@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class), // removes accents
 		@TokenFilterDef(factory = LowerCaseFilterFactory.class), //lowecase all words
-		@TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = { // reduces words to root
-				@Parameter(name = "language", value = "Spanish")
-		})
+//		@TokenFilterDef(factory = SnowballPorterFilterFactory.class, params = { // reduces words to root
+//				@Parameter(name = "language", value = "Spanish")
+//		})
 })
 
 @Entity

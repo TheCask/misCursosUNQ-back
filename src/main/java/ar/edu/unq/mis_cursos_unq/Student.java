@@ -3,6 +3,8 @@ package ar.edu.unq.mis_cursos_unq;
 import javax.persistence.*;
 
 import org.hibernate.search.annotations.*;
+import org.hibernate.search.bridge.builtin.IntegerBridge;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
@@ -15,6 +17,7 @@ public class Student implements Serializable {
 	
 	private static final long serialVersionUID = 4376258230787104838L;
 	
+	@Field(name="number") @FieldBridge(impl = IntegerBridge.class)
 	private Integer 	 fileNumber;
 	
 	@IndexedEmbedded(depth=1)

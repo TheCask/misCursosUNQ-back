@@ -23,6 +23,7 @@ import ar.edu.unq.mis_cursos_unq.exceptions.RecordNotFoundException;
 import ar.edu.unq.mis_cursos_unq.exceptions.SeasonException;
 import ar.edu.unq.mis_cursos_unq.repos.CourseRepo;
 import ar.edu.unq.mis_cursos_unq.services.CourseService;
+import ar.edu.unq.mis_cursos_unq.services.EvaluationService;
 import ar.edu.unq.mis_cursos_unq.services.StudentService;
 import ar.edu.unq.mis_cursos_unq.services.SubjectService;
 import ar.edu.unq.mis_cursos_unq.services.UserService;
@@ -62,6 +63,9 @@ class CourseServiceIT {
 	    
 	    @MockBean
 	    private SubjectService sjService;
+	    
+	    @MockBean
+	    private EvaluationService evService;
     }
 	
 	@BeforeEach

@@ -40,12 +40,13 @@ public class StudentDAO {
 		QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory()
 				.buildQueryBuilder().forEntity(Student.class).get();
 				
-		Query fileNumberQuery = queryBuilder
+		Query studentsQuery = queryBuilder
 				.keyword()
-				.wildcard() //it is necessary if we want to make use of wildcards
-				.onFields("careers", "personalData.firstName", "personalData.lastName", "personalData.email", "personalData.cellPhone") //for personal data fields: "personalData.lastName" | separates fields with , whe serch in more than one field
+				.wildcard() //it is necessary if use wildcards
+				.onFields("number", "personalData.dni", "personalData.firstName", "personalData.lastName", 
+						"personalData.email", "personalData.cellPhone")
 					.boostedTo(5f) // change relevancy 5X fileNumber vs 1X careers
-				.andField("personalData.dni")
+				.andField("careers")
 				.matching( "*" + searchText + "*")
 				.createQuery();
 //		
@@ -55,6 +56,6 @@ public class StudentDAO {
 //					.andByField("title").desc()
 //				.createSort();
 		
-		return fullTextEntityManager.createFullTextQuery(fileNumberQuery, Student.class);
+		return fullTextEntityManager.createFullTextQuery(studentsQuery, Student.class);
 	}
 }
