@@ -97,7 +97,7 @@ public class CourseTest {
 	}
 	
 	@Test
-    public void setSubjectSetsCourseFullCode() {
+    public void setCourseFullCodeConstructsCorrectCode() {
 		String courseFullCode = "80000-"+aCourse.getCourseCode()+"-CyT1y2";
 		assertThat(aCourse.getCourseFullCode()).isEqualTo(courseFullCode);
 	}

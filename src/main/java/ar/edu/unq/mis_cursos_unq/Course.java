@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +38,9 @@ public class Course implements Serializable {
 	
 	@JsonIgnore // fullCode is decoupled between back and front
 	private String 	courseFullCode;
+	
+	@JsonIgnore // Code based on fullcode, season and year; unique in entire database
+	private String uniqueCode;			
 	
 	@Size(min = 1, max = 10)
 	private String 	courseShift;
@@ -80,7 +84,7 @@ public class Course implements Serializable {
 		this.setCourseSeason(aSeason);
 		this.setCourseShift("");
 		this.setCourseIsOpen(true);
-		this.setSubject(aSubject); // sets courseFullCode also
+		this.setSubject(aSubject);
 //		this.setCourseBeginDay(LocalDate.ofEpochDay(0)); // First Epoch day is 1970-01-01;
 //		this.setCourseEndDay(LocalDate.ofEpochDay(0));
 		this.teachers = new ArrayList<User>();
@@ -135,11 +139,14 @@ public class Course implements Serializable {
 	@ManyToOne(optional = false)
 	public Subject getSubject() { return subject; }
 	
+	// TODO more tests
 	// Generates the course code based on subject code and name
 	public void setSubject(Subject subject) { 
 		this.subject = subject;
-		String courseCode = subject.getCode().replaceFirst("-", "-"+this.courseCode+"-");
-		this.setCourseFullCode(courseCode);
+		this.setCourseFullCode(subject.getCode());
+		this.setUniqueCode(this.getCourseFullCode() + '-' 
+				+ this.getCourseYear().toString() + '-'
+				+ this.getCourseSeason());
 	}
 	
 	public Integer getCourseYear() { return courseYear; }
@@ -157,8 +164,16 @@ public class Course implements Serializable {
 	public String getCourseFullCode() { return courseFullCode; }
 
 	// Sets automatic on construction, and depends on Subject
-	private void setCourseFullCode(String code) { this.courseFullCode = code; }
+	private void setCourseFullCode(String subjectCode) { 
+		this.courseFullCode = subjectCode.replaceFirst("-", "-"+this.courseCode+"-");
+	}
 
+	@Column(unique = true)
+	public String getUniqueCode() { return uniqueCode; }
+
+	// Sets automatic on construction
+	private void setUniqueCode(String uniqueCode) { this.uniqueCode = uniqueCode;}
+	
 	public String getCourseShift() { return courseShift; }
 
 	public void setCourseShift(String courseShift) { this.courseShift = courseShift; }
