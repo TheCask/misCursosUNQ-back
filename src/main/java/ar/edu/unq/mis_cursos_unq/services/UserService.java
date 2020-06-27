@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.edu.unq.mis_cursos_unq.Course;
 import ar.edu.unq.mis_cursos_unq.User;
 import ar.edu.unq.mis_cursos_unq.exceptions.RecordNotFoundException;
 import ar.edu.unq.mis_cursos_unq.exceptions.UserException;
@@ -82,6 +83,21 @@ public class UserService {
 		});
 		
 		return coordinators;
+	}
+	
+	public List<Course> getUserCoursesByEmail(String email) throws RecordNotFoundException {
+		List<User> userList = new ArrayList<User>();
+		
+		this.getUsers().stream().forEach(us -> { 
+			if (us.getPersonalData().getEmail().equals(email)) { 
+				userList.add(us); 
+			}
+		});
+		
+		if(!userList.isEmpty()) {
+			return userList.get(0).getTaughtCourses();
+		} 
+        else { throw new RecordNotFoundException("User record not exist for given email"); }
 	}
 	
 	@Transactional

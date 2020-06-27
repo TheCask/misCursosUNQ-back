@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import ar.edu.unq.mis_cursos_unq.Course;
 import ar.edu.unq.mis_cursos_unq.User;
 import ar.edu.unq.mis_cursos_unq.exceptions.RecordNotFoundException;
 import ar.edu.unq.mis_cursos_unq.exceptions.UserException;
@@ -71,4 +72,10 @@ public class UserController {
     	
     	return resultUserList;
 	}
+    
+    @GetMapping("user/{email}/courses")
+    public ResponseEntity<List<Course>> getUserCoursesByEmail(@PathVariable("email") String email) throws RecordNotFoundException {
+        List<Course> list = usService.getUserCoursesByEmail(email);
+        return new ResponseEntity<List<Course>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
 }

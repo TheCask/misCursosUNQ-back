@@ -48,7 +48,6 @@ public class StudentController {
         return new ResponseEntity<String>("Student " + fileNumber + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);
     }
     
-    
 	@GetMapping("/students/search")
     public List<Student> searchStudents(@RequestParam(value="text", required=false) String text,
     		@RequestParam(value="page", required=false) Integer page,
@@ -72,5 +71,4 @@ public class StudentController {
     	
     	return resultStudentList;
 	}
-    
 }

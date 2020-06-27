@@ -18,7 +18,7 @@ public class Student implements Serializable {
 	private static final long serialVersionUID = 4376258230787104838L;
 	
 	@Field(name="number") @FieldBridge(impl = IntegerBridge.class)
-	private Integer 	 fileNumber;
+	private Integer fileNumber;
 	
 	@IndexedEmbedded(depth=1)
 	private PersonalData personalData;

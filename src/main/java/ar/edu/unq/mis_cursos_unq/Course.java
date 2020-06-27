@@ -207,8 +207,14 @@ public class Course implements Serializable {
 	
 	public void removeStudent(Student aStudent) {	
 		if (this.students.remove(aStudent)) {
+			this.removeStudentCalifications(aStudent);
 			aStudent.signOffCourse(this);
 		}
+	}
+	
+	// TODO Test
+	public void removeStudentCalifications(Student student) {
+		this.getEvaluations().stream().forEach(ev -> ev.deleteStudentCalification(student));
 	}
 	
 	public void removeAllStudents() {
