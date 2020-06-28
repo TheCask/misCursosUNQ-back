@@ -2,6 +2,7 @@ package ar.edu.unq.mis_cursos_unq;
 
 import javax.persistence.*;
 
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
@@ -19,6 +20,9 @@ public class User implements Serializable {
 	
 	private Integer userId;
 	
+	@Field
+	private Boolean isActive;
+	
 	@IndexedEmbedded(depth=1)
 	private PersonalData personalData;
 	
@@ -34,6 +38,7 @@ public class User implements Serializable {
 	protected User() {}
 	
 	public User(String aFirstName, String aLastName, String anEmail, Integer aDNI) {
+		setIsActive(true);
 		setJobDetail(new JobDetail());
 		setPersonalData(new PersonalData(aDNI, aFirstName, aLastName, anEmail));
 		setCoordinatedSubjects(new ArrayList<Subject>());
@@ -48,6 +53,10 @@ public class User implements Serializable {
 
 	/* Protected to avoid set the primary key */
 	protected void setUserId(Integer userId) { this.userId = userId; }
+
+	public Boolean getIsActive() { return isActive; }
+
+	public void setIsActive(Boolean active) { this.isActive = active; }
 
 	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
 	public PersonalData getPersonalData() { return personalData; }
@@ -121,4 +130,33 @@ public class User implements Serializable {
         if (!(o instanceof User)) return false;
         return userId != null && userId.equals(((User) o).getUserId());
     }
+
+	// TODO Test
+	public List<Course> taughtCoursesByOpenState(Boolean isOpen) {
+		if (isOpen) { return this.openTaughtCourses(); }
+		else { return this.closeTaughtCourses(); }
+	}
+
+	// TODO Test
+	public Boolean canBeInactivated() {
+		return ( this.getCoordinatedSubjects().isEmpty() && this.openTaughtCourses().isEmpty() );
+	}
+
+	// TODO Test
+	private List<Course> openTaughtCourses() {
+		List<Course> courseList = new ArrayList<Course>();
+		this.getTaughtCourses().stream().forEach(cs -> {
+			if (cs.getCourseIsOpen()) { courseList.add(cs); }
+		});
+		return courseList;
+	}
+	
+	// TODO Test
+	private List<Course> closeTaughtCourses() {
+		List<Course> courseList = new ArrayList<Course>();
+		this.getTaughtCourses().stream().forEach(cs -> {
+			if (!cs.getCourseIsOpen()) { courseList.add(cs); }
+		});
+		return courseList;
+	}
 }

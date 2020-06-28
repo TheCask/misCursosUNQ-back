@@ -29,6 +29,15 @@ public class UserService {
         if(userList.size() > 0) { return userList; } 
         else { return new ArrayList<User>(); }
     }
+    
+    public List<User> getUsersByActiveState(Boolean isActive) {
+		List<User> userList = new ArrayList<User>();
+		this.getUsers().stream().forEach(us -> {
+        	if (isActive && us.getIsActive()) { userList.add(us); }
+        	else if (!isActive && !us.getIsActive()) { userList.add(us); }
+        });
+		return userList;
+	}
      
     public User getUserById(Integer id) throws RecordNotFoundException {
         Optional<User> user = usRepo.findById(id);
@@ -62,13 +71,10 @@ public class UserService {
     @Transactional
     public void deleteUserById(Integer id) throws RecordNotFoundException, UserException {
         Optional<User> optUser = usRepo.findById(id);
-        User user;
         if(optUser.isPresent()) {
-        	user = optUser.get();
-        	if (user.getCoordinatedSubjects().isEmpty() && 
-        			user.getTaughtCourses().isEmpty()) { usRepo.deleteById(id); }
-        	else { throw new UserException("User coordinates/teaches at least one subject/course and cannot be deleted");}
-        	 
+        	User user = optUser.get();
+        	if (user.canBeInactivated()) { user.setIsActive(false); }
+        	else { throw new UserException("User coordinates/teaches at least one active subject/course and cannot be deleted");}
         } 
         else { throw new RecordNotFoundException("User record not exist for given id"); }
     }
@@ -85,19 +91,33 @@ public class UserService {
 		return coordinators;
 	}
 	
+	public List<Course> getUserCoursesByEmailAndOpenState(String email, Boolean isOpen) throws RecordNotFoundException {
+		
+		List<User> userList = this.getUsersByEmail(email);
+		
+		List<Course> courseList = userList.get(0).taughtCoursesByOpenState(isOpen);
+		
+		return courseList;
+	}
+
 	public List<Course> getUserCoursesByEmail(String email) throws RecordNotFoundException {
+		
+		List<User> userList = this.getUsersByEmail(email);
+		
+		List<Course> courseList = userList.get(0).getTaughtCourses();
+		
+		return courseList;
+	}
+	
+	public List<User> getUsersByEmail(String email) throws RecordNotFoundException {
 		List<User> userList = new ArrayList<User>();
 		
 		this.getUsers().stream().forEach(us -> { 
-			if (us.getPersonalData().getEmail().equals(email)) { 
-				userList.add(us); 
-			}
+			if (us.getPersonalData().getEmail().equals(email)) { userList.add(us); }
 		});
 		
-		if(!userList.isEmpty()) {
-			return userList.get(0).getTaughtCourses();
-		} 
-        else { throw new RecordNotFoundException("User record not exist for given email"); }
+		if(!userList.isEmpty()) { return userList; }
+		else { throw new RecordNotFoundException("User record not exist for given email"); }
 	}
 	
 	@Transactional

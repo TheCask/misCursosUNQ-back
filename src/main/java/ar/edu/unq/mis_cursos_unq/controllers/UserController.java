@@ -30,6 +30,12 @@ public class UserController {
         List<User> list = usService.getUsers();
         return new ResponseEntity<List<User>>(list, new HttpHeaders(), HttpStatus.OK);
     }
+    
+    @GetMapping("/users/{isActive}")
+    public ResponseEntity<List<User>> getUsersByActiveState(@PathVariable("isActive") Boolean isActive) {
+        List<User> list = usService.getUsersByActiveState(isActive);
+        return new ResponseEntity<List<User>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
  
     @GetMapping("user/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") Integer id) throws RecordNotFoundException {
@@ -47,6 +53,18 @@ public class UserController {
     public ResponseEntity<String> deleteUserById(@PathVariable("id") Integer id) throws RecordNotFoundException, UserException {
         usService.deleteUserById(id);
         return new ResponseEntity<String>("User " + id + " has been successfully deleted", new HttpHeaders(), HttpStatus.OK);
+    }
+    
+    @GetMapping("user/{email}/courses/{isOpen}")
+    public ResponseEntity<List<Course>> getUserCoursesByEmailAndOpenState(@PathVariable("email") String email, @PathVariable("isOpen") Boolean isOpen) throws RecordNotFoundException {
+        List<Course> list = usService.getUserCoursesByEmailAndOpenState(email, isOpen);
+        return new ResponseEntity<List<Course>>(list, new HttpHeaders(), HttpStatus.OK);
+    }
+    
+    @GetMapping("user/{email}/courses")
+    public ResponseEntity<List<Course>> getUserCoursesByEmail(@PathVariable("email") String email) throws RecordNotFoundException {
+        List<Course> list = usService.getUserCoursesByEmail(email);
+        return new ResponseEntity<List<Course>>(list, new HttpHeaders(), HttpStatus.OK);
     }
     
     @GetMapping("/users/search")
@@ -72,10 +90,4 @@ public class UserController {
     	
     	return resultUserList;
 	}
-    
-    @GetMapping("user/{email}/courses")
-    public ResponseEntity<List<Course>> getUserCoursesByEmail(@PathVariable("email") String email) throws RecordNotFoundException {
-        List<Course> list = usService.getUserCoursesByEmail(email);
-        return new ResponseEntity<List<Course>>(list, new HttpHeaders(), HttpStatus.OK);
-    }
 }
