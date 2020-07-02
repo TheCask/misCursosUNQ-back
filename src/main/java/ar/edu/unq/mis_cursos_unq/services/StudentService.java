@@ -23,7 +23,10 @@ public class StudentService {
     
     @Autowired
     private StudentDAO stDAO;
-     
+    
+    @Autowired
+    private CourseService csService;
+    
     public List<Student> getStudents() {
         List<Student> aList = stRepo.findAll();
          
@@ -69,17 +72,20 @@ public class StudentService {
         	
         	Student st = optEntity.get();
         	
-        	// New array list to avoid concurrente modification
+        	// New array list to avoid concurrent modification
         	List<Lesson> stLessons = new ArrayList<Lesson>(st.getAttendedLessons());
         	List<Course> stCourses = new ArrayList<Course>(st.getTakenCourses());
         	
         	// Delete an student implies delete all asociations with courses taken, 
         	// lessons attended and evaluations
-        	stCourses.forEach(cs -> cs.removeStudent(st));
         	stLessons.forEach(ln -> ln.removeAttendance(st));
         	
-        	stRepo.deleteByFileNumber(fileNumber);
+        	stCourses.forEach(cs -> {
+				try { csService.deleteCourseStudent(cs.getCourseId(), st); }
+				catch (RecordNotFoundException e) { e.printStackTrace(); }
+			});
         	
+        	stRepo.deleteByFileNumber(fileNumber);
         } 
         else { throw new RecordNotFoundException("Student record does not exist for given file number"); }
     }

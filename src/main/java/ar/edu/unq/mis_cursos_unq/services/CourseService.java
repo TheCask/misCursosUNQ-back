@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.unq.mis_cursos_unq.Course;
 import ar.edu.unq.mis_cursos_unq.Evaluation;
+import ar.edu.unq.mis_cursos_unq.Lesson;
 import ar.edu.unq.mis_cursos_unq.Student;
 import ar.edu.unq.mis_cursos_unq.Subject;
 import ar.edu.unq.mis_cursos_unq.User;
@@ -78,7 +79,6 @@ public class CourseService {
 					
 					this.updateStudents(newEntity, entity);
 					this.updateTeachers(newEntity, entity);
-					//this.updateEvaluations(newEntity, entity);
 							
 					return csRepo.save(newEntity);
 				}
@@ -130,28 +130,42 @@ public class CourseService {
 		});
 		
 	}
+	
+//	private void updateEvaluations(Course dbCourse, Course newDataCourse) {
+//		newDataCourse.getEvaluations().forEach(ev -> {
+//			try {
+//				Evaluation dbEvaluation = evService.getEvaluationById(ev.getEvaluationId());
+//				dbCourse.addEvaluation(dbEvaluation);
+//			} 
+//			catch (RecordNotFoundException e) { e.printStackTrace(); }
+//		});
+//	}
 
+	@Transactional
+	protected void deleteCourseStudent(Integer courseId, Student st) throws RecordNotFoundException {
+		
+		Course course = this.getCourseById(courseId);
+		
+		List<Lesson> stCsLessons = new ArrayList<Lesson>();
+		
+		st.getAttendedLessons().stream().forEach(ln -> {
+			if (ln.getCourse().equals(course)) { stCsLessons.add(ln); };
+		});
+		
+		stCsLessons.forEach(ln -> ln.removeAttendance(st));
+		
+		evService.removeCourseStudentCalifications(course, st);
+		
+		course.removeStudent(st);
+		
+		csRepo.save(course);
+	}
+	
 	@Transactional
 	public void deleteCourseStudentById(Integer courseId, Integer studentId) throws RecordNotFoundException {
 		
-		Optional<Course> optEntity = csRepo.findById(courseId);
-		
-		Student student;
-		try { student = stService.getStudentByFileNumber(studentId); } 
-		catch (RecordNotFoundException e) { 
-			e.printStackTrace();
-			throw new RecordNotFoundException("Student record not found for given id");
-		}
-
-		if(optEntity.isPresent()) { 
-			
-			Course course = optEntity.get();
-			
-			course.removeStudent(student);
-			
-			csRepo.save(course);
-		} 
-		else { throw new RecordNotFoundException("Course record not exist for given id"); }
+		Student student = stService.getStudentByFileNumber(studentId);
+		this.deleteCourseStudent(courseId, student);
 	}
 
 	@Transactional

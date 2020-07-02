@@ -3,6 +3,7 @@ package ar.edu.unq.mis_cursos_unq;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -73,7 +74,17 @@ public class Evaluation implements Serializable{
     // TODO Test
     public void removeAllCalifications() {
 		this.getCalifications().clear();
-	}	
+	}
+    
+    // TODO Test
+    public Boolean isStudentEvaluated(Student st) {
+    	return this.getCalifications().stream().anyMatch(cl -> cl.getStudent().equals(st));
+	}
+    
+    // TODO Test
+    public Optional<Calification> getStudentCalification(Student st) {
+    	return this.getCalifications().stream().filter(cl -> cl.getStudent().equals(st)).findFirst();
+    }
     
     @Override
     public boolean equals(Object o) {

@@ -9,12 +9,14 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.edu.unq.mis_cursos_unq.Calification;
 import ar.edu.unq.mis_cursos_unq.Course;
 import ar.edu.unq.mis_cursos_unq.Evaluation;
 import ar.edu.unq.mis_cursos_unq.Student;
 import ar.edu.unq.mis_cursos_unq.exceptions.RecordNotFoundException;
 import ar.edu.unq.mis_cursos_unq.exceptions.SeasonException;
 import ar.edu.unq.mis_cursos_unq.exceptions.SubjectException;
+import ar.edu.unq.mis_cursos_unq.repos.CalificationRepo;
 import ar.edu.unq.mis_cursos_unq.repos.EvaluationRepo;
 
 @Service
@@ -24,15 +26,18 @@ public class EvaluationService {
 	EvaluationRepo evRepo;
 	
 	@Autowired
+	CalificationRepo clRepo;
+	
+	@Autowired
 	CourseService csService;
 	
 	@Autowired
 	StudentService stService;
 	
 	public List<Evaluation> getEvaluations() {
-		List<Evaluation> aList = evRepo.findAll();
+		List<Evaluation> evList = evRepo.findAll();
         
-        if(aList.size() > 0) { return aList; } 
+        if(evList.size() > 0) { return evList; } 
         else { return new ArrayList<Evaluation>(); }
 	}
 
@@ -41,6 +46,16 @@ public class EvaluationService {
         
         if(optional.isPresent()) { return optional.get(); } 
         else { throw new RecordNotFoundException("Evaluation record does not exist for given id"); }
+	}
+	
+
+	public List<Evaluation> getStudentEvaluations(Student st) {
+		List<Evaluation> evList = new ArrayList<Evaluation>();
+			
+		this.getEvaluations().stream().forEach(ev -> {
+			if (ev.isStudentEvaluated(st)) { evList.add(ev); }
+		});
+		return evList;
 	}
 
 	@Transactional
@@ -77,6 +92,7 @@ public class EvaluationService {
 		});
 	}
 
+	@Transactional
 	public void deleteEvaluationById(Long evaluationId) throws RecordNotFoundException, SeasonException, SubjectException {
 		
 		Optional<Evaluation> optEntity = evRepo.findById(evaluationId);
@@ -95,5 +111,27 @@ public class EvaluationService {
         } 
         else { throw new RecordNotFoundException("Evaluation record does not exist for given id"); }
 		
+	}
+
+	@Transactional
+	protected void removeCourseStudentCalifications(Course course, Student st) {
+		
+		List<Evaluation> evList = new ArrayList<Evaluation>();
+		
+		course.getEvaluations().stream().forEach(ev -> {
+			if (ev.isStudentEvaluated(st)) { evList.add(ev); }
+		});
+		
+		evList.forEach(ev -> {
+			Optional<Evaluation> optEv = evRepo.findById(ev.getEvaluationId());
+			if (optEv.isPresent()) {
+				Optional<Calification> optCl = clRepo.findById(optEv.get().getEvaluationId());
+				if (optCl.isPresent()) {
+					optEv.get().deleteStudentCalification(st);
+					clRepo.delete(optCl.get());
+				}
+			}
+			evRepo.save(ev);
+		});
 	}
 }
