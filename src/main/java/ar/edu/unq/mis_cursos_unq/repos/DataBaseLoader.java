@@ -69,8 +69,9 @@ public class DataBaseLoader implements CommandLineRunner  {
 		anotherCourse.setCourseShift("Tarde");
 		
 		User teacher1 = new User("El Profe", "Romero", "el_profe@unq.edu.ar", 12658953);
+		User teacher2 = new User("Eugenio", "Calcena", "eugeniocalcena@gmail.com", 28860590);
 		
-		Student student1 = new Student("Eugenio", "Cálcena", 28123123, "eugenio@gmail.com",14111);
+		Student student1 = new Student("Julian", "Asange", 28123123, "julianaa@gmail.com",14111);
 		Student student2 = new Student("Elias", "Filipponi", 29123456, "eliasfilipponi@gmail.com",14222);
 		Student student3 = new Student("Regina", "Falange",  33333333, "regina@gmail.com",14333);
 		Student student4 = new Student("Aurelio", "Gómez",   44444444, "aurelio_gomez@gmail.com",14444);
@@ -85,7 +86,7 @@ public class DataBaseLoader implements CommandLineRunner  {
 		Lesson lesson4 = new Lesson(LocalDate.now().plusDays(10));
 		Lesson lesson5 = new Lesson(LocalDate.now().plusDays(5));
 		
-		aCourse.addTeacher(teacher1);
+		aCourse.addTeacher(teacher2);
 		
 		aCourse.addStudent(student1);
 		aCourse.addStudent(student2);

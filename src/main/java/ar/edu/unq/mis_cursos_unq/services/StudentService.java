@@ -73,7 +73,8 @@ public class StudentService {
         	List<Lesson> stLessons = new ArrayList<Lesson>(st.getAttendedLessons());
         	List<Course> stCourses = new ArrayList<Course>(st.getTakenCourses());
         	
-        	// Delete an student implies delete all asociations with courses taken and lessons attended
+        	// Delete an student implies delete all asociations with courses taken, 
+        	// lessons attended and evaluations
         	stCourses.forEach(cs -> cs.removeStudent(st));
         	stLessons.forEach(ln -> ln.removeAttendance(st));
         	

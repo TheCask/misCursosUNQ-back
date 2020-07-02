@@ -58,6 +58,7 @@ public class UserService {
 	    		User newEntity = user.get();
 	
 	    		// TODO Update coordinatedSubjects, taughtCourses if needed
+	    		newEntity.setIsActive(entity.getIsActive());
 	    		newEntity.setPersonalData(entity.getPersonalData());
 	    		newEntity.setJobDetail(entity.getJobDetail());
 	
