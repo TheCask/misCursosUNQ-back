@@ -38,6 +38,13 @@ public class SubjectController {
         List<User> coordinators = sbService.getSubjectCoordinatorsByCode(code);
         return new ResponseEntity<List<User>>(coordinators, new HttpHeaders(), HttpStatus.OK);
     }
+    
+    @GetMapping("/subject/{code}/courseQty")
+    public ResponseEntity<String> getSubjectCourseQtyByCode(@PathVariable("code") String code) throws RecordNotFoundException {
+        String courseQty = sbService.getCourseQtyByCode(code).toString();
+        return new ResponseEntity<String>(courseQty, new HttpHeaders(), HttpStatus.OK);
+    }
+ 
  
     @PostMapping("/subject")
     public  @ResponseBody ResponseEntity<Subject> createOrUpdateSubject(@RequestBody Subject subject) throws SubjectException {

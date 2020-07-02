@@ -40,6 +40,12 @@ public class SubjectService {
         else { throw new RecordNotFoundException("Subject record not exist for given code"); }
     }
     
+
+	public Long getCourseQtyByCode(String code) throws RecordNotFoundException {
+		return csService.getCourses().stream().filter(cs -> 
+			cs.getSubject().getCode().equals(code)).count();
+	}
+    
     public List<User> getSubjectCoordinatorsByCode(String code) throws RecordNotFoundException {
     	this.getSubjectByCode(code);
     	return usService.getCoordinatorsByCode(code);
