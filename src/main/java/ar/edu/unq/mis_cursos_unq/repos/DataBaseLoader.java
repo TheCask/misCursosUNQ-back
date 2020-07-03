@@ -72,7 +72,7 @@ public class DataBaseLoader implements CommandLineRunner  {
 		User teacher2 = new User("Eugenio", "Calcena", "eugeniocalcena@gmail.com", 28860590);
 		
 		Student student1 = new Student("Julian", "Asange", 28123123, "julianaa@gmail.com",14111);
-		Student student2 = new Student("Elias", "Filipponi", 29123456, "eliasfilipponi@gmail.com",14222);
+		Student student2 = new Student("Harry", "Potter", 29123456, "harry.potter@gmail.com",14222);
 		Student student3 = new Student("Regina", "Falange",  33333333, "regina@gmail.com",14333);
 		Student student4 = new Student("Aurelio", "Gómez",   44444444, "aurelio_gomez@gmail.com",14444);
 		Student student5 = new Student("Nahuel", "Huapi",    55555555, "huapi.n@gmail.com",14555);
