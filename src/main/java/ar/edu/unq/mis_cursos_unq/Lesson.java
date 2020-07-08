@@ -24,7 +24,7 @@ public class Lesson implements Serializable{
 	
 	private Long lessonId;
 	
-	@JsonIgnoreProperties({"lessons", "students", "teachers", "subject"})
+	@JsonIgnoreProperties({"lessons", "students", "teachers", "subject", "evaluations"})
 	private Course course;
 	
 	private LocalDate lessonDay;

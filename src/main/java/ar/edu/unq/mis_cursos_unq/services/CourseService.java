@@ -130,16 +130,6 @@ public class CourseService {
 		});
 		
 	}
-	
-//	private void updateEvaluations(Course dbCourse, Course newDataCourse) {
-//		newDataCourse.getEvaluations().forEach(ev -> {
-//			try {
-//				Evaluation dbEvaluation = evService.getEvaluationById(ev.getEvaluationId());
-//				dbCourse.addEvaluation(dbEvaluation);
-//			} 
-//			catch (RecordNotFoundException e) { e.printStackTrace(); }
-//		});
-//	}
 
 	@Transactional
 	protected void deleteCourseStudent(Integer courseId, Student st) throws RecordNotFoundException {

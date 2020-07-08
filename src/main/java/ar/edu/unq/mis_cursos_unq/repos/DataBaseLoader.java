@@ -16,7 +16,6 @@ import ar.edu.unq.mis_cursos_unq.Evaluation;
 import ar.edu.unq.mis_cursos_unq.Lesson;
 import ar.edu.unq.mis_cursos_unq.Student;
 import ar.edu.unq.mis_cursos_unq.Subject;
-import ar.edu.unq.mis_cursos_unq.User;
 import ar.edu.unq.mis_cursos_unq.services.CourseService;
 import ar.edu.unq.mis_cursos_unq.services.SubjectService;
 
@@ -68,8 +67,8 @@ public class DataBaseLoader implements CommandLineRunner  {
 		anotherCourse.setCourseIsOpen(true);
 		anotherCourse.setCourseShift("Tarde");
 		
-		User teacher1 = new User("El Profe", "Romero", "el_profe@unq.edu.ar", 12658953);
-		User teacher2 = new User("Eugenio", "Calcena", "eugeniocalcena@gmail.com", 28860590);
+//		User teacher1 = new User("El Profe", "Romero", "el_profe@unq.edu.ar", 12658953);
+//		User teacher2 = new User("Eugenio", "Calcena", "eugeniocalcena@gmail.com", 28860590);
 		
 		Student student1 = new Student("Julian", "Asange", 28123123, "julianaa@gmail.com",14111);
 		Student student2 = new Student("Harry", "Potter", 29123456, "harry.potter@gmail.com",14222);
@@ -86,7 +85,7 @@ public class DataBaseLoader implements CommandLineRunner  {
 		Lesson lesson4 = new Lesson(LocalDate.now().plusDays(10));
 		Lesson lesson5 = new Lesson(LocalDate.now().plusDays(5));
 		
-		aCourse.addTeacher(teacher2);
+//		aCourse.addTeacher(teacher2);
 		
 		aCourse.addStudent(student1);
 		aCourse.addStudent(student2);
@@ -106,7 +105,7 @@ public class DataBaseLoader implements CommandLineRunner  {
 		lesson3.setAttendance(student2);
 		
 		
-		otherCourse.addTeacher(teacher1);
+//		otherCourse.addTeacher(teacher1);
 		
 		otherCourse.addStudent(student4);
 		otherCourse.addStudent(student5);
@@ -115,7 +114,7 @@ public class DataBaseLoader implements CommandLineRunner  {
 		otherCourse.addLesson(lesson5);
 		
 		
-		anotherCourse.addTeacher(teacher1);
+//		anotherCourse.addTeacher(teacher1);
 		
 		anotherCourse.addStudent(student4);
 		anotherCourse.addStudent(student5);
