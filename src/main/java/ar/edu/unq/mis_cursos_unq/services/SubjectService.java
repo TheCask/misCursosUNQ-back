@@ -52,41 +52,43 @@ public class SubjectService {
 	}
     
     @Transactional
-    public Subject createOrUpdateSubject(Subject entity) throws SubjectException {
+    public Subject updateSubject(Subject entity) throws SubjectException, RecordNotFoundException {
         
     	if (entity.getCode() != null) {
     	
-	    	Optional<Subject> subject = sbRepo.findByCode(entity.getCode());
+	    	Subject dbSubject = this.getSubjectByCode(entity.getCode());
 	
 	    	// Update subject
-	    	if(subject.isPresent()) {
-	    		Subject newEntity = subject.get();
-	
-	    		newEntity.setName(entity.getName());	
-	    		newEntity.setAcronym(entity.getAcronym());
-	    		newEntity.setProgramURL(entity.getProgramURL());
-	    
-	    		return sbRepo.save(newEntity);
-	    	}
-	    	// Create subject
-	    	return sbRepo.save(entity);
+    		dbSubject.setName(entity.getName());	
+    		dbSubject.setAcronym(entity.getAcronym());
+    		dbSubject.setProgramURL(entity.getProgramURL());
+    
+    		return sbRepo.save(dbSubject);
     	}
     	// Subject code null
     	throw new SubjectException("Subject code (PK) is null");
-    } 
+    }
+    
+    @Transactional
+    public Subject createSubject(Subject entity) throws SubjectException {
+        
+    	if (entity.getCode() != null) {
+    		if (!this.getSubjects().contains(entity)) { return sbRepo.save(entity); }
+    		else { throw new SubjectException("Subject with same code already exist"); }
+    	}
+    	// Subject code null
+    	throw new SubjectException("Subject code (PK) is null");
+    }
     
     @Transactional
     public void deleteSubjectByCode(String code) throws RecordNotFoundException, SubjectException {
-        Optional<Subject> subject = sbRepo.findByCode(code);
+        Subject dbSubject = this.getSubjectByCode(code);
         
         // Subject can/should not cascade delete operation to courses
-        if(subject.isPresent()) {
-        	if (!csService.getCourses().stream().anyMatch(cs -> cs.getSubject().equals(subject.get()))) {
-        		sbRepo.deleteByCode(code);
-        	}
-        	else { throw new SubjectException("Forbidden subject delete, there are courses associated to this subject");}
-        } 
-        else { throw new RecordNotFoundException("Subject record not exist for given code"); }
+        if (!csService.getCourses().stream().anyMatch(cs -> cs.getSubject().equals(dbSubject))) {
+        	sbRepo.deleteByCode(code);
+        }
+        else { throw new SubjectException("Forbidden subject delete, there are courses associated to this subject"); }
     }
 
     @Transactional

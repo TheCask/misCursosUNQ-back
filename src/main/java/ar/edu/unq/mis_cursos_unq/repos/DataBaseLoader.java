@@ -51,9 +51,9 @@ public class DataBaseLoader implements CommandLineRunner  {
 		Subject epyl = new Subject("Elementos de Programación y Lógica", "80005-CyT2", "EPYL");
 		Subject icfq = new Subject("Introducción al Conocimiento de la Física y la Química", "80004-CyT1", "ICFYQ");
 		
-		this.sbService.createOrUpdateSubject(lea);
-		this.sbService.createOrUpdateSubject(epyl);
-		this.sbService.createOrUpdateSubject(icfq);
+		this.sbService.createSubject(lea);
+		this.sbService.createSubject(epyl);
+		this.sbService.createSubject(icfq);
 		
 		Course aCourse = new Course("17", lea, 2020, "1c");
 		aCourse.setCourseIsOpen(false);

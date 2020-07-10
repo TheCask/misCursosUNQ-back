@@ -46,9 +46,15 @@ public class SubjectController {
     }
  
  
-    @PostMapping("/subject")
-    public  @ResponseBody ResponseEntity<Subject> createOrUpdateSubject(@RequestBody Subject subject) throws SubjectException {
-        Subject updated = sbService.createOrUpdateSubject(subject);
+    @PostMapping("/updateSubject")
+    public  @ResponseBody ResponseEntity<Subject> updateSubject(@RequestBody Subject subject) throws SubjectException, RecordNotFoundException {
+        Subject updated = sbService.updateSubject(subject);
+        return new ResponseEntity<Subject>(updated, new HttpHeaders(), HttpStatus.OK);
+    }
+    
+    @PostMapping("/createSubject")
+    public  @ResponseBody ResponseEntity<Subject> createSubject(@RequestBody Subject subject) throws SubjectException {
+        Subject updated = sbService.createSubject(subject);
         return new ResponseEntity<Subject>(updated, new HttpHeaders(), HttpStatus.OK);
     }
     
