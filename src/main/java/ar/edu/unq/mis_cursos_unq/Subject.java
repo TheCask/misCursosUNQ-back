@@ -30,7 +30,7 @@ public class Subject implements Serializable {
 	/* GETTERS & SETTERS */
 	
 	@Id
-	public String getCode() { return code; }
+	public String getCode() { return code.toUpperCase(); }
 
 	/* Protected to avoid set the primary key */
 	protected void setCode(String aCode) { this.code = aCode.toUpperCase(); }

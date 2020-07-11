@@ -143,7 +143,7 @@ public class Course implements Serializable {
 	// Generates the course code based on subject code and name
 	public void setSubject(Subject subject) { 
 		this.subject = subject;
-		this.setCourseFullCode(subject.getCode());
+		this.setCourseFullCode(subject.getCode().toUpperCase());
 		this.setUniqueCode(this.getCourseFullCode() + '-' 
 				+ this.getCourseYear().toString() + '-'
 				+ this.getCourseSeason());
