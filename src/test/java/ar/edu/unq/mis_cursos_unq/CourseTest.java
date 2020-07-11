@@ -98,7 +98,7 @@ public class CourseTest {
 	
 	@Test
     public void setCourseFullCodeConstructsCorrectCode() {
-		String courseFullCode = "80000-"+aCourse.getCourseCode()+"-CyT1y2";
+		String courseFullCode = "80000-"+aCourse.getCourseCode()+"-CYT1Y2"; // Note that we test if code is uppercase too
 		assertThat(aCourse.getCourseFullCode()).isEqualTo(courseFullCode);
 	}
 	
