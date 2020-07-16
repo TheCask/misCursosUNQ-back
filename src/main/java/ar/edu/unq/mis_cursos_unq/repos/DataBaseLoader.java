@@ -70,54 +70,54 @@ public class DataBaseLoader implements CommandLineRunner  {
 //		User teacher1 = new User("El Profe", "Romero", "el_profe@unq.edu.ar", 12658953);
 //		User teacher2 = new User("Eugenio", "Calcena", "eugeniocalcena@gmail.com", 28860590);
 		
-		Student student1 = new Student("Julian", "Asange", 28123123, "julianaa@gmail.com",14111);
-		Student student2 = new Student("Harry", "Potter", 29123456, "harry.potter@gmail.com",14222);
-		Student student3 = new Student("Regina", "Falange",  33333333, "regina@gmail.com",14333);
-		Student student4 = new Student("Aurelio", "Gómez",   44444444, "aurelio_gomez@gmail.com",14444);
-		Student student5 = new Student("Nahuel", "Huapi",    55555555, "huapi.n@gmail.com",14555);
-		
-		Evaluation anEvaluation = new Evaluation("Primer Parcial");
-		anEvaluation.setStudentNote(student1, 7f);
-		
-		Lesson lesson1 = new Lesson(LocalDate.now());
-		Lesson lesson2 = new Lesson(LocalDate.now().plusDays(1));
-		Lesson lesson3 = new Lesson(LocalDate.now().plusDays(2));
-		Lesson lesson4 = new Lesson(LocalDate.now().plusDays(10));
-		Lesson lesson5 = new Lesson(LocalDate.now().plusDays(5));
+//		Student student1 = new Student("Julian", "Asange", 28123123, "julianaa@gmail.com",14111);
+//		Student student2 = new Student("Harry", "Potter", 29123456, "harry.potter@gmail.com",14222);
+//		Student student3 = new Student("Regina", "Falange",  33333333, "regina@gmail.com",14333);
+//		Student student4 = new Student("Aurelio", "Gómez",   44444444, "aurelio_gomez@gmail.com",14444);
+//		Student student5 = new Student("Nahuel", "Huapi",    55555555, "huapi.n@gmail.com",14555);
+//		
+//		Evaluation anEvaluation = new Evaluation("Primer Parcial");
+//		anEvaluation.setStudentNote(student1, 7f);
+//		
+//		Lesson lesson1 = new Lesson(LocalDate.now());
+//		Lesson lesson2 = new Lesson(LocalDate.now().plusDays(1));
+//		Lesson lesson3 = new Lesson(LocalDate.now().plusDays(2));
+//		Lesson lesson4 = new Lesson(LocalDate.now().plusDays(10));
+//		Lesson lesson5 = new Lesson(LocalDate.now().plusDays(5));
 		
 //		aCourse.addTeacher(teacher2);
 		
-		aCourse.addStudent(student1);
-		aCourse.addStudent(student2);
-		aCourse.addStudent(student3);
-		aCourse.addStudent(student4);
-		aCourse.addStudent(student5);
-		
-		aCourse.addLesson(lesson1);
-		aCourse.addLesson(lesson2);
-		aCourse.addLesson(lesson3);
-		
-		aCourse.addEvaluation(anEvaluation);
-		
-		lesson1.setAttendance(student1);
-		lesson2.setAttendance(student2);
-		lesson3.setAttendance(student1);
-		lesson3.setAttendance(student2);
+//		aCourse.addStudent(student1);
+//		aCourse.addStudent(student2);
+//		aCourse.addStudent(student3);
+//		aCourse.addStudent(student4);
+//		aCourse.addStudent(student5);
+//		
+//		aCourse.addLesson(lesson1);
+//		aCourse.addLesson(lesson2);
+//		aCourse.addLesson(lesson3);
+//		
+//		aCourse.addEvaluation(anEvaluation);
+//		
+//		lesson1.setAttendance(student1);
+//		lesson2.setAttendance(student2);
+//		lesson3.setAttendance(student1);
+//		lesson3.setAttendance(student2);
 		
 		
 //		otherCourse.addTeacher(teacher1);
 		
-		otherCourse.addStudent(student4);
-		otherCourse.addStudent(student5);
-		
-		otherCourse.addLesson(lesson4);
-		otherCourse.addLesson(lesson5);
+//		otherCourse.addStudent(student4);
+//		otherCourse.addStudent(student5);
+//		
+//		otherCourse.addLesson(lesson4);
+//		otherCourse.addLesson(lesson5);
 		
 		
 //		anotherCourse.addTeacher(teacher1);
 		
-		anotherCourse.addStudent(student4);
-		anotherCourse.addStudent(student5);
+//		anotherCourse.addStudent(student4);
+//		anotherCourse.addStudent(student5);
 		
 		this.csService.createOrUpdateCourse(otherCourse);
 		this.csService.createOrUpdateCourse(aCourse);
